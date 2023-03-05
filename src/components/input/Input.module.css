@@ -1,0 +1,60 @@
+.BaseInput {
+    font-size: 1.4rem;
+    border-radius: 0.4rem;
+    height: 3.8rem;
+    padding: 1rem;
+    background-color: inherit;
+    border: 2px solid #E6BCBC;
+    color: #E6BCBC;
+    outline: none;
+}
+
+.BaseInput::placeholder {
+    color: transparent;
+}
+
+.BaseInput:disabled,
+.BaseInput[readonly] {
+}
+
+.BaseLabel {
+    display: block;
+    position: absolute;
+    top: 1rem;
+    margin-left: 1rem;
+    pointer-events: none;
+    transition: top 0.1s ease-in-out, scale 0.1s ease-in-out;
+    font-size: 1.4rem;
+}
+
+.BaseInput:focus ~ .BaseLabel,
+.BaseInput:not(:placeholder-shown) ~ .BaseLabel {
+    top: 0;
+    background-color: inherit;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    transform: translateY(-50%) scale(0.75);
+    margin-left: 0.2rem;
+}
+
+.BaseInput:placeholder-shown ~ .btnShowPassword {
+    display: none;
+}
+
+.BaseContainer {
+    position: relative;
+    background-color: inherit;
+}
+
+.invalidField {
+    border: 2px solid #7E2A30;
+}
+
+.btnShowPassword {
+    display: block;
+    position: absolute;
+    cursor: pointer;
+    user-select: none;
+    top: 1.2rem;
+    right: 1rem;
+}
