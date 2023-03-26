@@ -1,0 +1,31 @@
+.root {
+    width: 18rem;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 1rem 0 !important;
+    overflow: auto;
+}
+
+.title {
+    margin: 1rem;
+    font-size: 2rem;
+}
+
+.btnAbout {
+    border-radius: 0.6rem !important;
+    padding: 0.6rem 1rem 0.6rem 1rem !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 1rem !important;
+    font-size: 1rem !important;
+    font-weight: normal !important;
+    box-shadow: none !important;
+    margin-left: 1rem !important;
+    margin-right: 1rem !important;
+}
+
+.iconAbout {
+    font-size: 2rem !important;
+    margin-right: 2rem;
+}

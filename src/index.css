@@ -1,5 +1,3 @@
-@import "./themes/icons.css";
-
 * {
     box-sizing: border-box;
 }
@@ -11,8 +9,6 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #201a1a;
-    color: #FFDADB;
 }
 
 code {

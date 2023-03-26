@@ -1,0 +1,31 @@
+.root {
+    width: 100%;
+    padding: 1rem;
+    background-color: #44292A;
+    border-radius: 1rem;
+    margin-top: 1rem;
+}
+
+.title {
+    margin: 0;
+}
+
+.btnProfile {
+    border-radius: 0.6rem !important;
+    padding: 0.6rem 1rem 0.6rem 1rem !important;
+    width: 100%;
+    display: flex !important;
+    justify-content: space-around !important;
+    margin-top: 1rem !important;
+    font-size: 1rem !important;
+    font-weight: normal !important;
+    box-shadow: none !important;
+}
+
+.iconPerson {
+    font-size: 2rem !important;
+}
+
+.iconLogout {
+    font-size: 2rem !important;
+}
