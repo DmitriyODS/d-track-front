@@ -1,0 +1,11 @@
+.root {
+    border-radius: 0.6rem !important;
+    width: 38rem;
+    margin-left: 4rem;
+    font-size: 1.4rem !important;
+    background-color: #5D3F3F;
+}
+
+.root input {
+    padding: 0 !important;
+}

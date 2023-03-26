@@ -6,12 +6,14 @@ declare module '@mui/material/styles' {
     tertiary: Palette['primary'];
     secondaryInvert: Palette['primary'];
     textInput: Palette['primary'];
+    primaryInvert: Palette['primary'];
   }
 
   interface PaletteOptions {
     tertiary?: PaletteOptions['primary'];
     secondaryInvert?: PaletteOptions['primary'];
     textInput?: PaletteOptions['primary'];
+    primaryInvert?: PaletteOptions['primary'];
   }
 }
 
@@ -34,6 +36,12 @@ declare module '@mui/material/FormControl' {
   }
 }
 
+declare module '@mui/material/InputBase' {
+  interface InputBasePropsColorOverrides {
+    primaryInvert: true;
+  }
+}
+
 declare module '@mui/material/IconButton' {
   interface IconButtonPropsColorOverrides {
     textInput: true;
@@ -42,6 +50,13 @@ declare module '@mui/material/IconButton' {
 
 const BaseTheme: ThemeOptions = {
   components: {
+    MuiTypography: {
+      styleOverrides: {
+        h1: {
+          fontSize: '3rem',
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -98,6 +113,11 @@ const BaseTheme: ThemeOptions = {
       main: '#5D3F3F',
       dark: '#604646',
       contrastText: '#FFDAD9',
+    },
+    primaryInvert: {
+      main: '#FFDADB',
+      dark: '#eacfcf',
+      contrastText: '#5D3F3F',
     },
     secondary: {
       main: '#EEBF78',
