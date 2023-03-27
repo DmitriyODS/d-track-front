@@ -14,7 +14,6 @@ type Props = {
 
 function ClaimsToolbar({ isArchive }: Props) {
   return (
-
     <Paper className={styles.root}>
       <Button
         className={`${styles.btn} ${styles.btnMini}`}
