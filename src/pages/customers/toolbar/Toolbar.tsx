@@ -34,7 +34,7 @@ function CustomersToolbar({ isSelected }: Props) {
             startIcon={<IconOpen />}
             disabled={!isSelected}
           >
-            Открыть
+            Просмотреть
           </Button>
           <Button
             className={styles.btn}

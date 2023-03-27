@@ -36,7 +36,7 @@ function EmployeesToolbar(props: Props) {
           startIcon={<IconOpen />}
           disabled={!props.isSelected}
         >
-          Открыть
+          Просмотреть
         </Button>
         {!props.isArchive && (
           <Button

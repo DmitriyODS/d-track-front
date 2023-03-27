@@ -7,53 +7,66 @@ import IconOpen from '@mui/icons-material/OpenInNew';
 import IconEdit from '@mui/icons-material/Edit';
 import IconChange from '@mui/icons-material/PublishedWithChanges';
 import IconArrow from '@mui/icons-material/Shortcut';
+import { ViewModes } from '../../../globals/types';
 
 type Props = {
   isArchive?: boolean;
+  viewMode?: ViewModes;
+  isSelected?: boolean;
 };
 
-function ClaimsToolbar({ isArchive }: Props) {
+function ClaimsToolbar(props: Props) {
   return (
     <Paper className={styles.root}>
-      <Button
-        className={`${styles.btn} ${styles.btnMini}`}
-        variant={'contained'}
-        color={'secondary'}
-        startIcon={<IconAdd />}
-      >
-        Создать
-      </Button>
+      {!props.isArchive && (
+        <Button
+          className={`${styles.btn} ${styles.btnMini}`}
+          variant={'contained'}
+          color={'secondary'}
+          startIcon={<IconAdd />}
+        >
+          Создать
+        </Button>
+      )}
       <div className={styles.btnGroup}>
         <Button
           className={styles.btn}
           variant={'contained'}
           color={'primary'}
           startIcon={<IconOpen />}
+          disabled={!props.isSelected}
         >
-          Открыть
+          Просмотреть
         </Button>
-        <Button
-          className={styles.btn}
-          variant={'contained'}
-          color={'primary'}
-          startIcon={<IconEdit />}
-        >
-          Изменить
-        </Button>
-        <Button
-          className={styles.btn}
-          variant={'contained'}
-          color={'primary'}
-          startIcon={<IconChange />}
-        >
-          Поменять статус
-        </Button>
+        {!props.isArchive && (
+          <Button
+            className={styles.btn}
+            variant={'contained'}
+            color={'primary'}
+            startIcon={<IconEdit />}
+            disabled={!props.isSelected}
+          >
+            Изменить
+          </Button>
+        )}
+        {!props.isArchive && (
+          <Button
+            className={styles.btn}
+            variant={'contained'}
+            color={'primary'}
+            startIcon={<IconChange />}
+            disabled={!props.isSelected}
+          >
+            Поменять статус
+          </Button>
+        )}
       </div>
       <Button
         className={`${styles.btn} ${styles.btnMini}`}
         variant={'contained'}
         color={'tertiary'}
         startIcon={<IconArrow />}
+        disabled={!props.isSelected}
       >
         К клиенту
       </Button>

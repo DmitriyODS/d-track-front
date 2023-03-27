@@ -60,13 +60,16 @@ class Tasks extends React.Component<any, State> {
           <SearchField placeholder={'Фильтрация по номеру задачи'} />
         </div>
         <div className={styles.toolbar}>
-          <TasksToolbar isArchive={this.state.isArchive} />
+          <TasksToolbar
+            isArchive={this.state.isArchive}
+            isSelected={this.state.curItemID !== 0}
+          />
           <Switcher
             isArchive={this.state.isArchive}
             onClickOne={this.handleSwitchToMain}
             onClickTwo={this.handleSwitchToArchive}
-            textOne={'Открыть'}
-            textTwo={'Готово'}
+            textOne={'Открытые'}
+            textTwo={'Закрытые'}
           />
         </div>
         <div className={styles.content}>

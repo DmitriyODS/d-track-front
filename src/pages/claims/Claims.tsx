@@ -60,13 +60,16 @@ class Claims extends React.Component<any, State> {
           <SearchField placeholder={'Фильтрация по номеру заявки'} />
         </div>
         <div className={styles.toolbar}>
-          <ClaimsToolbar isArchive={this.state.isArchive} />
+          <ClaimsToolbar
+            isArchive={this.state.isArchive}
+            isSelected={this.state.curItemID !== 0}
+          />
           <Switcher
             isArchive={this.state.isArchive}
             onClickOne={this.handleSwitchToMain}
             onClickTwo={this.handleSwitchToArchive}
-            textOne={'Открытие'}
-            textTwo={'Закрытие'}
+            textOne={'Открытые'}
+            textTwo={'Закрытые'}
           />
         </div>
         <div className={styles.content}>
