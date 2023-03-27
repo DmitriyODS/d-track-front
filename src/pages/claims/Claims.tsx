@@ -11,6 +11,7 @@ type State = {
   isArchive: boolean;
   curItemID: number;
 };
+
 class Claims extends React.Component<any, State> {
   constructor(props: any) {
     super(props);
@@ -50,6 +51,7 @@ class Claims extends React.Component<any, State> {
 
     return dataItems;
   };
+
   render() {
     return (
       <div className={styles.root}>

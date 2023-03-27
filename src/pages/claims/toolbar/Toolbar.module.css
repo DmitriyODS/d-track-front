@@ -3,9 +3,11 @@
     display: flex !important;
     padding: 0.6rem 1rem 0.6rem 1rem !important;
 }
+
 .root > *:not(:first-child) {
     margin-left: 1rem !important;
 }
+
 .btnGroup {
     display: flex;
     background-color: #44292A;
@@ -14,9 +16,11 @@
     border-radius: 1rem;
     padding: 0.4rem;
 }
+
 .btnGroup .btn:not(:first-child) {
     margin-left: 1rem;
 }
+
 .btn {
     font-size: 1rem !important;
     box-shadow: none !important;
