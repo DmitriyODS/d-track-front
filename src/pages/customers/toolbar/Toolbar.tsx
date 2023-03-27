@@ -42,12 +42,11 @@ function CustomersToolbar({ isArchive }: Props) {
             Изменить
           </Button>
         </div>
-
       </Paper>
 
       <Paper className={styles.partTwo}>
         <Button
-          className={styles.btn}
+          className={`${styles.btn} ${styles.btnMini}`}
           variant={'contained'}
           color={'tertiary'}
           startIcon={<IconArrow />}
