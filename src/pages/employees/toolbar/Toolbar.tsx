@@ -15,45 +15,49 @@ type Props = {
   isSelected?: boolean;
 };
 
-function EmployeesToolbar({ isArchive, isSelected }: Props) {
+function EmployeesToolbar(props: Props) {
   return (
     <Paper className={styles.root}>
-      <Button
-        className={`${styles.btn} ${styles.btnMini}`}
-        variant={'contained'}
-        color={'secondary'}
-        startIcon={<IconAdd />}
-      >
-        Добавить
-      </Button>
+      {!props.isArchive && (
+        <Button
+          className={`${styles.btn} ${styles.btnMini}`}
+          variant={'contained'}
+          color={'secondary'}
+          startIcon={<IconAdd />}
+        >
+          Добавить
+        </Button>
+      )}
       <div className={styles.btnGroup}>
         <Button
           className={styles.btn}
           variant={'contained'}
           color={'primary'}
           startIcon={<IconOpen />}
-          disabled={!isSelected}
+          disabled={!props.isSelected}
         >
           Открыть
         </Button>
-        <Button
-          className={styles.btn}
-          variant={'contained'}
-          color={'primary'}
-          startIcon={<IconEdit />}
-          disabled={!isSelected}
-        >
-          Изменить
-        </Button>
+        {!props.isArchive && (
+          <Button
+            className={styles.btn}
+            variant={'contained'}
+            color={'primary'}
+            startIcon={<IconEdit />}
+            disabled={!props.isSelected}
+          >
+            Изменить
+          </Button>
+        )}
       </div>
       <Button
         className={`${styles.btn} ${styles.btnMini}`}
         variant={'contained'}
         color={'tertiary'}
-        disabled={!isSelected}
-        startIcon={isArchive ? <IconReplay /> : <IconPersonOff />}
+        disabled={!props.isSelected}
+        startIcon={props.isArchive ? <IconReplay /> : <IconPersonOff />}
       >
-        {isArchive ? 'Восстановить' : 'Уволить'}
+        {props.isArchive ? 'Восстановить' : 'Уволить'}
       </Button>
     </Paper>
   );

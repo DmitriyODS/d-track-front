@@ -4,15 +4,20 @@
     padding: 0.6rem 1rem 0.6rem 1rem !important;
 }
 
+.root > *:not(:first-child) {
+    margin-left: 1rem !important;
+}
+
 .btnGroup {
     display: flex;
     background-color: #44292A;
-    margin-left: 1rem;
-    margin-right: 0.3rem;
     justify-content: space-around;
-    width: 20rem;
     border-radius: 1rem;
     padding: 0.4rem;
+}
+
+.btnGroup .btn:not(:first-child) {
+    margin-left: 1rem;
 }
 
 .btn {
@@ -25,7 +30,7 @@
     margin: 0.4rem !important;
 }
 
-.partTwo{
+.partTwo {
     height: 4.6rem;
     display: flex !important;
     padding: 0.6rem 1rem 0.6rem 1rem !important;

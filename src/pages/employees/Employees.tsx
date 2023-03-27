@@ -6,10 +6,12 @@ import EmployeesToolbar from './toolbar/Toolbar';
 import Switcher from '../../components/switcher/Switcher';
 import Table, { DataItem } from '../../components/table/Table';
 import { ColumnTable } from './table/columnTable';
+import { ViewModes } from '../../globals/types';
 
 type State = {
   isArchive: boolean;
   curItemID: number;
+  viewMode: ViewModes;
 };
 
 class Employee extends React.Component<any, State> {
@@ -17,15 +19,19 @@ class Employee extends React.Component<any, State> {
     super(props);
 
     // todo: временная заглушка до ReduxToolkit
-    this.state = { isArchive: false, curItemID: 0 };
+    this.state = {
+      isArchive: false,
+      curItemID: 0,
+      viewMode: ViewModes.Creator,
+    };
   }
 
   handleSwitchToArchive = () => {
-    this.setState({ isArchive: true, curItemID: 0 });
+    this.setState((s) => ({ ...s, isArchive: true, curItemID: 0 }));
   };
 
   handleSwitchToMain = () => {
-    this.setState({ isArchive: false, curItemID: 0 });
+    this.setState((s) => ({ ...s, isArchive: false, curItemID: 0 }));
   };
 
   handleSelectItem = (itemID: number) => {
