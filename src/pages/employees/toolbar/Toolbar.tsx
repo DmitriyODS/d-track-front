@@ -7,20 +7,24 @@ import IconOpen from '@mui/icons-material/OpenInNew';
 import IconEdit from '@mui/icons-material/Edit';
 import IconPersonOff from '@mui/icons-material/PersonOffOutlined';
 import IconReplay from '@mui/icons-material/Replay';
+import { ViewModes } from '../../../globals/types';
 
-type ETBProps = {
+type Props = {
   isArchive?: boolean;
+  viewMode?: ViewModes;
+  isSelected?: boolean;
 };
 
-function EmployeesToolbar({ isArchive }: ETBProps) {
+function EmployeesToolbar({ isArchive, isSelected }: Props) {
   return (
 
       <Paper className={styles.root}>
         <Button
           className={`${styles.btn} ${styles.btnMini}`}
           variant={'contained'}
-          color={'secondary'}
-          startIcon={<IconAdd />}
+          color={'primary'}
+          startIcon={<IconOpen />}
+          disabled={!isSelected}
         >
           Добавить
         </Button>
@@ -45,14 +49,23 @@ function EmployeesToolbar({ isArchive }: ETBProps) {
         <Button
           className={`${styles.btn} ${styles.btnMini}`}
           variant={'contained'}
-          color={'tertiary'}
-          startIcon={isArchive ? <IconReplay /> : <IconPersonOff />}
+          color={'primary'}
+          startIcon={<IconEdit />}
+          disabled={!isSelected}
         >
           {isArchive ? 'Восстановить' : 'Уволить'}
         </Button>
-      </Paper>
-
-
+      </div>
+      <Button
+        className={`${styles.btn} ${styles.btnMini}`}
+        variant={'contained'}
+        color={'tertiary'}
+        disabled={!isSelected}
+        startIcon={isArchive ? <IconReplay /> : <IconPersonOff />}
+      >
+        {isArchive ? 'Восстановить' : 'Уволить'}
+      </Button>
+    </Paper>
   );
 }
 
