@@ -60,7 +60,10 @@ class Employee extends React.Component<any, State> {
           <SearchField placeholder={'Фильтрация по ФИО сотрудника'} />
         </div>
         <div className={styles.toolbar}>
-          <EmployeesToolbar isArchive={this.state.isArchive} />
+          <EmployeesToolbar
+            isArchive={this.state.isArchive}
+            isSelected={this.state.curItemID !== 0}
+          />
           <Switcher
             isArchive={this.state.isArchive}
             onClickOne={this.handleSwitchToMain}
