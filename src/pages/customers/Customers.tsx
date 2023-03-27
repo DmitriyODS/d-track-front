@@ -47,7 +47,7 @@ class Customers extends React.Component<any, State> {
       <div className={styles.root}>
         <div className={styles.header}>
           <Typography variant={'h1'}>Клиенты</Typography>
-          <SearchField placeholder={'Поиск по ФИО клиента'} />
+          <SearchField placeholder={'Фильтрация по ФИО клиента'} />
         </div>
         <div className={styles.toolbar}>
           <CustomersToolbar/>
