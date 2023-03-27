@@ -5,8 +5,6 @@ import Button from '@mui/material/Button';
 import IconAdd from '@mui/icons-material/Add';
 import IconOpen from '@mui/icons-material/OpenInNew';
 import IconEdit from '@mui/icons-material/Edit';
-import IconPersonOff from '@mui/icons-material/PersonOffOutlined';
-import IconReplay from '@mui/icons-material/Replay';
 import IconChange from '@mui/icons-material/PublishedWithChanges';
 
 type ETBProps = {
