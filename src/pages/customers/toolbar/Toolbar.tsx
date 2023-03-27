@@ -8,6 +8,7 @@ import IconEdit from '@mui/icons-material/Edit';
 import IconArrow from '@mui/icons-material/Shortcut';
 import IconReplay from '@mui/icons-material/Replay';
 import { ViewModes } from '../../../globals/types';
+import { Collapse, useMediaQuery } from '@mui/material';
 
 type Props = {
   viewMode?: ViewModes;
@@ -15,6 +16,8 @@ type Props = {
 };
 
 function CustomersToolbar({ isSelected }: Props) {
+  const matches = useMediaQuery('(min-width: 1650px)');
+
   return (
     <>
       <Paper className={styles.root}>
@@ -22,41 +25,48 @@ function CustomersToolbar({ isSelected }: Props) {
           className={`${styles.btn} ${styles.btnMini}`}
           variant={'contained'}
           color={'secondary'}
-          startIcon={<IconAdd />}
         >
-          Добавить
+          <IconAdd />
+          <Collapse in={matches} orientation={'horizontal'}>
+            <p>Добавить</p>
+          </Collapse>
         </Button>
         <div className={styles.btnGroup}>
           <Button
             className={styles.btn}
             variant={'contained'}
             color={'primary'}
-            startIcon={<IconOpen />}
             disabled={!isSelected}
           >
-            Просмотреть
+            <IconOpen />
+            <Collapse in={matches} orientation={'horizontal'}>
+              <p>Просмотреть</p>
+            </Collapse>
           </Button>
           <Button
             className={styles.btn}
             variant={'contained'}
             color={'primary'}
-            startIcon={<IconEdit />}
             disabled={!isSelected}
           >
-            Изменить
+            <IconEdit />
+            <Collapse in={matches} orientation={'horizontal'}>
+              <p>Изменить</p>
+            </Collapse>
           </Button>
         </div>
       </Paper>
-
       <Paper className={styles.partTwo}>
         <Button
           className={`${styles.btn} ${styles.btnMini}`}
           variant={'contained'}
           color={'tertiary'}
-          startIcon={<IconArrow />}
           disabled={!isSelected}
         >
-          К заявкам
+          <IconArrow />
+          <Collapse in={matches} orientation={'horizontal'}>
+            <p>К заявкам</p>
+          </Collapse>
         </Button>
       </Paper>
     </>

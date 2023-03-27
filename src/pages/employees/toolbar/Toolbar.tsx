@@ -8,6 +8,7 @@ import IconEdit from '@mui/icons-material/Edit';
 import IconPersonOff from '@mui/icons-material/PersonOffOutlined';
 import IconReplay from '@mui/icons-material/Replay';
 import { ViewModes } from '../../../globals/types';
+import { Collapse, useMediaQuery } from '@mui/material';
 
 type Props = {
   isArchive?: boolean;
@@ -16,6 +17,8 @@ type Props = {
 };
 
 function EmployeesToolbar(props: Props) {
+  const matches = useMediaQuery('(min-width: 1650px)');
+
   return (
     <Paper className={styles.root}>
       {!props.isArchive && (
@@ -23,9 +26,11 @@ function EmployeesToolbar(props: Props) {
           className={`${styles.btn} ${styles.btnMini}`}
           variant={'contained'}
           color={'secondary'}
-          startIcon={<IconAdd />}
         >
-          Добавить
+          <IconAdd />
+          <Collapse in={matches} orientation={'horizontal'}>
+            <p>Добавить</p>
+          </Collapse>
         </Button>
       )}
       <div className={styles.btnGroup}>
@@ -33,20 +38,24 @@ function EmployeesToolbar(props: Props) {
           className={styles.btn}
           variant={'contained'}
           color={'primary'}
-          startIcon={<IconOpen />}
           disabled={!props.isSelected}
         >
-          Просмотреть
+          <IconOpen />
+          <Collapse in={matches} orientation={'horizontal'}>
+            <p>Просмотреть</p>
+          </Collapse>
         </Button>
         {!props.isArchive && (
           <Button
             className={styles.btn}
             variant={'contained'}
             color={'primary'}
-            startIcon={<IconEdit />}
             disabled={!props.isSelected}
           >
-            Изменить
+            <IconEdit />
+            <Collapse in={matches} orientation={'horizontal'}>
+              <p>Изменить</p>
+            </Collapse>
           </Button>
         )}
       </div>
@@ -55,9 +64,11 @@ function EmployeesToolbar(props: Props) {
         variant={'contained'}
         color={'tertiary'}
         disabled={!props.isSelected}
-        startIcon={props.isArchive ? <IconReplay /> : <IconPersonOff />}
       >
-        {props.isArchive ? 'Восстановить' : 'Уволить'}
+        {props.isArchive ? <IconReplay /> : <IconPersonOff />}
+        <Collapse in={matches} orientation={'horizontal'}>
+          <p>{props.isArchive ? 'Восстановить' : 'Уволить'}</p>
+        </Collapse>
       </Button>
     </Paper>
   );

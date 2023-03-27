@@ -27,6 +27,11 @@
     padding: 1rem !important;
 }
 
+.btn p {
+    margin-left: 0.6rem;
+    width: max-content !important;
+}
+
 .btnMini {
     margin: 0.4rem !important;
 }

@@ -8,6 +8,7 @@ import IconEdit from '@mui/icons-material/Edit';
 import IconChange from '@mui/icons-material/PublishedWithChanges';
 import IconArrow from '@mui/icons-material/Shortcut';
 import { ViewModes } from '../../../globals/types';
+import { Collapse, useMediaQuery } from '@mui/material';
 
 type Props = {
   isArchive?: boolean;
@@ -16,6 +17,8 @@ type Props = {
 };
 
 function ClaimsToolbar(props: Props) {
+  const matches = useMediaQuery('(min-width: 1650px)');
+
   return (
     <Paper className={styles.root}>
       {!props.isArchive && (
@@ -23,9 +26,11 @@ function ClaimsToolbar(props: Props) {
           className={`${styles.btn} ${styles.btnMini}`}
           variant={'contained'}
           color={'secondary'}
-          startIcon={<IconAdd />}
         >
-          Создать
+          <IconAdd />
+          <Collapse in={matches} orientation={'horizontal'}>
+            <p>Создать</p>
+          </Collapse>
         </Button>
       )}
       <div className={styles.btnGroup}>
@@ -33,20 +38,24 @@ function ClaimsToolbar(props: Props) {
           className={styles.btn}
           variant={'contained'}
           color={'primary'}
-          startIcon={<IconOpen />}
           disabled={!props.isSelected}
         >
-          Просмотреть
+          <IconOpen />
+          <Collapse in={matches} orientation={'horizontal'}>
+            <p>Просмотреть</p>
+          </Collapse>
         </Button>
         {!props.isArchive && (
           <Button
             className={styles.btn}
             variant={'contained'}
             color={'primary'}
-            startIcon={<IconEdit />}
             disabled={!props.isSelected}
           >
-            Изменить
+            <IconEdit />
+            <Collapse in={matches} orientation={'horizontal'}>
+              <p>Изменить</p>
+            </Collapse>
           </Button>
         )}
         {!props.isArchive && (
@@ -54,10 +63,12 @@ function ClaimsToolbar(props: Props) {
             className={styles.btn}
             variant={'contained'}
             color={'primary'}
-            startIcon={<IconChange />}
             disabled={!props.isSelected}
           >
-            Поменять статус
+            <IconChange />
+            <Collapse in={matches} orientation={'horizontal'}>
+              <p>Поменять статус</p>
+            </Collapse>
           </Button>
         )}
       </div>
@@ -65,10 +76,12 @@ function ClaimsToolbar(props: Props) {
         className={`${styles.btn} ${styles.btnMini}`}
         variant={'contained'}
         color={'tertiary'}
-        startIcon={<IconArrow />}
         disabled={!props.isSelected}
       >
-        К клиенту
+        <IconArrow />
+        <Collapse in={matches} orientation={'horizontal'}>
+          <p>К клиенту</p>
+        </Collapse>
       </Button>
     </Paper>
   );

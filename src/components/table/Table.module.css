@@ -28,6 +28,10 @@
     background-color: #483838;
 }
 
+.table tbody tr {
+    transition: background-color 200ms ease-in-out;
+}
+
 .table tbody tr:hover {
     background-color: #574545;
 }
@@ -63,6 +67,7 @@
     overflow: auto;
 }
 
+/* TODO: тут должны быть бордеры для разделения заголовка таблицы - нужны? 🤔 */
 .table thead tr th:not(:last-child) {
 }
 
