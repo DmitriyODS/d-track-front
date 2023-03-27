@@ -5,16 +5,16 @@ import Button from '@mui/material/Button';
 import IconAdd from '@mui/icons-material/Add';
 import IconOpen from '@mui/icons-material/OpenInNew';
 import IconEdit from '@mui/icons-material/Edit';
-import IconPersonOff from '@mui/icons-material/PersonOffOutlined';
+import IconArrow from '@mui/icons-material/Shortcut';
 import IconReplay from '@mui/icons-material/Replay';
 
-type ETBProps = {
+type Props = {
   isArchive?: boolean;
 };
 
-function EmployeesToolbar({ isArchive }: ETBProps) {
+function CustomersToolbar({ isArchive }: Props) {
   return (
-
+    <>
       <Paper className={styles.root}>
         <Button
           className={`${styles.btn} ${styles.btnMini}`}
@@ -42,18 +42,21 @@ function EmployeesToolbar({ isArchive }: ETBProps) {
             Изменить
           </Button>
         </div>
-        <Button
-          className={`${styles.btn} ${styles.btnMini}`}
-          variant={'contained'}
-          color={'tertiary'}
-          startIcon={isArchive ? <IconReplay /> : <IconPersonOff />}
-        >
-          {isArchive ? 'Восстановить' : 'Уволить'}
-        </Button>
+
       </Paper>
 
-
+      <Paper className={styles.partTwo}>
+        <Button
+          className={styles.btn}
+          variant={'contained'}
+          color={'tertiary'}
+          startIcon={<IconArrow />}
+        >
+          Изменить
+        </Button>
+      </Paper>
+    </>
   );
 }
 
-export default EmployeesToolbar;
+export default CustomersToolbar;
