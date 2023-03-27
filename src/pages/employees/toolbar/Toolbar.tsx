@@ -17,43 +17,33 @@ type Props = {
 
 function EmployeesToolbar({ isArchive, isSelected }: Props) {
   return (
-
-      <Paper className={styles.root}>
+    <Paper className={styles.root}>
+      <Button
+        className={`${styles.btn} ${styles.btnMini}`}
+        variant={'contained'}
+        color={'secondary'}
+        startIcon={<IconAdd />}
+      >
+        Добавить
+      </Button>
+      <div className={styles.btnGroup}>
         <Button
-          className={`${styles.btn} ${styles.btnMini}`}
+          className={styles.btn}
           variant={'contained'}
           color={'primary'}
           startIcon={<IconOpen />}
           disabled={!isSelected}
         >
-          Добавить
+          Открыть
         </Button>
-        <div className={styles.btnGroup}>
-          <Button
-            className={styles.btn}
-            variant={'contained'}
-            color={'primary'}
-            startIcon={<IconOpen />}
-          >
-            Открыть
-          </Button>
-          <Button
-            className={styles.btn}
-            variant={'contained'}
-            color={'primary'}
-            startIcon={<IconEdit />}
-          >
-            Изменить
-          </Button>
-        </div>
         <Button
-          className={`${styles.btn} ${styles.btnMini}`}
+          className={styles.btn}
           variant={'contained'}
           color={'primary'}
           startIcon={<IconEdit />}
           disabled={!isSelected}
         >
-          {isArchive ? 'Восстановить' : 'Уволить'}
+          Изменить
         </Button>
       </div>
       <Button

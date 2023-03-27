@@ -11,12 +11,11 @@ type State = {
 };
 
 class Customers extends React.Component<any, State> {
-
   constructor(props: any) {
     super(props);
 
     // todo: временная заглушка до ReduxToolkit
-    this.state = {  curItemID: 0 };
+    this.state = { curItemID: 0 };
   }
 
   handleSelectItem = (itemID: number) => {
@@ -42,6 +41,7 @@ class Customers extends React.Component<any, State> {
 
     return dataItems;
   };
+
   render() {
     return (
       <div className={styles.root}>
@@ -50,8 +50,7 @@ class Customers extends React.Component<any, State> {
           <SearchField placeholder={'Фильтрация по ФИО клиента'} />
         </div>
         <div className={styles.toolbar}>
-          <CustomersToolbar/>
-
+          <CustomersToolbar isSelected={this.state.curItemID !== 0} />
         </div>
         <div className={styles.content}>
           <Table

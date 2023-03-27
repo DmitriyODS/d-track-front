@@ -7,12 +7,14 @@ import IconOpen from '@mui/icons-material/OpenInNew';
 import IconEdit from '@mui/icons-material/Edit';
 import IconArrow from '@mui/icons-material/Shortcut';
 import IconReplay from '@mui/icons-material/Replay';
+import { ViewModes } from '../../../globals/types';
 
 type Props = {
-  isArchive?: boolean;
+  viewMode?: ViewModes;
+  isSelected?: boolean;
 };
 
-function CustomersToolbar({ isArchive }: Props) {
+function CustomersToolbar({ isSelected }: Props) {
   return (
     <>
       <Paper className={styles.root}>
@@ -30,6 +32,7 @@ function CustomersToolbar({ isArchive }: Props) {
             variant={'contained'}
             color={'primary'}
             startIcon={<IconOpen />}
+            disabled={!isSelected}
           >
             Открыть
           </Button>
@@ -38,6 +41,7 @@ function CustomersToolbar({ isArchive }: Props) {
             variant={'contained'}
             color={'primary'}
             startIcon={<IconEdit />}
+            disabled={!isSelected}
           >
             Изменить
           </Button>
@@ -50,6 +54,7 @@ function CustomersToolbar({ isArchive }: Props) {
           variant={'contained'}
           color={'tertiary'}
           startIcon={<IconArrow />}
+          disabled={!isSelected}
         >
           К заявкам
         </Button>
