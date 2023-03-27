@@ -1,0 +1,93 @@
+.root {
+    border-radius: 1rem;
+    width: 100%;
+    overflow: auto;
+    height: 100%;
+}
+
+.table {
+    border-radius: 1rem;
+    width: 100%;
+    font-size: 1.4rem;
+    position: relative;
+    border-collapse: collapse;
+}
+
+.footer {
+    flex-grow: 1;
+}
+
+.table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #483838;
+}
+
+.table tbody tr:hover {
+    background-color: #574545;
+}
+
+.table tbody tr:active {
+    background-color: #4f3c3c;
+}
+
+.itemNotData {
+    text-align: center;
+    user-select: none !important;
+    cursor: auto !important;
+}
+
+.itemNotData td {
+    padding-top: 4rem !important;
+}
+
+.itemNotData:hover {
+    background-color: inherit !important;
+}
+
+.selectedItem {
+    background-color: #FFB3B6 !important;
+    color: #5F131C;
+}
+
+.selectedItem td:not(:last-child) {
+    border-right: 2px solid #5F131C !important;
+}
+
+.table tbody {
+    overflow: auto;
+}
+
+.table thead tr th:not(:last-child) {
+}
+
+.table tbody tr td:not(:last-child) {
+    border-right: 2px solid #FFB3B6;
+}
+
+.table tbody tr {
+    cursor: pointer;
+}
+
+.table tbody tr:not(:last-child) td {
+    border-bottom: 4px solid #201A1A;
+}
+
+.table thead th {
+    background-color: #44292A;
+    font-weight: normal;
+    user-select: none;
+}
+
+.table thead th:first-child {
+    border-radius: 1rem 0 0 0;
+}
+
+.table thead th:last-child {
+    border-radius: 0 1rem 0 0;
+}
