@@ -59,8 +59,6 @@ function ClaimsToolbar({ isArchive }: Props) {
         К клиенту
       </Button>
     </Paper>
-
-
   );
 }
 
