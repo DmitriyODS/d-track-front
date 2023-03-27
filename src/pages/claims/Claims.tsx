@@ -55,7 +55,7 @@ class Claims extends React.Component<any, State> {
       <div className={styles.root}>
         <div className={styles.header}>
           <Typography variant={'h1'}>Заявки</Typography>
-          <SearchField placeholder={'Поиск по номеру заявки'} />
+          <SearchField placeholder={'Фильтрация по номеру заявки'} />
         </div>
         <div className={styles.toolbar}>
           <ClaimsToolbar isArchive={this.state.isArchive} />
