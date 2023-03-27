@@ -52,7 +52,7 @@ function CustomersToolbar({ isArchive }: Props) {
           color={'tertiary'}
           startIcon={<IconArrow />}
         >
-          Изменить
+          К заявкам
         </Button>
       </Paper>
     </>
