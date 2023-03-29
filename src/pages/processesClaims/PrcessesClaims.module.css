@@ -2,16 +2,35 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    height: 100%;
+    overflow-x: auto;
 }
 
 .header {
     margin-left: 2rem;
     margin-top: 1rem;
-}
-
-.toolbar {
+    display: flex;
+    align-items: center !important;
 }
 
 .content {
+    display: flex;
+    margin-top: 4rem;
+    overflow: auto;
+    flex-grow: 1;
+    padding-bottom: 2rem;
+}
 
+.content > div:not(:first-child) {
+    margin-left: 2rem;
+}
+
+.btn {
+    border-radius: 1rem !important;
+    width: 10rem;
+    height: 3.5rem;
+    font-size: 1rem !important;
+    box-shadow: none !important;
+    padding: 1rem !important;
+    margin-left: 4rem !important;
 }

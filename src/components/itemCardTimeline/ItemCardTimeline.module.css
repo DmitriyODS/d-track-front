@@ -1,0 +1,26 @@
+.root {
+    width: 100%;
+    background-color: #5D3F3F;
+    margin-bottom: 1.6rem;
+    padding: 0.6rem;
+    border-radius: 1rem;
+    transition: background-color 200ms ease-in-out;
+    cursor: pointer;
+}
+
+.root:hover {
+    background-color: #674949;
+}
+
+.root:active {
+    background-color: #775656;
+}
+
+.root div {
+    margin-bottom: 1rem;
+}
+
+.title {
+    color: #FFB3B6;
+    font-weight: bold;
+}
