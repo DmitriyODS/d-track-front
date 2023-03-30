@@ -13,7 +13,11 @@ import IconTaskBoard from '@mui/icons-material/DashboardOutlined';
 import IconCustomers from '@mui/icons-material/PeopleOutline';
 import IconEmployees from '@mui/icons-material/BadgeOutlined';
 
-function LeftPanel() {
+type Props = {
+  onOpenAboutDialogHandler: () => void;
+};
+
+function LeftPanel(props: Props) {
   const navItems: NavItemData[] = [
     {
       id: 1,
@@ -62,6 +66,7 @@ function LeftPanel() {
         variant={'contained'}
         color={'secondaryInvert'}
         className={styles.btnAbout}
+        onClick={props.onOpenAboutDialogHandler}
       >
         <Info className={styles.iconAbout} />О сервисе
       </Button>

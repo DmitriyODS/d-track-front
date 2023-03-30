@@ -1,8 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './AboutDialog.module.css';
+import BaseDialog from '../baseDialog/BaseDialog';
+import { Typography } from '@mui/material';
 
-function AboutDialog() {
-  return <div>AboutDialog</div>;
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+function AboutDialog(props: Props) {
+  return (
+    <BaseDialog
+      title={'О сервисе'}
+      isOpen={props.isOpen}
+      onClose={props.onClose}
+      className={styles.root}
+    >
+      <Typography>
+        D-Track - система автоматизированного управления рабочими процессами.
+      </Typography>
+      <Typography>Версия: 0.1.0</Typography>
+      <Typography>Сборка: 20230225.1</Typography>
+      <Typography>Разработчик: IT Компания DDDA</Typography>
+    </BaseDialog>
+  );
 }
 
 export default AboutDialog;

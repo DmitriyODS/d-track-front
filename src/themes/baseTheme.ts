@@ -50,6 +50,31 @@ declare module '@mui/material/IconButton' {
 
 const BaseTheme: ThemeOptions = {
   components: {
+    MuiDialog: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'rgba(32,26,26,0.6)',
+        },
+        paper: {
+          padding: '1rem',
+          backgroundImage: 'none',
+          boxShadow: 'none',
+        },
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          padding: '0 0 0 2rem',
+          color: '#FFDADB',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontSize: '2rem',
+          fontWeight: 'lighter',
+        },
+      },
+    },
     MuiTypography: {
       styleOverrides: {
         h1: {
