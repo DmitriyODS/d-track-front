@@ -1,8 +1,6 @@
 import React from 'react';
 import styles from './PrcessesClaims.module.css';
-import { Collapse, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
-import IconAdd from '@mui/icons-material/Add';
+import { Typography } from '@mui/material';
 import TimelineCards from '../../components/timelineCards/TimelineCards';
 
 class ProcessesClaims extends React.Component<any, any> {
@@ -11,14 +9,6 @@ class ProcessesClaims extends React.Component<any, any> {
       <div className={styles.root}>
         <div className={styles.header}>
           <Typography variant={'h1'}>Процессы заявок</Typography>
-          <Button
-            className={`${styles.btn} ${styles.btnMini}`}
-            variant={'contained'}
-            color={'secondary'}
-            startIcon={<IconAdd />}
-          >
-            <p>Создать</p>
-          </Button>
         </div>
         <div className={styles.content}>
           <TimelineCards dataLst={[]} title={'Выезд'} />

@@ -8,12 +8,8 @@ import IconClose from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Unstable_Grid2';
 import InputSelect, { ItemSelect } from '../inputSelect/InputSelect';
-
-export enum EditModes {
-  Create,
-  Edit,
-  View,
-}
+import { EditModes } from '../../globals/types';
+import { DatePicker } from '@mui/x-date-pickers';
 
 type Props = {
   onClose: () => void;
@@ -56,11 +52,11 @@ function ClaimEdit(props: Props) {
           />
         </Grid>
         <Grid xs={6}>
-          <TextField
-            fullWidth
+          <DatePicker
+            sx={{ width: '100%' }}
             label="Дата открытия"
-            variant="outlined"
             disabled
+            format="DD.MM.YYYY"
           />
         </Grid>
         <Grid xs={6}>
@@ -114,19 +110,19 @@ function ClaimEdit(props: Props) {
           />
         </Grid>
         <Grid xs={6}>
-          <TextField
-            fullWidth
+          <DatePicker
+            sx={{ width: '100%' }}
             label="Ориентировочная дата закрытия"
-            variant="outlined"
             disabled={isViewMode}
+            format="DD.MM.YYYY"
           />
         </Grid>
         <Grid xs={6}>
-          <TextField
-            fullWidth
+          <DatePicker
+            sx={{ width: '100%' }}
             label="Дата закрытия"
-            variant="outlined"
             disabled
+            format="DD.MM.YYYY"
           />
         </Grid>
       </Grid>

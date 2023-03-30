@@ -24,13 +24,3 @@
 .content > div:not(:first-child) {
     margin-left: 2rem;
 }
-
-.btn {
-    border-radius: 1rem !important;
-    width: 10rem;
-    height: 3.5rem;
-    font-size: 1rem !important;
-    box-shadow: none !important;
-    padding: 1rem !important;
-    margin-left: 4rem !important;
-}

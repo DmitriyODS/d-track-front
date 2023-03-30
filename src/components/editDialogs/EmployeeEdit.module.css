@@ -1,3 +1,10 @@
 .root {
+}
 
+.spacing > *:not(:first-child) {
+    margin-left: 2rem !important;
+}
+
+.spacing > button {
+    height: 3.4rem;
 }

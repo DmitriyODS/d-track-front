@@ -11,6 +11,7 @@
 .title {
     margin: 1rem;
     font-size: 2rem;
+    user-select: none;
 }
 
 .btnAbout {

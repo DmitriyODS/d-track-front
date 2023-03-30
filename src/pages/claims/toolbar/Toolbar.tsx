@@ -7,9 +7,8 @@ import IconOpen from '@mui/icons-material/OpenInNew';
 import IconEdit from '@mui/icons-material/Edit';
 import IconChange from '@mui/icons-material/PublishedWithChanges';
 import IconArrow from '@mui/icons-material/Shortcut';
-import { ViewModes } from '../../../globals/types';
+import { EditModes, ViewModes } from '../../../globals/types';
 import { Collapse, useMediaQuery } from '@mui/material';
-import { EditModes } from '../../../components/editDialogs/ClaimEdit';
 
 type Props = {
   isArchive?: boolean;

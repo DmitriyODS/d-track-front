@@ -6,23 +6,27 @@ import EmployeesToolbar from './toolbar/Toolbar';
 import Switcher from '../../components/switcher/Switcher';
 import Table, { DataItem } from '../../components/table/Table';
 import { ColumnTable } from './table/columnTable';
-import { ViewModes } from '../../globals/types';
+import { EditModes, ViewModes } from '../../globals/types';
+import EmployeeEdit from '../../components/editDialogs/EmployeeEdit';
 
 type State = {
   isArchive: boolean;
   curItemID: number;
-  viewMode: ViewModes;
+  isOpenEditDialog: boolean;
+  editMode: EditModes;
+  curSelectData?: any;
 };
 
 class Employee extends React.Component<any, State> {
   constructor(props: any) {
     super(props);
 
-    // todo: временная заглушка до ReduxToolkit
     this.state = {
       isArchive: false,
       curItemID: 0,
-      viewMode: ViewModes.Creator,
+      isOpenEditDialog: false,
+      editMode: EditModes.Create,
+      curSelectData: undefined,
     };
   }
 
@@ -58,9 +62,39 @@ class Employee extends React.Component<any, State> {
     return dataItems;
   };
 
+  handleOnCloseEditDialog = (e?: any, r?: string) => {
+    // нельзя закрывать форму при нажатии на пустое место - вдруг юзер ошибся?
+    if (r === 'backdropClick') {
+      return;
+    }
+
+    this.setState({
+      ...this.state,
+      isOpenEditDialog: false,
+    });
+  };
+
+  handleOnSaveEditDialog = (data: any) => {
+    this.handleOnCloseEditDialog();
+  };
+
+  handleOnOpenEditDialog = (editMode: EditModes) => {
+    this.setState({
+      ...this.state,
+      editMode: editMode,
+      isOpenEditDialog: true,
+    });
+  };
+
   render() {
     return (
       <div className={styles.root}>
+        <EmployeeEdit
+          onClose={this.handleOnCloseEditDialog}
+          onSave={this.handleOnSaveEditDialog}
+          isOpen={this.state.isOpenEditDialog}
+          editMode={this.state.editMode}
+        />
         <div className={styles.header}>
           <Typography variant={'h1'}>Сотрудники</Typography>
           <SearchField placeholder={'Фильтрация по ФИО сотрудника'} />
@@ -69,6 +103,7 @@ class Employee extends React.Component<any, State> {
           <EmployeesToolbar
             isArchive={this.state.isArchive}
             isSelected={this.state.curItemID !== 0}
+            onOpenEditDialog={this.handleOnOpenEditDialog}
           />
           <Switcher
             isArchive={this.state.isArchive}

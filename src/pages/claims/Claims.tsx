@@ -6,7 +6,8 @@ import Switcher from '../../components/switcher/Switcher';
 import Table, { DataItem } from '../../components/table/Table';
 import ClaimsToolbar from './toolbar/Toolbar';
 import { ColumnTable } from './table/columnTable';
-import ClaimEdit, { EditModes } from '../../components/editDialogs/ClaimEdit';
+import ClaimEdit from '../../components/editDialogs/ClaimEdit';
+import { EditModes } from '../../globals/types';
 
 type State = {
   isArchive: boolean;

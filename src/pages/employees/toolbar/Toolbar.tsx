@@ -7,13 +7,14 @@ import IconOpen from '@mui/icons-material/OpenInNew';
 import IconEdit from '@mui/icons-material/Edit';
 import IconPersonOff from '@mui/icons-material/PersonOffOutlined';
 import IconReplay from '@mui/icons-material/Replay';
-import { ViewModes } from '../../../globals/types';
+import { EditModes, ViewModes } from '../../../globals/types';
 import { Collapse, useMediaQuery } from '@mui/material';
 
 type Props = {
   isArchive?: boolean;
   viewMode?: ViewModes;
   isSelected?: boolean;
+  onOpenEditDialog: (editMode: EditModes) => void;
 };
 
 function EmployeesToolbar(props: Props) {
@@ -26,6 +27,7 @@ function EmployeesToolbar(props: Props) {
           className={`${styles.btn} ${styles.btnMini}`}
           variant={'contained'}
           color={'secondary'}
+          onClick={() => props.onOpenEditDialog(EditModes.Create)}
         >
           <IconAdd />
           <Collapse in={matches} orientation={'horizontal'}>
@@ -39,6 +41,7 @@ function EmployeesToolbar(props: Props) {
           variant={'contained'}
           color={'primary'}
           disabled={!props.isSelected}
+          onClick={() => props.onOpenEditDialog(EditModes.View)}
         >
           <IconOpen />
           <Collapse in={matches} orientation={'horizontal'}>
@@ -51,6 +54,7 @@ function EmployeesToolbar(props: Props) {
             variant={'contained'}
             color={'primary'}
             disabled={!props.isSelected}
+            onClick={() => props.onOpenEditDialog(EditModes.Edit)}
           >
             <IconEdit />
             <Collapse in={matches} orientation={'horizontal'}>
