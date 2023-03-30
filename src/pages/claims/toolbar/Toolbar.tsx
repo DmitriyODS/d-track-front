@@ -9,11 +9,13 @@ import IconChange from '@mui/icons-material/PublishedWithChanges';
 import IconArrow from '@mui/icons-material/Shortcut';
 import { ViewModes } from '../../../globals/types';
 import { Collapse, useMediaQuery } from '@mui/material';
+import { EditModes } from '../../../components/editDialogs/ClaimEdit';
 
 type Props = {
   isArchive?: boolean;
   viewMode?: ViewModes;
   isSelected?: boolean;
+  onOpenEditDialog: (editMode: EditModes) => void;
 };
 
 function ClaimsToolbar(props: Props) {
@@ -26,6 +28,7 @@ function ClaimsToolbar(props: Props) {
           className={`${styles.btn} ${styles.btnMini}`}
           variant={'contained'}
           color={'secondary'}
+          onClick={() => props.onOpenEditDialog(EditModes.Create)}
         >
           <IconAdd />
           <Collapse in={matches} orientation={'horizontal'}>
@@ -39,6 +42,7 @@ function ClaimsToolbar(props: Props) {
           variant={'contained'}
           color={'primary'}
           disabled={!props.isSelected}
+          onClick={() => props.onOpenEditDialog(EditModes.View)}
         >
           <IconOpen />
           <Collapse in={matches} orientation={'horizontal'}>
@@ -51,6 +55,7 @@ function ClaimsToolbar(props: Props) {
             variant={'contained'}
             color={'primary'}
             disabled={!props.isSelected}
+            onClick={() => props.onOpenEditDialog(EditModes.Edit)}
           >
             <IconEdit />
             <Collapse in={matches} orientation={'horizontal'}>

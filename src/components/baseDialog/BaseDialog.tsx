@@ -1,6 +1,12 @@
 import React from 'react';
 import styles from './BaseDialog.module.css';
-import { Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import {
+  Breakpoint,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+} from '@mui/material';
 import IconClose from '@mui/icons-material/Close';
 
 type Props = {
@@ -10,6 +16,7 @@ type Props = {
   className?: string;
   children?: React.ReactNode;
   disableEscapeKeyDown?: boolean;
+  maxWidth?: Breakpoint;
 };
 
 function BaseDialog(props: Props) {
@@ -19,6 +26,7 @@ function BaseDialog(props: Props) {
       open={props.isOpen}
       disableEscapeKeyDown={props.disableEscapeKeyDown}
       onClose={props.onClose}
+      maxWidth={props.maxWidth}
     >
       <DialogTitle className={styles.header}>
         {props.title}
