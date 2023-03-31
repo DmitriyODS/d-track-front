@@ -4,6 +4,8 @@ import AuthCard from '../../components/authCard/AuthCard';
 import { UserContext } from '../../providers/UserProvider';
 import { LoginUser } from '../../api/auth';
 import { Navigate } from 'react-router-dom';
+import { SetJWTToLocalStorage } from '../../globals/funcs';
+import { enqueueSnackbar } from 'notistack';
 
 type State = {
   isLoading: boolean;
@@ -20,18 +22,25 @@ class AuthPage extends React.Component<any, State> {
 
   handlerOnLogin = (login: string, password: string) => {
     this.setState({ isLoading: true });
-    const p = LoginUser(login, password);
+    const result = LoginUser(login, password);
     const setUser = this.context?.SetUser;
 
-    p.then(
-      (u) => {
-        setUser?.(u);
+    result.then(
+      (res) => {
+        if (!res.ok) {
+          enqueueSnackbar(`Ошибка: ${res.description}`, { variant: 'error' });
+          return;
+        }
+
+        setUser?.(res.data!);
+        SetJWTToLocalStorage(res.data!.jwt);
       },
-      (errorText) => {
-        alert(errorText);
+      () => {
+        enqueueSnackbar('Сервер не доступен', { variant: 'error' });
       }
     );
-    p.finally(() => {
+
+    result.finally(() => {
       this.setState({ isLoading: false });
     });
   };
@@ -39,7 +48,7 @@ class AuthPage extends React.Component<any, State> {
   render() {
     return (
       <div className={styles.root}>
-        {this.context?.User.UserID !== 0 && (
+        {this.context?.User.user_id !== 0 && (
           <Navigate to={'/'} replace={true} />
         )}
         <p className={styles.titleLogo}>D-Track</p>

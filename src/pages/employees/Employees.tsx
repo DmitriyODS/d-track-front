@@ -6,18 +6,26 @@ import EmployeesToolbar from './toolbar/Toolbar';
 import Switcher from '../../components/switcher/Switcher';
 import Table, { DataItem } from '../../components/table/Table';
 import { ColumnTable } from './table/columnTable';
-import { EditModes, ViewModes } from '../../globals/types';
+import { EditModes } from '../../globals/types';
 import EmployeeEdit from '../../components/editDialogs/EmployeeEdit';
+import { PendingContext } from '../../providers/PendingProvider';
+import { GetEmployees } from '../../api/employees';
+import { enqueueSnackbar } from 'notistack';
+import { EmployeeDataItem } from './table/EmployeeDataItem';
+import { GetItemsFromData } from './table/dataConvert';
+import EmployeeData from '../../models/employee/EmployeeData';
 
 type State = {
   isArchive: boolean;
   curItemID: number;
   isOpenEditDialog: boolean;
   editMode: EditModes;
-  curSelectData?: any;
+  dataList: DataItem<EmployeeDataItem>[];
 };
 
 class Employee extends React.Component<any, State> {
+  context!: React.ContextType<typeof PendingContext>;
+
   constructor(props: any) {
     super(props);
 
@@ -26,7 +34,7 @@ class Employee extends React.Component<any, State> {
       curItemID: 0,
       isOpenEditDialog: false,
       editMode: EditModes.Create,
-      curSelectData: undefined,
+      dataList: [],
     };
   }
 
@@ -42,26 +50,6 @@ class Employee extends React.Component<any, State> {
     this.setState((s) => ({ ...s, curItemID: itemID }));
   };
 
-  // todo: временная заглушка до API
-  getDataTable = (count: number) => {
-    const dataItems: DataItem<any>[] = [];
-
-    for (let i = 0; i < count; i++) {
-      dataItems.push({
-        id: i + 1,
-        value: {
-          t1: `Item ${i + 1}`,
-          t2: `Item ${i + 1}`,
-          t3: `Item ${i + 1}`,
-          t4: `Item ${i + 1}`,
-          t5: `Item ${i + 1}`,
-        },
-      });
-    }
-
-    return dataItems;
-  };
-
   handleOnCloseEditDialog = (e?: any, r?: string) => {
     // нельзя закрывать форму при нажатии на пустое место - вдруг юзер ошибся?
     if (r === 'backdropClick') {
@@ -74,7 +62,7 @@ class Employee extends React.Component<any, State> {
     });
   };
 
-  handleOnSaveEditDialog = (data: any) => {
+  handleOnSaveEditDialog = (data: EmployeeData) => {
     this.handleOnCloseEditDialog();
   };
 
@@ -86,15 +74,43 @@ class Employee extends React.Component<any, State> {
     });
   };
 
+  componentDidMount() {
+    this.context?.ToPending();
+
+    const result = GetEmployees();
+    result.then(
+      (value) => {
+        if (!value.ok) {
+          enqueueSnackbar(`Ошибка: ${value.description}`, { variant: 'error' });
+          return;
+        }
+
+        this.setState((prev) => ({
+          ...prev,
+          curItemID: 0,
+          dataList: GetItemsFromData(value.data!),
+        }));
+      },
+      () => {
+        enqueueSnackbar('Не удалось загрузить данные', { variant: 'error' });
+      }
+    );
+
+    result.finally(() => this.context?.ToReady());
+  }
+
   render() {
     return (
       <div className={styles.root}>
-        <EmployeeEdit
-          onClose={this.handleOnCloseEditDialog}
-          onSave={this.handleOnSaveEditDialog}
-          isOpen={this.state.isOpenEditDialog}
-          editMode={this.state.editMode}
-        />
+        {this.state.isOpenEditDialog && (
+          <EmployeeEdit
+            onClose={this.handleOnCloseEditDialog}
+            onSave={this.handleOnSaveEditDialog}
+            isOpen={this.state.isOpenEditDialog}
+            editMode={this.state.editMode}
+            selectID={this.state.curItemID}
+          />
+        )}
         <div className={styles.header}>
           <Typography variant={'h1'}>Сотрудники</Typography>
           <SearchField placeholder={'Фильтрация по ФИО сотрудника'} />
@@ -116,14 +132,17 @@ class Employee extends React.Component<any, State> {
         <div className={styles.content}>
           <Table
             column={ColumnTable}
-            data={this.getDataTable(33)}
+            data={this.state.dataList}
             onSelect={this.handleSelectItem}
             curSelectedID={this.state.curItemID}
+            isLoading={this.context?.Status}
           />
         </div>
       </div>
     );
   }
 }
+
+Employee.contextType = PendingContext;
 
 export default Employee;

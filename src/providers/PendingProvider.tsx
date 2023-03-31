@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState } from 'react';
 import { PendingStatuses } from '../globals/types';
 
-type PendingDispatch = {
+type TPendingContext = {
+  Status: PendingStatuses;
   ToPending: () => void;
   ToReady: () => void;
 };
@@ -10,21 +11,12 @@ type Props = {
   children?: React.ReactNode;
 };
 
-export const PendingContext = createContext<PendingStatuses>(
-  PendingStatuses.Ready
+export const PendingContext = createContext<TPendingContext | undefined>(
+  undefined
 );
-
-export const PendingDispatchContext = createContext<PendingDispatch>({
-  ToPending: () => {},
-  ToReady: () => {},
-});
 
 export function usePending() {
   return useContext(PendingContext);
-}
-
-export function usePendingDispatch() {
-  return useContext(PendingDispatchContext);
 }
 
 function PendingProvider({ children }: Props) {
@@ -39,12 +31,10 @@ function PendingProvider({ children }: Props) {
   };
 
   return (
-    <PendingContext.Provider value={pending}>
-      <PendingDispatchContext.Provider
-        value={{ ToPending: toPending, ToReady: toReady }}
-      >
-        {children}
-      </PendingDispatchContext.Provider>
+    <PendingContext.Provider
+      value={{ Status: pending, ToPending: toPending, ToReady: toReady }}
+    >
+      {children}
     </PendingContext.Provider>
   );
 }

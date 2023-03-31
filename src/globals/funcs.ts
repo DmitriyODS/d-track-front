@@ -19,7 +19,7 @@ export function GetJWTFromLocalStorage(): any {
     return localStorage.getItem(JWTKey);
   }
 
-  return undefined;
+  return null;
 }
 
 export function SetJWTToLocalStorage(jwtStr: string) {
@@ -40,9 +40,16 @@ export function GetUserFromJWT(jwtStr: string): any {
 
 export function GetLocalUser(): any {
   const jwt = GetJWTFromLocalStorage();
-  if (jwt === undefined) {
+  if (jwt === null) {
     return undefined;
   }
 
-  return GetUserFromJWT(jwt);
+  const tokenUserData = GetUserFromJWT(jwt);
+
+  return {
+    user_id: tokenUserData.user_id,
+    login: tokenUserData.user_login,
+    position_id: tokenUserData.position_id,
+    level_access: tokenUserData.level_access,
+  };
 }
