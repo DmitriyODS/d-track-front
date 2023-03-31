@@ -34,9 +34,9 @@ class Home extends React.Component<any, State> {
   render() {
     return (
       <div className={styles.root}>
-        {this.context?.User.UserID === 0 && (
-          <Navigate to={UrlPages.Auth} replace />
-        )}
+        {/*{this.context?.User.UserID === 0 && (*/}
+        {/*  <Navigate to={UrlPages.Auth} replace />*/}
+        {/*)}*/}
         <AboutDialog
           onClose={this.onCloseAboutDialogHandler}
           isOpen={this.state.isOpenAboutDialog}
