@@ -14,10 +14,11 @@ export async function LoginUser(
   // const baseServer = process.env['REACT_APP_SERVER'];
   const baseServer = '127.0.0.1:8080';
   const loginReq: LoginRequest = { login: login, password: password };
+  const url = `http://${baseServer}${ApiServer.Login}`;
 
   return new Promise<ResponseData<User>>(async (resolve, reject) => {
     try {
-      const response = await fetch(`http://${baseServer}${ApiServer.Login}`, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;charset=utf-8',

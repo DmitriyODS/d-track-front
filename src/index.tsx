@@ -1,7 +1,5 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { store } from './_old_app/store';
 import App from './App';
 import './index.css';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
@@ -17,17 +15,15 @@ const theme = createTheme(BaseTheme);
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'ruRU'}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline enableColorScheme />
-          <UserProvider>
-            <PendingProvider>
-              <App />
-            </PendingProvider>
-          </UserProvider>
-        </ThemeProvider>
-      </LocalizationProvider>
-    </Provider>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'ruRU'}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline enableColorScheme />
+        <UserProvider>
+          <PendingProvider>
+            <App />
+          </PendingProvider>
+        </UserProvider>
+      </ThemeProvider>
+    </LocalizationProvider>
   </React.StrictMode>
 );

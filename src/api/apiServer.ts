@@ -2,7 +2,7 @@ export enum ApiServer {
   Login = '/v1/auth/login',
 
   GetEmployeesLst = '/v1/employees/getList',
-  GetEmployeeByID = '/v1/employees/:byID',
+  GetEmployeeByID = '/v1/employees/',
   StoreEmployee = '/v1/employees/store',
 
   GetListPositions = '/v1/lists/positions',
