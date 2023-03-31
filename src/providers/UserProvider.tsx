@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import User, { CreateEmptyUser } from '../models/user/User';
+import { GetLocalUser } from '../globals/funcs';
 
 type TUserContext = {
   User: User;
@@ -18,7 +19,10 @@ export function useUser() {
 }
 
 function UserProvider({ children }: Props) {
-  const [user, setUser] = useState(CreateEmptyUser());
+  const curUser = GetLocalUser();
+  const [user, setUser] = useState(
+    curUser === undefined ? CreateEmptyUser() : curUser
+  );
 
   const clearUserCtx = () => {
     setUser(CreateEmptyUser());

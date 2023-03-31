@@ -4,6 +4,8 @@ import AuthCard from '../../components/authCard/AuthCard';
 import { UserContext } from '../../providers/UserProvider';
 import { LoginUser } from '../../api/auth';
 import { Navigate } from 'react-router-dom';
+import { SetJWTToLocalStorage } from '../../globals/funcs';
+import { enqueueSnackbar } from 'notistack';
 
 type State = {
   isLoading: boolean;
@@ -26,14 +28,15 @@ class AuthPage extends React.Component<any, State> {
     result.then(
       (res) => {
         if (!res.ok) {
-          alert(res.description);
+          enqueueSnackbar(`Ошибка: ${res.description}`, { variant: 'error' });
           return;
         }
 
         setUser?.(res.data!);
+        SetJWTToLocalStorage(res.data!.jwt);
       },
-      (err) => {
-        alert(err);
+      () => {
+        enqueueSnackbar('Сервер не доступен', { variant: 'error' });
       }
     );
 

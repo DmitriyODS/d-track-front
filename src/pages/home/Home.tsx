@@ -5,6 +5,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import AboutDialog from '../../components/aboutDialog/AboutDialog';
 import { UserContext } from '../../providers/UserProvider';
 import { UrlPages } from '../../globals/urlPages';
+import { ResetLocalStorage } from '../../globals/funcs';
 
 type State = {
   isOpenAboutDialog: boolean;
@@ -29,6 +30,7 @@ class Home extends React.Component<any, State> {
 
   onLogoutUserHandler = () => {
     this.context?.ClearUser();
+    ResetLocalStorage();
   };
 
   render() {

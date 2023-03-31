@@ -3,6 +3,8 @@ type User = {
   login: string;
   password: string;
   jwt: string;
+  position_id?: number;
+  level_access?: string;
 };
 
 export function CreateEmptyUser(): User {
