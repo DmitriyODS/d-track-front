@@ -34,7 +34,7 @@ class Home extends React.Component<any, State> {
   render() {
     return (
       <div className={styles.root}>
-        {this.context?.User.UserID === 0 && (
+        {this.context?.User.user_id === 0 && (
           <Navigate to={UrlPages.Auth} replace />
         )}
         <AboutDialog

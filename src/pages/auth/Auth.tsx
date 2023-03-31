@@ -20,18 +20,24 @@ class AuthPage extends React.Component<any, State> {
 
   handlerOnLogin = (login: string, password: string) => {
     this.setState({ isLoading: true });
-    const p = LoginUser(login, password);
+    const result = LoginUser(login, password);
     const setUser = this.context?.SetUser;
 
-    p.then(
-      (u) => {
-        setUser?.(u);
+    result.then(
+      (res) => {
+        if (!res.ok) {
+          alert(res.description);
+          return;
+        }
+
+        setUser?.(res.data!);
       },
-      (errorText) => {
-        alert(errorText);
+      (err) => {
+        alert(err);
       }
     );
-    p.finally(() => {
+
+    result.finally(() => {
       this.setState({ isLoading: false });
     });
   };
@@ -39,7 +45,7 @@ class AuthPage extends React.Component<any, State> {
   render() {
     return (
       <div className={styles.root}>
-        {this.context?.User.UserID !== 0 && (
+        {this.context?.User.user_id !== 0 && (
           <Navigate to={'/'} replace={true} />
         )}
         <p className={styles.titleLogo}>D-Track</p>

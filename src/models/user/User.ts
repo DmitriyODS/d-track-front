@@ -1,12 +1,12 @@
 type User = {
-  UserID: number;
-  Login: string;
-  Password: string;
-  JWT: string;
+  user_id: number;
+  login: string;
+  password: string;
+  jwt: string;
 };
 
 export function CreateEmptyUser(): User {
-  return { UserID: 0, Login: '', Password: '', JWT: '' };
+  return { user_id: 0, login: '', password: '', jwt: '' };
 }
 
 export default User;

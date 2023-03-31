@@ -14,14 +14,14 @@ function ProfileCard(props: Props) {
 
   return (
     <div className={styles.root}>
-      <p className={styles.title}>{user?.User.Login}</p>
+      <p className={styles.title}>{user?.User.login}</p>
       <Button
         variant={'contained'}
         color={'secondary'}
         className={styles.btnProfile}
       >
         <Person className={styles.iconPerson} />
-        <p className={styles.labelBtn}>{user?.User.Login}</p>
+        <p className={styles.labelBtn}>{user?.User.login}</p>
       </Button>
       <Button
         variant={'contained'}
