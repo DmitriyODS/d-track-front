@@ -1,5 +1,5 @@
 import ResponseData from '../models/responseData/responseData';
-import Employee from '../models/employee/Employee';
+import EmployeeData from '../models/employee/EmployeeData';
 import { ApiServer } from './apiServer';
 import { GetJWTFromLocalStorage } from '../globals/funcs';
 
@@ -9,7 +9,7 @@ export async function GetEmployees() {
   const baseServer = '127.0.0.1:8080';
   const url = `http://${baseServer}${ApiServer.GetEmployeesLst}`;
 
-  return new Promise<ResponseData<Employee[]>>(async (resolve, reject) => {
+  return new Promise<ResponseData<EmployeeData[]>>(async (resolve, reject) => {
     const jwtKey = GetJWTFromLocalStorage();
     if (jwtKey === null) {
       reject('Not JWT token!');
@@ -23,7 +23,7 @@ export async function GetEmployees() {
           Authentication: jwtKey,
         },
       });
-      const result: ResponseData<Employee[]> = await response.json();
+      const result: ResponseData<EmployeeData[]> = await response.json();
       resolve(result);
     } catch (e) {
       reject(e);
@@ -33,11 +33,11 @@ export async function GetEmployees() {
 
 export async function GetEmployeeByID(
   id: number
-): Promise<ResponseData<Employee>> {
+): Promise<ResponseData<EmployeeData>> {
   const baseServer = '127.0.0.1:8080';
   const url = `http://${baseServer}${ApiServer.GetEmployeeByID}${id}`;
 
-  return new Promise<ResponseData<Employee>>(async (resolve, reject) => {
+  return new Promise<ResponseData<EmployeeData>>(async (resolve, reject) => {
     const jwtKey = GetJWTFromLocalStorage();
     if (jwtKey === null) {
       reject('Not JWT token!');
@@ -51,7 +51,7 @@ export async function GetEmployeeByID(
           Authentication: jwtKey,
         },
       });
-      const result: ResponseData<Employee> = await response.json();
+      const result: ResponseData<EmployeeData> = await response.json();
       resolve(result);
     } catch (e) {
       reject(e);

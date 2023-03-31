@@ -3,7 +3,7 @@ import LevelAccess, {
   CreateEmptyLevelAccess,
 } from '../levelAccess/LevelAccess';
 
-type Employee = {
+type EmployeeData = {
   id: number;
   fio: string;
   login: string;
@@ -18,7 +18,7 @@ type Employee = {
   date_of_dismissal: number;
 };
 
-export function CreateEmptyEmployee(): Employee {
+export function CreateEmptyEmployee(): EmployeeData {
   return {
     id: 0,
     fio: '',
@@ -35,4 +35,4 @@ export function CreateEmptyEmployee(): Employee {
   };
 }
 
-export default Employee;
+export default EmployeeData;

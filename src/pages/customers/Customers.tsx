@@ -3,7 +3,7 @@ import styles from './Customers.module.css';
 import { Typography } from '@mui/material';
 import SearchField from '../../components/searchField/SearchField';
 import Table, { DataItem } from '../../components/table/Table';
-import { ColumnTable } from '../employees/table/columnTable';
+import { ColumnTable } from '../customers/table/columnTable';
 import CustomersToolbar from './toolbar/Toolbar';
 
 type State = {

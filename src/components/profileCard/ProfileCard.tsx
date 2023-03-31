@@ -4,13 +4,14 @@ import Button from '@mui/material/Button';
 import Person from '@mui/icons-material/Person';
 import Logout from '@mui/icons-material/Logout';
 import { useUser } from '../../providers/UserProvider';
-import EmployeeData from '../../models/employee/Employee';
+import EmployeeData from '../../models/employee/EmployeeData';
 import { GetEmployeeByID } from '../../api/employees';
 import { enqueueSnackbar } from 'notistack';
 import { CircularProgress } from '@mui/material';
 
 type Props = {
   onLogout: () => void;
+  onOpenUserInfo: () => void;
 };
 
 function ProfileCard(props: Props) {
@@ -45,6 +46,7 @@ function ProfileCard(props: Props) {
         variant={'contained'}
         color={'secondary'}
         className={styles.btnProfile}
+        onClick={props.onOpenUserInfo}
       >
         <Person className={styles.iconPerson} />
         <p className={styles.labelBtn}>

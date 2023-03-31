@@ -1,5 +1,7 @@
 import React from 'react';
 import styles from './Table.module.css';
+import { CircularProgress } from '@mui/material';
+import { PendingStatuses } from '../../globals/types';
 
 export enum TypeDataTable {
   NumericStr,
@@ -25,15 +27,25 @@ type Props<T> = {
   data: DataItem<T>[];
   curSelectedID?: number;
   onSelect: (itemID: number) => void;
+  isLoading?: PendingStatuses;
 };
 
 function Table(props: Props<any>) {
   let tableData: React.ReactNode[] = [];
 
-  if (props.data.length === 0) {
+  if (props.isLoading) {
     tableData.push(
       <tr className={styles.itemNotData}>
-        <td colSpan={props.column.length}>Данные отсутствуют</td>
+        <td colSpan={props.column.length}>
+          <CircularProgress color="inherit" />
+          <p>Загрузка</p>
+        </td>
+      </tr>
+    );
+  } else if (props.data.length === 0) {
+    tableData.push(
+      <tr className={styles.itemNotData}>
+        <td colSpan={props.column.length}>Список пуст</td>
       </tr>
     );
   } else {
