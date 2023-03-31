@@ -15,6 +15,7 @@ import IconEmployees from '@mui/icons-material/BadgeOutlined';
 
 type Props = {
   onOpenAboutDialogHandler: () => void;
+  onLogout: () => void;
 };
 
 function LeftPanel(props: Props) {
@@ -60,7 +61,7 @@ function LeftPanel(props: Props) {
   return (
     <Paper className={styles.root}>
       <p className={styles.title}>D-Track</p>
-      <ProfileCard typeUser={'Администратор'} userName={'Дмитрий Сергеевич'} />
+      <ProfileCard onLogout={props.onLogout} />
       <NavigationBar items={navItems} />
       <Button
         variant={'contained'}

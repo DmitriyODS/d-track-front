@@ -22,7 +22,11 @@ function TimelineCards(props: Props) {
           </div>
         ) : (
           props.dataLst.map((it) => (
-            <ItemCardTimeline data={it} onSelect={props.onSelect} />
+            <ItemCardTimeline
+              key={it.itemID}
+              data={it}
+              onSelect={props.onSelect}
+            />
           ))
         )}
       </div>

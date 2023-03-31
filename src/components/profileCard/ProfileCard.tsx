@@ -3,31 +3,34 @@ import styles from './ProfileCard.module.css';
 import Button from '@mui/material/Button';
 import Person from '@mui/icons-material/Person';
 import Logout from '@mui/icons-material/Logout';
+import { useUser } from '../../providers/UserProvider';
 
-type ProfileCardProps = {
-  typeUser: string;
-  userName: string;
+type Props = {
+  onLogout: () => void;
 };
 
-function ProfileCard(props: ProfileCardProps) {
+function ProfileCard(props: Props) {
+  const user = useUser();
+
   return (
     <div className={styles.root}>
-      <p className={styles.title}>{props.typeUser}</p>
+      <p className={styles.title}>{user?.User.Login}</p>
       <Button
         variant={'contained'}
         color={'secondary'}
         className={styles.btnProfile}
       >
         <Person className={styles.iconPerson} />
-        {props.userName}
+        <p className={styles.labelBtn}>{user?.User.Login}</p>
       </Button>
       <Button
         variant={'contained'}
         color={'secondaryInvert'}
         className={styles.btnProfile}
+        onClick={props.onLogout}
       >
         <Logout className={styles.iconLogout} />
-        Выйти из системы
+        <p className={styles.labelBtn}>Выйти из системы</p>
       </Button>
     </div>
   );

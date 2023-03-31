@@ -1,11 +1,12 @@
 .authCard {
     width: 24rem;
-    height: 28rem;
+    height: max-content;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-left: 3rem !important;
     padding-right: 3rem !important;
+    padding-bottom: 2rem !important;
 }
 
 .title {

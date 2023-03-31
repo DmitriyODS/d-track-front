@@ -8,6 +8,8 @@ import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import BaseTheme from './themes/baseTheme';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import UserProvider from './providers/UserProvider';
+import PendingProvider from './providers/PendingProvider';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -16,10 +18,14 @@ const theme = createTheme(BaseTheme);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'de'}>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'ruRU'}>
         <ThemeProvider theme={theme}>
           <CssBaseline enableColorScheme />
-          <App />
+          <UserProvider>
+            <PendingProvider>
+              <App />
+            </PendingProvider>
+          </UserProvider>
         </ThemeProvider>
       </LocalizationProvider>
     </Provider>

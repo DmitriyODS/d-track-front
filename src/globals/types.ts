@@ -8,3 +8,10 @@ export enum EditModes {
   Edit,
   View,
 }
+
+export enum PendingStatuses {
+  Ready,
+  Loading,
+}
+
+export type JWTPayload = {};
