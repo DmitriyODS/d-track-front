@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Customers.module.css';
 import { Typography } from '@mui/material';
 import SearchField from '../../components/searchField/SearchField';
-import Table, { DataItem } from '../../components/table/Table';
+import Table, { TDataTableItem } from '../../components/table/Table';
 import { ColumnTable } from '../customers/table/columnTable';
 import CustomersToolbar from './toolbar/Toolbar';
 
@@ -24,7 +24,7 @@ class Customers extends React.Component<any, State> {
 
   // todo: временная заглушка до API
   getDataTable = (count: number) => {
-    const dataItems: DataItem<any>[] = [];
+    const dataItems: TDataTableItem<any>[] = [];
 
     for (let i = 0; i < count; i++) {
       dataItems.push({

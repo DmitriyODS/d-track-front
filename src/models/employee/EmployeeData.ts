@@ -1,38 +1,38 @@
-import SelectList, { CreateEmptySelectList } from '../selectList/SelectList';
-import LevelAccess, {
-  CreateEmptyLevelAccess,
-} from '../levelAccess/LevelAccess';
+import ItemData, { NewEmptyItemData } from '../item/ItemData';
+import LevelAccessData, {
+  NewEmptyLevelAccess,
+} from '../levelAccess/LevelAccessData';
 
-type EmployeeData = {
+interface IEmployeeData {
   id: number;
   fio: string;
   login: string;
   password: string;
-  phone_number: string;
-  email_address: string;
-  address_of_residence: string;
-  position: SelectList;
-  level_access: LevelAccess;
-  freedom_type: SelectList;
-  date_appointments: number;
-  date_of_dismissal: number;
-};
+  phoneNumber: string;
+  emailAddress: string;
+  addressOfResidence: string;
+  position: ItemData;
+  levelAccess: LevelAccessData;
+  freedomType: ItemData;
+  dateAppointments: number;
+  dateOfDismissal: number;
+}
 
-export function CreateEmptyEmployee(): EmployeeData {
+export function NewEmptyEmployeeData(): IEmployeeData {
   return {
     id: 0,
     fio: '',
     login: '',
     password: '',
-    phone_number: '',
-    email_address: '',
-    address_of_residence: '',
-    position: CreateEmptySelectList(),
-    level_access: CreateEmptyLevelAccess(),
-    freedom_type: CreateEmptySelectList(),
-    date_appointments: 0,
-    date_of_dismissal: 0,
+    phoneNumber: '',
+    emailAddress: '',
+    addressOfResidence: '',
+    position: NewEmptyItemData(),
+    levelAccess: NewEmptyLevelAccess(),
+    freedomType: NewEmptyItemData(),
+    dateAppointments: 0,
+    dateOfDismissal: 0,
   };
 }
 
-export default EmployeeData;
+export default IEmployeeData;

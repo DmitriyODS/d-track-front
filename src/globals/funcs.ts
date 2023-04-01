@@ -1,4 +1,6 @@
 import jwtDecode from 'jwt-decode';
+import dayjs, { Dayjs } from 'dayjs';
+import IUserData from '../models/user/UserData';
 
 function storageAvailable(typeStorage: any) {
   try {
@@ -34,22 +36,45 @@ export function ResetLocalStorage() {
   }
 }
 
-export function GetUserFromJWT(jwtStr: string): any {
-  return jwtDecode(jwtStr);
+type TJwtPayload = {
+  user_id: number;
+  login: string;
+  position_id?: number;
+  level_access: string;
+};
+
+export function GetUserFromJWT(jwtStr: string): IUserData {
+  const jwtPayload: TJwtPayload = jwtDecode(jwtStr);
+  return {
+    userId: jwtPayload.user_id,
+    login: jwtPayload.login,
+    positionId: jwtPayload.position_id,
+    jwt: jwtStr,
+    levelAccess: jwtPayload.level_access,
+  };
 }
 
-export function GetLocalUser(): any {
+export function GetLocalUser(): IUserData | undefined {
   const jwt = GetJWTFromLocalStorage();
   if (jwt === null) {
     return undefined;
   }
 
-  const tokenUserData = GetUserFromJWT(jwt);
+  return GetUserFromJWT(jwt);
+}
 
-  return {
-    user_id: tokenUserData.user_id,
-    login: tokenUserData.user_login,
-    position_id: tokenUserData.position_id,
-    level_access: tokenUserData.level_access,
-  };
+export function GetDayjsFromUnix(date: number): Dayjs | undefined {
+  if (date === 0) {
+    return undefined;
+  }
+
+  return dayjs.unix(date);
+}
+
+export function GetUnixFromDayjs(date?: Dayjs): number {
+  if (date === undefined) {
+    return 0;
+  }
+
+  return date.unix();
 }

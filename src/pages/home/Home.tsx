@@ -6,7 +6,7 @@ import AboutDialog from '../../components/aboutDialog/AboutDialog';
 import { UserContext } from '../../providers/UserProvider';
 import { UrlPages } from '../../globals/urlPages';
 import { ResetLocalStorage } from '../../globals/funcs';
-import EmployeeEdit from '../../components/editDialogs/EmployeeEdit';
+import EmployeeEdit from '../employees/editDailog/EmployeeEdit';
 import { EditModes } from '../../globals/types';
 
 type State = {
@@ -40,28 +40,23 @@ class Home extends React.Component<any, State> {
   };
 
   onLogoutUserHandler = () => {
-    this.context?.ClearUser();
+    this.context.ClearUser?.();
     ResetLocalStorage();
   };
 
   render() {
     return (
       <div className={styles.root}>
-        {this.context?.User.user_id === 0 && (
-          <Navigate to={UrlPages.Auth} replace />
-        )}
+        {this.context.User.userId === 0 && <Navigate to={UrlPages.Auth} replace />}
         {this.state.isOpenEmployeeDialog && (
           <EmployeeEdit
             onClose={this.onCloseEmployeeDialogHandler}
             isOpen={this.state.isOpenEmployeeDialog}
             editMode={EditModes.View}
-            selectID={this.context?.User.user_id}
+            selectID={this.context?.User.userId}
           />
         )}
-        <AboutDialog
-          onClose={this.onCloseAboutDialogHandler}
-          isOpen={this.state.isOpenAboutDialog}
-        />
+        <AboutDialog onClose={this.onCloseAboutDialogHandler} isOpen={this.state.isOpenAboutDialog} />
         <LeftPanel
           onOpenAboutDialogHandler={this.onOpenAboutDialogHandler}
           onLogout={this.onLogoutUserHandler}

@@ -1,4 +1,4 @@
-export enum ApiServer {
+export enum ServerAPI {
   Login = '/v1/auth/login',
 
   GetEmployeesLst = '/v1/employees/getList',

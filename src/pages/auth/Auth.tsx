@@ -2,10 +2,11 @@ import React from 'react';
 import styles from './Auth.module.css';
 import AuthCard from '../../components/authCard/AuthCard';
 import { UserContext } from '../../providers/UserProvider';
-import { LoginUser } from '../../api/auth';
 import { Navigate } from 'react-router-dom';
 import { SetJWTToLocalStorage } from '../../globals/funcs';
 import { enqueueSnackbar } from 'notistack';
+import { Login } from '../../api/auth/methods';
+import { NewLoginUser } from '../../models/user/UserData';
 
 type State = {
   isLoading: boolean;
@@ -20,24 +21,18 @@ class AuthPage extends React.Component<any, State> {
     this.state = { isLoading: false };
   }
 
-  handlerOnLogin = (login: string, password: string) => {
+  onLoginHandler = (login: string, password: string) => {
     this.setState({ isLoading: true });
-    const result = LoginUser(login, password);
-    const setUser = this.context?.SetUser;
+
+    const setUser = this.context.SetUser;
+    const result = Login(NewLoginUser(login, password));
 
     result.then(
-      (res) => {
-        if (!res.ok) {
-          enqueueSnackbar(`Ошибка: ${res.description}`, { variant: 'error' });
-          return;
-        }
-
-        setUser?.(res.data!);
-        SetJWTToLocalStorage(res.data!.jwt);
+      (u) => {
+        setUser?.(u);
+        SetJWTToLocalStorage(u.jwt);
       },
-      () => {
-        enqueueSnackbar('Сервер не доступен', { variant: 'error' });
-      }
+      (error: string) => enqueueSnackbar(error, { variant: 'error' })
     );
 
     result.finally(() => {
@@ -48,14 +43,9 @@ class AuthPage extends React.Component<any, State> {
   render() {
     return (
       <div className={styles.root}>
-        {this.context?.User.user_id !== 0 && (
-          <Navigate to={'/'} replace={true} />
-        )}
+        {!!this.context?.User.userId && <Navigate to={'/'} replace={true} />}
         <p className={styles.titleLogo}>D-Track</p>
-        <AuthCard
-          onLogin={this.handlerOnLogin}
-          isInactive={this.state.isLoading}
-        />
+        <AuthCard onLogin={this.onLoginHandler} isInactive={this.state.isLoading} />
         <p className={styles.textVer}>
           Ver: 0.1.0
           <br />

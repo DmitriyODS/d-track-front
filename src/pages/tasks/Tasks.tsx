@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Tasks.module.css';
 import { Typography } from '@mui/material';
-import Table, { DataItem } from '../../components/table/Table';
+import Table, { TDataTableItem } from '../../components/table/Table';
 import SearchField from '../../components/searchField/SearchField';
 import Switcher from '../../components/switcher/Switcher';
 import { ColumnTable } from './table/columnTable';
@@ -34,7 +34,7 @@ class Tasks extends React.Component<any, State> {
 
   // todo: временная заглушка до API
   getDataTable = (count: number) => {
-    const dataItems: DataItem<any>[] = [];
+    const dataItems: TDataTableItem<any>[] = [];
 
     for (let i = 0; i < count; i++) {
       dataItems.push({
@@ -60,10 +60,7 @@ class Tasks extends React.Component<any, State> {
           <SearchField placeholder={'Фильтрация по номеру задачи'} />
         </div>
         <div className={styles.toolbar}>
-          <TasksToolbar
-            isArchive={this.state.isArchive}
-            isSelected={this.state.curItemID !== 0}
-          />
+          <TasksToolbar isArchive={this.state.isArchive} isSelected={this.state.curItemID !== 0} />
           <Switcher
             isArchive={this.state.isArchive}
             onClickOne={this.handleSwitchToMain}

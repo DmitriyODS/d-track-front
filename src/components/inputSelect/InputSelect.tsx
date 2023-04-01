@@ -1,14 +1,8 @@
 import React from 'react';
 import styles from './InputSelect.module.css';
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
-export type ItemSelect = {
+export type TSelectItem = {
   id: number;
   value: string;
   label: string;
@@ -21,16 +15,12 @@ type Props = {
   value?: string;
   disabled?: boolean;
   fullWidth?: boolean;
-  initData: ItemSelect[];
+  initData: TSelectItem[];
 };
 
 function InputSelect(props: Props) {
   return (
-    <FormControl
-      fullWidth={props.fullWidth}
-      disabled={props.disabled}
-      color={'textInput'}
-    >
+    <FormControl fullWidth={props.fullWidth} disabled={props.disabled} color={'textInput'}>
       <InputLabel id={`${props.id}-label`}>{props.label}</InputLabel>
       <Select
         labelId={`${props.id}-label`}

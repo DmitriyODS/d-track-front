@@ -11,20 +11,20 @@ export enum TypeDataTable {
   BooleanStr,
 }
 
-export type ColumnItem = {
+export type TColumnItem = {
   name: string;
   typeData: TypeDataTable;
   indexKey: string;
 };
 
-export type DataItem<T> = {
+export type TDataTableItem<T> = {
   id: number;
   value: T;
 };
 
 type Props<T> = {
-  column: ColumnItem[];
-  data: DataItem<T>[];
+  column: TColumnItem[];
+  data: TDataTableItem<T>[];
   curSelectedID?: number;
   onSelect: (itemID: number) => void;
   isLoading?: PendingStatuses;
@@ -35,7 +35,7 @@ function Table(props: Props<any>) {
 
   if (props.isLoading) {
     tableData.push(
-      <tr className={styles.itemNotData}>
+      <tr className={styles.itemNotData} key={0}>
         <td colSpan={props.column.length}>
           <CircularProgress color="inherit" />
           <p>Загрузка</p>
@@ -44,7 +44,7 @@ function Table(props: Props<any>) {
     );
   } else if (props.data.length === 0) {
     tableData.push(
-      <tr className={styles.itemNotData}>
+      <tr className={styles.itemNotData} key={0}>
         <td colSpan={props.column.length}>Список пуст</td>
       </tr>
     );

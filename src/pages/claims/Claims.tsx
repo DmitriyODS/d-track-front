@@ -3,7 +3,7 @@ import styles from './Claims.module.css';
 import { Typography } from '@mui/material';
 import SearchField from '../../components/searchField/SearchField';
 import Switcher from '../../components/switcher/Switcher';
-import Table, { DataItem } from '../../components/table/Table';
+import Table, { TDataTableItem } from '../../components/table/Table';
 import ClaimsToolbar from './toolbar/Toolbar';
 import { ColumnTable } from './table/columnTable';
 import ClaimEdit from '../../components/editDialogs/ClaimEdit';
@@ -44,7 +44,7 @@ class Claims extends React.Component<any, State> {
 
   // todo: временная заглушка до API
   getDataTable = (count: number) => {
-    const dataItems: DataItem<any>[] = [];
+    const dataItems: TDataTableItem<any>[] = [];
 
     for (let i = 0; i < count; i++) {
       dataItems.push({

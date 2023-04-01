@@ -1,4 +1,4 @@
-export type EmployeeDataItem = {
+export type TEmployeeDataTable = {
   login: string;
   fio: string;
   position: string;

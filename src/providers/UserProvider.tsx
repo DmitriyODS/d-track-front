@@ -1,14 +1,16 @@
-import React, { createContext, useContext, useState } from 'react';
-import User, { CreateEmptyUser } from '../models/user/User';
+import React, { createContext, useCallback, useContext, useState } from 'react';
 import { GetLocalUser } from '../globals/funcs';
+import IUserData, { NewEmptyUser } from '../models/user/UserData';
 
 type TUserContext = {
-  User: User;
-  SetUser: (user: User) => void;
-  ClearUser: () => void;
+  User: IUserData;
+  SetUser?: (user: IUserData) => void;
+  ClearUser?: () => void;
 };
 
-export const UserContext = createContext<TUserContext | undefined>(undefined);
+export const UserContext = createContext<TUserContext>({
+  User: NewEmptyUser(),
+});
 
 type Props = {
   children?: React.ReactNode;
@@ -19,18 +21,15 @@ export function useUser() {
 }
 
 function UserProvider({ children }: Props) {
-  const curUser = GetLocalUser();
-  const [user, setUser] = useState(
-    curUser === undefined ? CreateEmptyUser() : curUser
-  );
+  const [user, setUser] = useState(GetLocalUser() ?? NewEmptyUser());
 
-  const clearUserCtx = () => {
-    setUser(CreateEmptyUser());
-  };
+  const clearUserCtx = useCallback(() => {
+    setUser(NewEmptyUser());
+  }, []);
 
-  const setUserCtx = (u: User) => {
+  const setUserCtx = useCallback((u: IUserData) => {
     setUser(u);
-  };
+  }, []);
 
   return (
     <UserContext.Provider

@@ -4,23 +4,23 @@ import { Typography } from '@mui/material';
 import SearchField from '../../components/searchField/SearchField';
 import EmployeesToolbar from './toolbar/Toolbar';
 import Switcher from '../../components/switcher/Switcher';
-import Table, { DataItem } from '../../components/table/Table';
+import Table, { TDataTableItem } from '../../components/table/Table';
 import { ColumnTable } from './table/columnTable';
 import { EditModes } from '../../globals/types';
-import EmployeeEdit from '../../components/editDialogs/EmployeeEdit';
+import EmployeeEdit from './editDailog/EmployeeEdit';
 import { PendingContext } from '../../providers/PendingProvider';
-import { GetEmployees } from '../../api/employees';
+import { GetEmployees } from '../../api/employee/methods';
 import { enqueueSnackbar } from 'notistack';
-import { EmployeeDataItem } from './table/EmployeeDataItem';
 import { GetItemsFromData } from './table/dataConvert';
-import EmployeeData from '../../models/employee/EmployeeData';
+import IEmployeeData from '../../models/employee/EmployeeData';
+import { TEmployeeDataTable } from './table/EmployeeDataItem';
 
 type State = {
   isArchive: boolean;
   curItemID: number;
   isOpenEditDialog: boolean;
   editMode: EditModes;
-  dataList: DataItem<EmployeeDataItem>[];
+  dataList: TDataTableItem<TEmployeeDataTable>[];
 };
 
 class Employee extends React.Component<any, State> {
@@ -38,19 +38,19 @@ class Employee extends React.Component<any, State> {
     };
   }
 
-  handleSwitchToArchive = () => {
+  onSwitchToArchiveHandler = () => {
     this.setState((s) => ({ ...s, isArchive: true, curItemID: 0 }));
   };
 
-  handleSwitchToMain = () => {
+  onSwitchToActiveHandler = () => {
     this.setState((s) => ({ ...s, isArchive: false, curItemID: 0 }));
   };
 
-  handleSelectItem = (itemID: number) => {
+  onSelectItemHandler = (itemID: number) => {
     this.setState((s) => ({ ...s, curItemID: itemID }));
   };
 
-  handleOnCloseEditDialog = (e?: any, r?: string) => {
+  onCloseEditDialogHandler = (e?: any, r?: string) => {
     // нельзя закрывать форму при нажатии на пустое место - вдруг юзер ошибся?
     if (r === 'backdropClick') {
       return;
@@ -62,11 +62,11 @@ class Employee extends React.Component<any, State> {
     });
   };
 
-  handleOnSaveEditDialog = (data: EmployeeData) => {
-    this.handleOnCloseEditDialog();
+  onSaveEditDialogHandler = (data: IEmployeeData) => {
+    this.onCloseEditDialogHandler();
   };
 
-  handleOnOpenEditDialog = (editMode: EditModes) => {
+  onOpenEditDialogHandler = (editMode: EditModes) => {
     this.setState({
       ...this.state,
       editMode: editMode,
@@ -75,28 +75,23 @@ class Employee extends React.Component<any, State> {
   };
 
   componentDidMount() {
-    this.context?.ToPending();
+    this.context.ToPending?.();
 
-    const result = GetEmployees();
+    const result = GetEmployees({});
     result.then(
-      (value) => {
-        if (!value.ok) {
-          enqueueSnackbar(`Ошибка: ${value.description}`, { variant: 'error' });
-          return;
-        }
-
+      (employee) => {
         this.setState((prev) => ({
           ...prev,
           curItemID: 0,
-          dataList: GetItemsFromData(value.data!),
+          dataList: GetItemsFromData(employee),
         }));
       },
-      () => {
-        enqueueSnackbar('Не удалось загрузить данные', { variant: 'error' });
+      (error: string) => {
+        enqueueSnackbar(error, { variant: 'error' });
       }
     );
 
-    result.finally(() => this.context?.ToReady());
+    result.finally(() => this.context.ToReady?.());
   }
 
   render() {
@@ -104,8 +99,8 @@ class Employee extends React.Component<any, State> {
       <div className={styles.root}>
         {this.state.isOpenEditDialog && (
           <EmployeeEdit
-            onClose={this.handleOnCloseEditDialog}
-            onSave={this.handleOnSaveEditDialog}
+            onClose={this.onCloseEditDialogHandler}
+            onSave={this.onSaveEditDialogHandler}
             isOpen={this.state.isOpenEditDialog}
             editMode={this.state.editMode}
             selectID={this.state.curItemID}
@@ -119,12 +114,12 @@ class Employee extends React.Component<any, State> {
           <EmployeesToolbar
             isArchive={this.state.isArchive}
             isSelected={this.state.curItemID !== 0}
-            onOpenEditDialog={this.handleOnOpenEditDialog}
+            onOpenEditDialog={this.onOpenEditDialogHandler}
           />
           <Switcher
             isArchive={this.state.isArchive}
-            onClickOne={this.handleSwitchToMain}
-            onClickTwo={this.handleSwitchToArchive}
+            onClickOne={this.onSwitchToActiveHandler}
+            onClickTwo={this.onSwitchToArchiveHandler}
             textOne={'Штат'}
             textTwo={'Уволенные'}
           />
@@ -133,7 +128,7 @@ class Employee extends React.Component<any, State> {
           <Table
             column={ColumnTable}
             data={this.state.dataList}
-            onSelect={this.handleSelectItem}
+            onSelect={this.onSelectItemHandler}
             curSelectedID={this.state.curItemID}
             isLoading={this.context?.Status}
           />

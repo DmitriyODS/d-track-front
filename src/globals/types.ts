@@ -13,5 +13,3 @@ export enum PendingStatuses {
   Ready,
   Loading,
 }
-
-export type JWTPayload = {};
