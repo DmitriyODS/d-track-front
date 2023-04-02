@@ -63,16 +63,16 @@ export function GetLocalUser(): IUserData | undefined {
   return GetUserFromJWT(jwt);
 }
 
-export function GetDayjsFromUnix(date: number): Dayjs | undefined {
+export function GetDayjsFromUnix(date: number): Dayjs | null {
   if (date === 0) {
-    return undefined;
+    return null;
   }
 
   return dayjs.unix(date);
 }
 
-export function GetUnixFromDayjs(date?: Dayjs): number {
-  if (date === undefined) {
+export function GetUnixFromDayjs(date: Dayjs | null): number {
+  if (date === null) {
     return 0;
   }
 

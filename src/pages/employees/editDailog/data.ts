@@ -1,4 +1,3 @@
-import { TSelectItem } from '../../../components/inputSelect/InputSelect';
 import IEmployeeData from '../../../models/employee/EmployeeData';
 import { GetDayjsFromUnix, GetUnixFromDayjs } from '../../../globals/funcs';
 import { Dayjs } from 'dayjs';
@@ -11,11 +10,11 @@ export type TEmployeeState = {
   phoneNumber: string;
   emailAddress: string;
   addressOfResidence: string;
-  position: TSelectItem;
-  levelAccess: TSelectItem;
-  freedomType: TSelectItem;
-  dateAppointments?: Dayjs;
-  dateOfDismissal?: Dayjs;
+  position: string;
+  levelAccess: string;
+  freedomType: string;
+  dateAppointments: Dayjs | null;
+  dateOfDismissal: Dayjs | null;
 };
 
 export function GetEmployeeDataFromFields(fieldsData: TEmployeeState): IEmployeeData {
@@ -27,9 +26,9 @@ export function GetEmployeeDataFromFields(fieldsData: TEmployeeState): IEmployee
     phoneNumber: fieldsData.phoneNumber,
     emailAddress: fieldsData.emailAddress,
     addressOfResidence: fieldsData.addressOfResidence,
-    position: { id: fieldsData.position.id, value: fieldsData.position.value },
-    levelAccess: { id: fieldsData.levelAccess.id, name: fieldsData.levelAccess.value },
-    freedomType: { id: fieldsData.freedomType.id, value: fieldsData.freedomType.value },
+    position: { id: Number(fieldsData.position), value: '' },
+    levelAccess: { id: Number(fieldsData.levelAccess), name: '' },
+    freedomType: { id: Number(fieldsData.freedomType), value: '' },
     dateAppointments: GetUnixFromDayjs(fieldsData.dateAppointments),
     dateOfDismissal: GetUnixFromDayjs(fieldsData.dateOfDismissal),
   };
@@ -45,11 +44,11 @@ export function GetInitStateFieldsData(employee?: IEmployeeData): TEmployeeState
       phoneNumber: '',
       emailAddress: '',
       addressOfResidence: '',
-      position: { id: 0, value: '', label: '' },
-      levelAccess: { id: 0, value: '', label: '' },
-      freedomType: { id: 0, value: '', label: '' },
-      dateAppointments: undefined,
-      dateOfDismissal: undefined,
+      position: '',
+      levelAccess: '',
+      freedomType: '',
+      dateAppointments: null,
+      dateOfDismissal: null,
     };
   }
 
@@ -61,21 +60,9 @@ export function GetInitStateFieldsData(employee?: IEmployeeData): TEmployeeState
     phoneNumber: employee.phoneNumber,
     emailAddress: employee.emailAddress,
     addressOfResidence: employee.addressOfResidence,
-    position: {
-      id: employee.position.id,
-      value: `${employee.position.id}`,
-      label: employee.position.value,
-    },
-    levelAccess: {
-      id: employee.levelAccess.id,
-      value: `${employee.levelAccess.id}`,
-      label: employee.levelAccess.name,
-    },
-    freedomType: {
-      id: employee.freedomType.id,
-      value: `${employee.freedomType.id}`,
-      label: employee.freedomType.value,
-    },
+    position: `${employee.position.id}`,
+    levelAccess: `${employee.levelAccess.id}`,
+    freedomType: `${employee.freedomType.id}`,
     dateAppointments: GetDayjsFromUnix(employee.dateAppointments),
     dateOfDismissal: GetDayjsFromUnix(employee.dateOfDismissal),
   };

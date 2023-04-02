@@ -1,4 +1,6 @@
 import { TEmployeeState } from './data';
+import { FreedomTypes } from '../../../globals/types';
+import dayjs from 'dayjs';
 
 export enum NameFields {
   init,
@@ -54,7 +56,13 @@ export function EditEmployeeReducer(state: TEmployeeState, action: TAction): TEm
       return { ...state, levelAccess: action.payload };
     }
     case NameFields.freedomType: {
-      return { ...state, freedomType: action.payload };
+      let dateOfDismissal: dayjs.Dayjs | null = null;
+
+      if (action.payload === FreedomTypes.Fired) {
+        dateOfDismissal = dayjs();
+      }
+
+      return { ...state, freedomType: action.payload, dateOfDismissal: dateOfDismissal };
     }
     case NameFields.dateAppointments: {
       return { ...state, dateAppointments: action.payload };

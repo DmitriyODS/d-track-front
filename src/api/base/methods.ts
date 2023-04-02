@@ -7,5 +7,6 @@ export enum ServerAPI {
 
   GetListPositions = '/v1/lists/positions',
   GetListEmployees = '/v1/lists/employees',
+  GetListFreedomTypes = '/v1/lists/freedomTypes',
   GetListLevelAccesses = '/v1/lists/levelAccesses',
 }

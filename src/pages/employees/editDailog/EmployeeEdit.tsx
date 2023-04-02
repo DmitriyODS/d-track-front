@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import styles from './EmployeeEdit.module.css';
-import InputSelect, { TSelectItem } from '../../../components/inputSelect/InputSelect';
+import InputSelect from '../../../components/inputSelect/InputSelect';
 import BaseDialog from '../../../components/baseDialog/BaseDialog';
 import { EditModes } from '../../../globals/types';
-import { CircularProgress, DialogActions } from '@mui/material';
+import { CircularProgress, DialogActions, SelectChangeEvent } from '@mui/material';
 import Button from '@mui/material/Button';
 import IconClose from '@mui/icons-material/Close';
 import IconSave from '@mui/icons-material/SaveOutlined';
@@ -15,6 +15,7 @@ import { enqueueSnackbar } from 'notistack';
 import IEmployeeData from '../../../models/employee/EmployeeData';
 import { EditEmployeeReducer, NameFields } from './reducer';
 import { GetInitStateFieldsData } from './data';
+import { GetListFreedomTypes, GetListLevelAccess, GetListPositions } from '../../../api/lists/methods';
 
 type Props = {
   onClose: () => void;
@@ -50,16 +51,6 @@ function EmployeeEdit(props: Props) {
     result.finally(() => setLoading(false));
   }, []);
 
-  const getTestingData = useCallback((count: number) => {
-    const testData: TSelectItem[] = [];
-
-    for (let i = 0; i < count; ++i) {
-      testData.push({ id: i + 1, value: `${i + 1}`, label: `Item ${i + 1}` });
-    }
-
-    return testData;
-  }, []);
-
   const onChangeFio = useCallback((event: any) => {
     dispatch({ type: NameFields.fio, payload: event.target.value });
   }, []);
@@ -68,16 +59,16 @@ function EmployeeEdit(props: Props) {
     dispatch({ type: NameFields.dateAppointments, payload: value });
   }, []);
 
-  const onChangeFreedomType = useCallback((value: any) => {
-    dispatch({ type: NameFields.freedomType, payload: value });
+  const onChangeFreedomType = useCallback((event: SelectChangeEvent) => {
+    dispatch({ type: NameFields.freedomType, payload: event.target.value });
   }, []);
 
   const onChangeDateOfDismissal = useCallback((value: any) => {
     dispatch({ type: NameFields.dateOfDismissal, payload: value });
   }, []);
 
-  const onChangePosition = useCallback((value: any) => {
-    dispatch({ type: NameFields.position, payload: value });
+  const onChangePosition = useCallback((event: SelectChangeEvent) => {
+    dispatch({ type: NameFields.position, payload: event.target.value });
   }, []);
 
   const onChangePhoneNumber = useCallback((event: any) => {
@@ -92,8 +83,8 @@ function EmployeeEdit(props: Props) {
     dispatch({ type: NameFields.addressOfResidence, payload: event.target.value });
   }, []);
 
-  const onChangeLevelAccess = useCallback((value: any) => {
-    dispatch({ type: NameFields.levelAccess, payload: value });
+  const onChangeLevelAccess = useCallback((event: SelectChangeEvent) => {
+    dispatch({ type: NameFields.levelAccess, payload: event.target.value });
   }, []);
 
   const onChangePassword = useCallback((event: any) => {
@@ -167,9 +158,9 @@ function EmployeeEdit(props: Props) {
               label={'Должность'}
               fullWidth
               disabled={isViewMode}
-              initData={getTestingData(12)}
-              value={state.position.value}
+              value={state.position}
               onChange={onChangePosition}
+              onLoadData={GetListPositions}
             />
           </Grid>
           <Grid xs={6}>
@@ -177,9 +168,9 @@ function EmployeeEdit(props: Props) {
               label={'Доступ'}
               fullWidth
               disabled={isViewMode}
-              initData={getTestingData(12)}
-              value={state.levelAccess.value}
+              value={state.levelAccess}
               onChange={onChangeLevelAccess}
+              onLoadData={GetListLevelAccess}
             />
           </Grid>
           <Grid xs={6}>
@@ -187,9 +178,9 @@ function EmployeeEdit(props: Props) {
               label={'Доступность'}
               fullWidth
               disabled={isViewMode}
-              initData={getTestingData(12)}
-              value={state.freedomType.value}
+              value={state.freedomType}
               onChange={onChangeFreedomType}
+              onLoadData={GetListFreedomTypes}
             />
           </Grid>
           <Grid xs={6}>

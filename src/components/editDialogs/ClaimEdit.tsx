@@ -25,16 +25,6 @@ function ClaimEdit(props: Props) {
   const isViewMode = props.editMode === EditModes.View;
   const isEditMode = props.editMode === EditModes.Edit;
 
-  const getTestingData = (count: number) => {
-    const testData: TSelectItem[] = [];
-
-    for (let i = 0; i < count; ++i) {
-      testData.push({ id: i + 1, value: `${i + 1}`, label: `Item ${i + 1}` });
-    }
-
-    return testData;
-  };
-
   return (
     <BaseDialog
       onClose={props.onClose}
@@ -52,10 +42,10 @@ function ClaimEdit(props: Props) {
           <DatePicker sx={{ width: '100%' }} label="Дата открытия" disabled format="DD.MM.YYYY" />
         </Grid>
         <Grid xs={6}>
-          <InputSelect label={'Клиент'} fullWidth disabled={isViewMode || isEditMode} initData={getTestingData(12)} />
+          <InputSelect label={'Клиент'} fullWidth disabled={isViewMode || isEditMode} value={'0'} />
         </Grid>
         <Grid xs={6}>
-          <InputSelect label={'Вид услуги'} fullWidth disabled={isViewMode || isEditMode} initData={getTestingData(12)} />
+          <InputSelect label={'Вид услуги'} fullWidth disabled={isViewMode || isEditMode} value={'0'} />
         </Grid>
         <Grid xs={12}>
           <TextField fullWidth label="Предмет заявки" variant="outlined" disabled={isViewMode || isEditMode} />
@@ -64,10 +54,10 @@ function ClaimEdit(props: Props) {
           <TextField fullWidth label="Описание" variant="outlined" multiline maxRows={4} disabled={isViewMode} />
         </Grid>
         <Grid xs={6}>
-          <InputSelect label={'Статус'} fullWidth disabled={isViewMode} initData={getTestingData(4)} />
+          <InputSelect label={'Статус'} fullWidth disabled={isViewMode} value={'0'} />
         </Grid>
         <Grid xs={6}>
-          <InputSelect label={'Исполнитель'} fullWidth disabled={isViewMode} initData={getTestingData(4)} />
+          <InputSelect label={'Исполнитель'} fullWidth disabled={isViewMode} value={'0'} />
         </Grid>
         <Grid xs={6}>
           <DatePicker sx={{ width: '100%' }} label="Ориентировочная дата закрытия" disabled={isViewMode} format="DD.MM.YYYY" />
