@@ -63,6 +63,7 @@ class Employee extends React.Component<any, State> {
   };
 
   onSaveEditDialogHandler = (data: IEmployeeData) => {
+    console.log(data);
     this.onCloseEditDialogHandler();
   };
 

@@ -1,14 +1,14 @@
 import React from 'react';
 import styles from './ClaimEdit.module.css';
-import BaseDialog from '../baseDialog/BaseDialog';
+import BaseDialog from '../../../components/baseDialog/BaseDialog';
 import { DialogActions } from '@mui/material';
 import Button from '@mui/material/Button';
 import IconSave from '@mui/icons-material/SaveOutlined';
 import IconClose from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Unstable_Grid2';
-import InputSelect, { TSelectItem } from '../inputSelect/InputSelect';
-import { EditModes } from '../../globals/types';
+import InputSelect, { TSelectItem } from '../../../components/inputSelect/InputSelect';
+import { EditModes } from '../../../globals/types';
 import { DatePicker } from '@mui/x-date-pickers';
 
 type Props = {
@@ -36,7 +36,12 @@ function ClaimEdit(props: Props) {
     >
       <Grid container spacing={4} mt={1} mb={1}>
         <Grid xs={6}>
-          <TextField fullWidth label="Номер заявки" variant="outlined" disabled={isViewMode || isEditMode} />
+          <TextField
+            fullWidth
+            label="Номер заявки"
+            variant="outlined"
+            disabled={isViewMode || isEditMode}
+          />
         </Grid>
         <Grid xs={6}>
           <DatePicker sx={{ width: '100%' }} label="Дата открытия" disabled format="DD.MM.YYYY" />
@@ -45,13 +50,30 @@ function ClaimEdit(props: Props) {
           <InputSelect label={'Клиент'} fullWidth disabled={isViewMode || isEditMode} value={'0'} />
         </Grid>
         <Grid xs={6}>
-          <InputSelect label={'Вид услуги'} fullWidth disabled={isViewMode || isEditMode} value={'0'} />
+          <InputSelect
+            label={'Вид услуги'}
+            fullWidth
+            disabled={isViewMode || isEditMode}
+            value={'0'}
+          />
         </Grid>
         <Grid xs={12}>
-          <TextField fullWidth label="Предмет заявки" variant="outlined" disabled={isViewMode || isEditMode} />
+          <TextField
+            fullWidth
+            label="Предмет заявки"
+            variant="outlined"
+            disabled={isViewMode || isEditMode}
+          />
         </Grid>
         <Grid xs={12}>
-          <TextField fullWidth label="Описание" variant="outlined" multiline maxRows={4} disabled={isViewMode} />
+          <TextField
+            fullWidth
+            label="Описание"
+            variant="outlined"
+            multiline
+            maxRows={4}
+            disabled={isViewMode}
+          />
         </Grid>
         <Grid xs={6}>
           <InputSelect label={'Статус'} fullWidth disabled={isViewMode} value={'0'} />
@@ -60,7 +82,12 @@ function ClaimEdit(props: Props) {
           <InputSelect label={'Исполнитель'} fullWidth disabled={isViewMode} value={'0'} />
         </Grid>
         <Grid xs={6}>
-          <DatePicker sx={{ width: '100%' }} label="Ориентировочная дата закрытия" disabled={isViewMode} format="DD.MM.YYYY" />
+          <DatePicker
+            sx={{ width: '100%' }}
+            label="Ориентировочная дата закрытия"
+            disabled={isViewMode}
+            format="DD.MM.YYYY"
+          />
         </Grid>
         <Grid xs={6}>
           <DatePicker sx={{ width: '100%' }} label="Дата закрытия" disabled format="DD.MM.YYYY" />
@@ -68,11 +95,22 @@ function ClaimEdit(props: Props) {
       </Grid>
 
       <DialogActions className={styles.spacing}>
-        <Button variant={'contained'} color={'tertiary'} disableElevation startIcon={<IconClose />} onClick={props.onClose}>
+        <Button
+          variant={'contained'}
+          color={'tertiary'}
+          disableElevation
+          startIcon={<IconClose />}
+          onClick={props.onClose}
+        >
           Закрыть
         </Button>
         {!isViewMode && (
-          <Button variant={'contained'} color={'secondary'} disableElevation startIcon={<IconSave />}>
+          <Button
+            variant={'contained'}
+            color={'secondary'}
+            disableElevation
+            startIcon={<IconSave />}
+          >
             Сохранить
           </Button>
         )}
