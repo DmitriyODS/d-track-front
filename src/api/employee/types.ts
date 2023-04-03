@@ -7,6 +7,31 @@ export type TFilters = {
   is_archive?: boolean;
 };
 
+export type TEmployeeRequest = {
+  id: number;
+  fio: string;
+  login: string;
+  password: string;
+  phone_number: string;
+  email_address: string;
+  address_of_residence: string;
+  position: {
+    id: number;
+    value: string;
+  };
+  level_access: {
+    id: number;
+    name: string;
+    access?: string;
+  };
+  freedom_type: {
+    id: number;
+    value: string;
+  };
+  date_appointments: number;
+  date_of_dismissal: number;
+};
+
 export type TEmployeeResponse = {
   id: number;
   fio: string;
@@ -36,5 +61,26 @@ export function MakeDataFromResponse(r: TEmployeeResponse): IEmployeeData {
     freedomType: r.freedom_type,
     dateAppointments: r.date_appointments,
     dateOfDismissal: r.date_of_dismissal,
+  };
+}
+
+export function NewEmployeeRequest(employee: IEmployeeData): TEmployeeRequest {
+  return {
+    id: employee.id,
+    fio: employee.fio,
+    login: employee.login,
+    password: employee.password,
+    phone_number: employee.phoneNumber,
+    email_address: employee.emailAddress,
+    address_of_residence: employee.addressOfResidence,
+    date_appointments: employee.dateAppointments,
+    date_of_dismissal: employee.dateOfDismissal,
+    position: { id: employee.position.id, value: employee.position.value },
+    freedom_type: { id: employee.freedomType.id, value: employee.freedomType.value },
+    level_access: {
+      id: employee.levelAccess.id,
+      name: employee.levelAccess.name,
+      access: employee.levelAccess.access,
+    },
   };
 }

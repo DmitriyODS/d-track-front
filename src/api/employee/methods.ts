@@ -1,5 +1,5 @@
 import { ServerAPI } from '../base/methods';
-import { MakeDataFromResponse, TEmployeeResponse, TFilters } from './types';
+import { MakeDataFromResponse, NewEmployeeRequest, TEmployeeResponse, TFilters } from './types';
 import IEmployeeData from '../../models/employee/EmployeeData';
 import { GetJWTFromLocalStorage } from '../../globals/funcs';
 import { TBaseResponse } from '../base/types';
@@ -57,6 +57,72 @@ export async function GetEmployeeByID(id: number): Promise<IEmployeeData> {
       const result: TBaseResponse<TEmployeeResponse> = await response.json();
       if (result.ok && !!result.data) {
         resolve(MakeDataFromResponse(result.data));
+      } else {
+        reject(`Ошибка: ${result.description}`);
+      }
+    } catch (e) {
+      reject('Сервер не доступен');
+    }
+  });
+}
+
+export async function CreateEmployee(employee: IEmployeeData): Promise<number> {
+  const baseServer = process.env.REACT_APP_SERVER;
+  const url = `http://${baseServer}${ServerAPI.StoreEmployee}`;
+  const req = NewEmployeeRequest(employee);
+
+  return new Promise<number>(async (resolve, reject) => {
+    const jwtKey = GetJWTFromLocalStorage();
+    if (!jwtKey) {
+      reject('Вы не авторизировованы');
+      return;
+    }
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Authentication: jwtKey,
+        },
+        body: JSON.stringify(req),
+      });
+
+      const result: TBaseResponse<number> = await response.json();
+      if (result.ok && !!result.data) {
+        resolve(result.data);
+      } else {
+        reject(`Ошибка: ${result.description}`);
+      }
+    } catch (e) {
+      reject('Сервер не доступен');
+    }
+  });
+}
+
+export async function EditEmployee(employee: IEmployeeData): Promise<number> {
+  const baseServer = process.env.REACT_APP_SERVER;
+  const url = `http://${baseServer}${ServerAPI.StoreEmployee}`;
+  const req = NewEmployeeRequest(employee);
+
+  return new Promise<number>(async (resolve, reject) => {
+    const jwtKey = GetJWTFromLocalStorage();
+    if (!jwtKey) {
+      reject('Вы не авторизировованы');
+      return;
+    }
+
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          Authentication: jwtKey,
+        },
+        body: JSON.stringify(req),
+      });
+
+      const result: TBaseResponse<number> = await response.json();
+      if (result.ok && !!result.data) {
+        resolve(result.data);
       } else {
         reject(`Ошибка: ${result.description}`);
       }

@@ -21,6 +21,7 @@ type Props = {
   isOpen: boolean;
   editMode: EditModes;
   selectID: number;
+  isLoading?: boolean;
 };
 
 function EmployeeEdit(props: Props) {
@@ -68,7 +69,7 @@ function EmployeeEdit(props: Props) {
       disableEscapeKeyDown
       maxWidth={'md'}
     >
-      {loading ? (
+      {loading || props.isLoading ? (
         <div className={styles.loading}>
           <CircularProgress color="inherit" />
           <p>Загрузка</p>

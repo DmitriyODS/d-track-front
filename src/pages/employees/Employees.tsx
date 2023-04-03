@@ -6,10 +6,10 @@ import EmployeesToolbar from './toolbar/Toolbar';
 import Switcher from '../../components/switcher/Switcher';
 import Table, { TDataTableItem } from '../../components/table/Table';
 import { ColumnTable } from './table/columnTable';
-import { EditModes } from '../../globals/types';
+import { EditModes, PendingStatuses } from '../../globals/types';
 import EmployeeEdit from './editDailog/EmployeeEdit';
 import { PendingContext } from '../../providers/PendingProvider';
-import { GetEmployees } from '../../api/employee/methods';
+import { CreateEmployee, EditEmployee, GetEmployees } from '../../api/employee/methods';
 import { enqueueSnackbar } from 'notistack';
 import { GetItemsFromData } from './table/dataConvert';
 import IEmployeeData from '../../models/employee/EmployeeData';
@@ -63,8 +63,30 @@ class Employee extends React.Component<any, State> {
   };
 
   onSaveEditDialogHandler = (data: IEmployeeData) => {
-    console.log(data);
-    this.onCloseEditDialogHandler();
+    this.context.ToPending?.();
+
+    let result: Promise<number>;
+    if (this.state.editMode === EditModes.Create) {
+      result = CreateEmployee(data);
+    } else if (this.state.editMode === EditModes.Edit) {
+      result = EditEmployee(data);
+    } else {
+      return;
+    }
+
+    result.then(
+      () => {
+        enqueueSnackbar('Операция выполнена', { variant: 'success' });
+        this.onCloseEditDialogHandler();
+      },
+      (error: string) => {
+        enqueueSnackbar(error, { variant: 'error' });
+      }
+    );
+
+    result.finally(() => {
+      this.getTableData();
+    });
   };
 
   onOpenEditDialogHandler = (editMode: EditModes) => {
@@ -75,7 +97,7 @@ class Employee extends React.Component<any, State> {
     });
   };
 
-  componentDidMount() {
+  getTableData = () => {
     this.context.ToPending?.();
 
     const result = GetEmployees({});
@@ -93,6 +115,10 @@ class Employee extends React.Component<any, State> {
     );
 
     result.finally(() => this.context.ToReady?.());
+  };
+
+  componentDidMount() {
+    this.getTableData();
   }
 
   render() {
@@ -105,6 +131,7 @@ class Employee extends React.Component<any, State> {
             isOpen={this.state.isOpenEditDialog}
             editMode={this.state.editMode}
             selectID={this.state.curItemID}
+            isLoading={this.context.Status === PendingStatuses.Loading}
           />
         )}
         <div className={styles.header}>
