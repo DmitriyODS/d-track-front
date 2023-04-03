@@ -6,7 +6,7 @@ import Switcher from '../../components/switcher/Switcher';
 import Table, { TDataTableItem } from '../../components/table/Table';
 import ClaimsToolbar from './toolbar/Toolbar';
 import { ColumnTable } from './table/columnTable';
-import ClaimEdit from '../../components/editDialogs/ClaimEdit';
+import ClaimEdit from './editDialog/ClaimEdit';
 import { EditModes } from '../../globals/types';
 
 type State = {

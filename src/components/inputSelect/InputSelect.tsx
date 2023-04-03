@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styles from './InputSelect.module.css';
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 import { TFilters } from '../../api/lists/types';
 import { enqueueSnackbar } from 'notistack';
 import IItemData from '../../models/item/ItemData';
@@ -12,7 +19,7 @@ export type TSelectItem = {
 };
 
 type TProps = {
-  id?: string;
+  name?: string;
   label?: string;
   onChange?: (event: SelectChangeEvent) => void;
   value: string;
@@ -20,6 +27,11 @@ type TProps = {
   fullWidth?: boolean;
   onLoadData?: (filters: TFilters) => Promise<IItemData[]>;
   filters?: TFilters;
+  required?: boolean;
+  refCom?: any;
+  onBlur?: any;
+  error?: boolean;
+  helperText?: string;
 };
 
 function GetItems(isLoading: boolean, data: TSelectItem[]) {
@@ -51,7 +63,11 @@ function InputSelect(props: TProps) {
     const result = props.onLoadData(props.filters ?? {});
     result.then(
       (itemsData) => {
-        setData(itemsData.map((it): TSelectItem => ({ id: it.id, label: it.value, value: it.id.toString() })));
+        setData(
+          itemsData.map(
+            (it): TSelectItem => ({ id: it.id, label: it.value, value: it.id.toString() })
+          )
+        );
       },
       (error: string) => {
         enqueueSnackbar(error, { variant: 'error' });
@@ -61,19 +77,28 @@ function InputSelect(props: TProps) {
   }, [props.filters]);
 
   return (
-    <FormControl fullWidth={props.fullWidth} disabled={props.disabled} color={'textInput'}>
-      <InputLabel id={`${props.id}-label`}>{props.label}</InputLabel>
+    <FormControl
+      fullWidth={props.fullWidth}
+      disabled={props.disabled}
+      color={'textInput'}
+      required={props.required}
+      error={props.error}
+    >
+      <InputLabel id={`${props.name}-label`}>{props.label}</InputLabel>
       <Select
-        labelId={`${props.id}-label`}
-        id={props.id}
+        labelId={`${props.name}-label`}
+        name={props.name}
         value={props.value}
         label={props.label}
         onChange={props.onChange}
         variant={'outlined'}
         className={styles.root}
+        inputRef={props.refCom}
+        onBlur={props.onBlur}
       >
         {GetItems(loading, data)}
       </Select>
+      <FormHelperText>{props.helperText}</FormHelperText>
     </FormControl>
   );
 }
