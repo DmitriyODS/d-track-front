@@ -4,11 +4,13 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconSearch from '@mui/icons-material/ManageSearchSharp';
 
-type SearchProps = {
+type TProps = {
   placeholder: string;
+  onChange?: (value: string) => void;
+  disabled?: boolean;
 };
 
-function SearchField(props: SearchProps) {
+function SearchField(props: TProps) {
   return (
     <OutlinedInput
       sx={{
@@ -16,15 +18,14 @@ function SearchField(props: SearchProps) {
           borderColor: 'primary.main',
         },
       }}
+      onChange={(e) => props.onChange?.(e.target.value)}
       color={'primaryInvert'}
       className={styles.root}
       placeholder={props.placeholder}
+      disabled={props.disabled}
       startAdornment={
         <InputAdornment position={'start'}>
-          <IconSearch
-            sx={{ color: 'text.primary', fontSize: '2rem' }}
-            className={styles.icon}
-          />
+          <IconSearch sx={{ color: 'text.primary', fontSize: '2rem' }} className={styles.icon} />
         </InputAdornment>
       }
     ></OutlinedInput>

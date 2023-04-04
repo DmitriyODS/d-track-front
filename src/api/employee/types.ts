@@ -3,9 +3,13 @@ import ILevelAccessData from '../../models/levelAccess/LevelAccessData';
 import IEmployeeData from '../../models/employee/EmployeeData';
 
 export type TFilters = {
-  fio?: string;
-  is_archive?: boolean;
+  fio_filter?: string;
+  is_archive?: string;
 };
+
+export function MakeEmployeeFilters(fio: string, isArchive: boolean): TFilters {
+  return { fio_filter: fio, is_archive: isArchive.toString() };
+}
 
 export type TEmployeeRequest = {
   id: number;

@@ -10,6 +10,7 @@ type Props = {
   textTwo: string;
   onClickOne: any;
   onClickTwo: any;
+  isLoading?: boolean;
 };
 
 function Switcher(props: Props) {
@@ -21,6 +22,7 @@ function Switcher(props: Props) {
         variant={props.isArchive ? 'text' : 'contained'}
         color={'tertiary'}
         onClick={props.onClickOne}
+        disabled={props.isLoading}
       >
         {props.textOne}
       </Button>
@@ -29,6 +31,7 @@ function Switcher(props: Props) {
         variant={props.isArchive ? 'contained' : 'text'}
         color={'tertiary'}
         onClick={props.onClickTwo}
+        disabled={props.isLoading}
       >
         {props.textTwo}
       </Button>

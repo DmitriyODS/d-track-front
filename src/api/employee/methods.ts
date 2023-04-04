@@ -1,12 +1,21 @@
 import { ServerAPI } from '../base/methods';
-import { MakeDataFromResponse, NewEmployeeRequest, TEmployeeResponse, TFilters } from './types';
+import {
+  MakeDataFromResponse,
+  MakeEmployeeFilters,
+  NewEmployeeRequest,
+  TEmployeeResponse,
+} from './types';
 import IEmployeeData from '../../models/employee/EmployeeData';
 import { GetJWTFromLocalStorage } from '../../globals/funcs';
 import { TBaseResponse } from '../base/types';
 
-export async function GetEmployees(filters: TFilters): Promise<IEmployeeData[]> {
+export async function GetEmployees(
+  fioFilter: string,
+  isArchive: boolean
+): Promise<IEmployeeData[]> {
   const baseServer = process.env.REACT_APP_SERVER;
-  const url = `http://${baseServer}${ServerAPI.GetEmployeesLst}`;
+  const urlParams = new URLSearchParams(MakeEmployeeFilters(fioFilter, isArchive));
+  const url = `http://${baseServer}${ServerAPI.GetEmployeesLst}?${urlParams}`;
 
   return new Promise<IEmployeeData[]>(async (resolve, reject) => {
     const jwtKey = GetJWTFromLocalStorage();

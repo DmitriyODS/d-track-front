@@ -15,6 +15,9 @@ type Props = {
   viewMode?: ViewModes;
   isSelected?: boolean;
   onOpenEditDialog: (editMode: EditModes) => void;
+  onEmployeeToFired?: () => void;
+  onEmployeeRestore?: () => void;
+  isLoading?: boolean;
 };
 
 function EmployeesToolbar(props: Props) {
@@ -28,6 +31,7 @@ function EmployeesToolbar(props: Props) {
           variant={'contained'}
           color={'secondary'}
           onClick={() => props.onOpenEditDialog(EditModes.Create)}
+          disabled={props.isLoading}
         >
           <IconAdd />
           <Collapse in={matches} orientation={'horizontal'}>
@@ -40,7 +44,7 @@ function EmployeesToolbar(props: Props) {
           className={styles.btn}
           variant={'contained'}
           color={'primary'}
-          disabled={!props.isSelected}
+          disabled={!props.isSelected || props.isLoading}
           onClick={() => props.onOpenEditDialog(EditModes.View)}
         >
           <IconOpen />
@@ -53,7 +57,7 @@ function EmployeesToolbar(props: Props) {
             className={styles.btn}
             variant={'contained'}
             color={'primary'}
-            disabled={!props.isSelected}
+            disabled={!props.isSelected || props.isLoading}
             onClick={() => props.onOpenEditDialog(EditModes.Edit)}
           >
             <IconEdit />
@@ -67,7 +71,8 @@ function EmployeesToolbar(props: Props) {
         className={`${styles.btn} ${styles.btnMini}`}
         variant={'contained'}
         color={'tertiary'}
-        disabled={!props.isSelected}
+        disabled={!props.isSelected || props.isLoading}
+        onClick={props.isArchive ? props.onEmployeeRestore : props.onEmployeeToFired}
       >
         {props.isArchive ? <IconReplay /> : <IconPersonOff />}
         <Collapse in={matches} orientation={'horizontal'}>
