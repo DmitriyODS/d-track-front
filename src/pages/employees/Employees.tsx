@@ -220,7 +220,6 @@ class Employee extends React.Component<any, TState> {
           <SearchField
             onChange={this.onChangeFilter}
             placeholder={'Фильтрация по ФИО сотрудника'}
-            disabled={this.context.Status === PendingStatuses.Loading}
           />
         </div>
         <div className={styles.toolbar}>
