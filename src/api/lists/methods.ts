@@ -1,4 +1,10 @@
-import { MakeDataFromLAResponse, MakeDataFromResponse, TFilters, TListLevelAccessResponse, TListResponse } from './types';
+import {
+  MakeDataFromLAResponse,
+  MakeDataFromResponse,
+  TFilters,
+  TListLevelAccessResponse,
+  TListResponse,
+} from './types';
 import IItemData from '../../models/item/ItemData';
 import { ServerAPI } from '../base/methods';
 import { GetJWTFromLocalStorage } from '../../globals/funcs';
@@ -39,12 +45,28 @@ export async function GetListEmployees(filters: TFilters): Promise<IItemData[]> 
   return GetList(filters, ServerAPI.GetListEmployees);
 }
 
+export async function GetListCustomers(filters: TFilters): Promise<IItemData[]> {
+  return GetList(filters, ServerAPI.GetListCustomers);
+}
+
 export async function GetListPositions(filters: TFilters): Promise<IItemData[]> {
   return GetList(filters, ServerAPI.GetListPositions);
 }
 
 export async function GetListFreedomTypes(filters: TFilters): Promise<IItemData[]> {
   return GetList(filters, ServerAPI.GetListFreedomTypes);
+}
+
+export async function GetListServices(filters: TFilters): Promise<IItemData[]> {
+  return GetList(filters, ServerAPI.GetListServices);
+}
+
+export async function GetListClaimStates(filters: TFilters): Promise<IItemData[]> {
+  return GetList(filters, ServerAPI.GetListClaimStates);
+}
+
+export async function GetListTaskStates(filters: TFilters): Promise<IItemData[]> {
+  return GetList(filters, ServerAPI.GetListTaskStates);
 }
 
 export async function GetListLevelAccess(filters: TFilters): Promise<IItemData[]> {
