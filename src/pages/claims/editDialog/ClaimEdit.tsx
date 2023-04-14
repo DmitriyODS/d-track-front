@@ -15,7 +15,7 @@ import { enqueueSnackbar } from 'notistack';
 import { GetClaimByID } from '../../../api/claim/methods';
 import { FormClaim } from './form';
 
-type Props = {
+type TProps = {
   onClose: () => void;
   onSave?: (data: IClaimData) => void;
   isOpen: boolean;
@@ -24,7 +24,7 @@ type Props = {
   isLoading?: boolean;
 };
 
-function ClaimEdit(props: Props) {
+function ClaimEdit(props: TProps) {
   const isViewMode = props.editMode === EditModes.View;
   const isEditMode = props.editMode === EditModes.Edit;
   const isCreateMode = props.editMode === EditModes.Create;

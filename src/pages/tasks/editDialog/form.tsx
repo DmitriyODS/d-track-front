@@ -1,17 +1,12 @@
 import React from 'react';
-import Grid from '@mui/material/Unstable_Grid2';
 import { Control, UseFormSetValue } from 'react-hook-form';
-import { TClaimState } from './data';
+import { TTaskState } from './data';
+import Grid from '@mui/material/Unstable_Grid2';
 import CTextField from '../../../components/cTextField/CTextField';
 import CDatePicker from '../../../components/cDatePicker/CDatePicker';
-import {
-  GetListClaimStates,
-  GetListCustomers,
-  GetListEmployees,
-  GetListServices,
-} from '../../../api/lists/methods';
 import CInputSelect from '../../../components/cInputSelect/CInputSelect';
-import { ClaimStates } from '../../../globals/types';
+import { GetListEmployees, GetListTaskStates } from '../../../api/lists/methods';
+import { TaskStates } from '../../../globals/types';
 import dayjs from 'dayjs';
 
 type TProps = {
@@ -20,16 +15,16 @@ type TProps = {
   isCreateMode: boolean;
   control: Control<any>;
   onSubmit?: any;
-  setValue: UseFormSetValue<TClaimState>;
+  setValue: UseFormSetValue<TTaskState>;
 };
 
-export function FormClaim(props: TProps) {
+export function FormTask(props: TProps) {
   return (
     <Grid container spacing={4} mt={1} mb={1}>
       <Grid xs={6}>
         <CTextField
           fullWidth
-          label="Номер заявки"
+          label="Номер задачи"
           disabled
           name={'number'}
           control={props.control}
@@ -43,34 +38,12 @@ export function FormClaim(props: TProps) {
           control={props.control}
         />
       </Grid>
-      <Grid xs={6}>
-        <CInputSelect
-          control={props.control}
-          name={'customer'}
-          label={'Клиент'}
-          fullWidth
-          onLoadData={GetListCustomers}
-          required
-          disabled={props.isViewMode || props.isEditMode}
-        />
-      </Grid>
-      <Grid xs={6}>
-        <CInputSelect
-          control={props.control}
-          name={'serviceType'}
-          label={'Тип услуги'}
-          fullWidth
-          onLoadData={GetListServices}
-          required
-          disabled={props.isViewMode || props.isEditMode}
-        />
-      </Grid>
       <Grid xs={12}>
         <CTextField
           fullWidth
-          label="Предмет заявки"
+          label="Заголовок"
           disabled={props.isViewMode || props.isEditMode}
-          name={'subject'}
+          name={'name'}
           control={props.control}
           required
         />
@@ -84,17 +57,28 @@ export function FormClaim(props: TProps) {
           control={props.control}
         />
       </Grid>
+      <Grid xs={12}>
+        <CInputSelect
+          control={props.control}
+          name={'creator'}
+          label={'Создатель'}
+          fullWidth
+          onLoadData={GetListEmployees}
+          required
+          disabled
+        />
+      </Grid>
       <Grid xs={6}>
         <CInputSelect
           control={props.control}
           name={'status'}
           label={'Статус'}
           fullWidth
-          required
-          onLoadData={GetListClaimStates}
+          onLoadData={GetListTaskStates}
           disabled={props.isViewMode}
+          required
           onChangeValue={(value) => {
-            if (value === ClaimStates.Close) {
+            if (value === TaskStates.Close) {
               props.setValue('dateCompleted', dayjs());
             } else if (value !== '') {
               props.setValue('dateCompleted', null);

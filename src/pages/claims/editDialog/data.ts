@@ -36,7 +36,7 @@ export function GetInitStateFieldsData(claim?: IClaimData): TClaimState {
   if (!claim) {
     return {
       id: 0,
-      number: `З-${dayjs().unix()}`,
+      number: `ЗВК-${dayjs().unix()}`,
       dateCreated: dayjs(),
       dateCompleted: null,
       dateEstimatedCompletion: null,

@@ -31,3 +31,10 @@ export enum ClaimStates {
   Extradition = '5',
   Close = '6',
 }
+
+export enum TaskStates {
+  Open = '1',
+  InWork = '2',
+  Estimation = '3',
+  Close = '4',
+}

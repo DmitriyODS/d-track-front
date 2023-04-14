@@ -1,6 +1,7 @@
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import ITaskData from '../../../models/task/TaskData';
 import { GetDayjsFromUnix, GetUnixFromDayjs } from '../../../globals/funcs';
+import UserData from '../../../models/user/UserData';
 
 export type TTaskState = {
   id: number;
@@ -30,18 +31,18 @@ export function GetTaskDataFromFields(fieldsData: TTaskState): ITaskData {
   };
 }
 
-export function GetInitStateFieldsData(task?: ITaskData): TTaskState {
+export function GetInitStateFieldsData(userID: string, task?: ITaskData): TTaskState {
   if (!task) {
     return {
       id: 0,
-      number: '',
-      dateCreated: null,
+      number: `ЗДЧ-${dayjs().unix()}`,
+      dateCreated: dayjs(),
       dateCompleted: null,
       dateEstimatedCompletion: null,
       name: '',
       description: '',
       status: '',
-      creator: '',
+      creator: userID,
       executor: '',
     };
   }
