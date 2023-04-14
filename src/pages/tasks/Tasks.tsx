@@ -6,65 +6,167 @@ import SearchField from '../../components/searchField/SearchField';
 import Switcher from '../../components/switcher/Switcher';
 import { ColumnTable } from './table/columnTable';
 import TasksToolbar from './toolbar/Toolbar';
+import { EditModes, PendingStatuses } from '../../globals/types';
+import { TTaskDataTable } from './table/TaskDataItem';
+import { PendingContext } from '../../providers/PendingProvider';
+import { enqueueSnackbar } from 'notistack';
+import { GetItemsFromData } from './table/dataConvert';
+import { CreateTask, EditTask, GetTask } from '../../api/task/methods';
+import ITaskData from '../../models/task/TaskData';
+import TaskEdit from './editDialog/TaskEdit';
 
-type State = {
+type TState = {
   isArchive: boolean;
   curItemID: number;
+  isOpenEditDialog: boolean;
+  editMode: EditModes;
+  dataList: TDataTableItem<TTaskDataTable>[];
 };
 
-class Tasks extends React.Component<any, State> {
+class Tasks extends React.Component<any, TState> {
+  context!: React.ContextType<typeof PendingContext>;
+  searchFilterTimerID: any;
+  searchFilterText: string;
+
   constructor(props: any) {
     super(props);
 
-    // todo: временная заглушка до ReduxToolkit
-    this.state = { isArchive: false, curItemID: 0 };
+    this.searchFilterTimerID = 0;
+    this.searchFilterText = '';
+
+    this.state = {
+      isArchive: false,
+      curItemID: 0,
+      isOpenEditDialog: false,
+      editMode: EditModes.Create,
+      dataList: [],
+    };
   }
 
-  handleSwitchToArchive = () => {
-    this.setState({ isArchive: true, curItemID: 0 });
+  onSwitchToArchiveHandler = () => {
+    this.setState((s) => ({ ...s, isArchive: true, curItemID: 0 }));
   };
 
-  handleSwitchToMain = () => {
-    this.setState({ isArchive: false, curItemID: 0 });
+  onSwitchToActiveHandler = () => {
+    this.setState((s) => ({ ...s, isArchive: false, curItemID: 0 }));
   };
 
-  handleSelectItem = (itemID: number) => {
+  onSelectItemHandler = (itemID: number) => {
     this.setState((s) => ({ ...s, curItemID: itemID }));
   };
 
-  // todo: временная заглушка до API
-  getDataTable = (count: number) => {
-    const dataItems: TDataTableItem<any>[] = [];
-
-    for (let i = 0; i < count; i++) {
-      dataItems.push({
-        id: i + 1,
-        value: {
-          t1: `Item ${i + 1}`,
-          t2: `Item ${i + 1}`,
-          t3: `Item ${i + 1}`,
-          t4: `Item ${i + 1}`,
-          t5: `Item ${i + 1}`,
-        },
-      });
+  onCloseEditDialogHandler = (e?: any, r?: string) => {
+    // нельзя закрывать форму при нажатии на пустое место - вдруг юзер ошибся?
+    if (r === 'backdropClick') {
+      return;
     }
 
-    return dataItems;
+    this.setState({
+      ...this.state,
+      isOpenEditDialog: false,
+    });
+  };
+
+  onOpenEditDialogHandler = (editMode: EditModes) => {
+    this.setState({
+      ...this.state,
+      editMode: editMode,
+      isOpenEditDialog: true,
+    });
+  };
+
+  onSaveEditDialogHandler = (data: ITaskData) => {
+    this.context.ToPending?.();
+
+    let result: Promise<number>;
+    if (this.state.editMode === EditModes.Create) {
+      result = CreateTask(data);
+    } else if (this.state.editMode === EditModes.Edit) {
+      result = EditTask(data);
+    } else {
+      return;
+    }
+
+    result.then(
+      () => {
+        enqueueSnackbar('Операция выполнена', { variant: 'success' });
+        this.onCloseEditDialogHandler();
+      },
+      (error: string) => {
+        enqueueSnackbar(error, { variant: 'error' });
+      }
+    );
+
+    result.finally(() => {
+      this.getTableData();
+    });
+  };
+
+  getTableData = () => {
+    this.context.ToPending?.();
+
+    const result = GetTask(this.searchFilterText, this.state.isArchive);
+    result.then(
+      (task) => {
+        this.setState((prev) => ({
+          ...prev,
+          curItemID: 0,
+          dataList: GetItemsFromData(task),
+        }));
+      },
+      (error: string) => {
+        enqueueSnackbar(error, { variant: 'error' });
+      }
+    );
+
+    result.finally(() => this.context.ToReady?.());
+  };
+
+  componentDidMount() {
+    this.getTableData();
+  }
+
+  componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<TState>, snapshot?: any) {
+    if (prevState.isArchive != this.state.isArchive) {
+      this.getTableData();
+    }
+  }
+
+  onChangeFilter = (value: string) => {
+    clearTimeout(this.searchFilterTimerID);
+    this.searchFilterTimerID = setTimeout(() => {
+      this.searchFilterText = value;
+      this.getTableData();
+    }, 500);
   };
 
   render() {
     return (
       <div className={styles.root}>
+        {this.state.isOpenEditDialog && (
+          <TaskEdit
+            onClose={this.onCloseEditDialogHandler}
+            onSave={this.onSaveEditDialogHandler}
+            isOpen={this.state.isOpenEditDialog}
+            editMode={this.state.editMode}
+            selectID={this.state.curItemID}
+            isLoading={this.context.Status === PendingStatuses.Loading}
+          />
+        )}
         <div className={styles.header}>
           <Typography variant={'h1'}>Задачи</Typography>
-          <SearchField placeholder={'Фильтрация по номеру задачи'} />
+          <SearchField onChange={this.onChangeFilter} placeholder={'Фильтрация по номеру задачи'} />
         </div>
         <div className={styles.toolbar}>
-          <TasksToolbar isArchive={this.state.isArchive} isSelected={this.state.curItemID !== 0} />
+          <TasksToolbar
+            isArchive={this.state.isArchive}
+            isSelected={this.state.curItemID !== 0}
+            onOpenEditDialog={this.onOpenEditDialogHandler}
+          />
           <Switcher
             isArchive={this.state.isArchive}
-            onClickOne={this.handleSwitchToMain}
-            onClickTwo={this.handleSwitchToArchive}
+            onClickOne={this.onSwitchToActiveHandler}
+            onClickTwo={this.onSwitchToArchiveHandler}
             textOne={'Открытые'}
             textTwo={'Закрытые'}
           />
@@ -72,9 +174,10 @@ class Tasks extends React.Component<any, State> {
         <div className={styles.content}>
           <Table
             column={ColumnTable}
-            data={this.getDataTable(33)}
-            onSelect={this.handleSelectItem}
+            data={this.state.dataList}
+            onSelect={this.onSelectItemHandler}
             curSelectedID={this.state.curItemID}
+            isLoading={this.context?.Status}
           />
         </div>
       </div>

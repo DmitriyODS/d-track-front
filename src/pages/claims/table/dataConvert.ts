@@ -8,6 +8,7 @@ export function GetItemsFromData(data: IClaimData[]): TDataTableItem<TClaimDataT
     id: it.id,
     value: {
       number: it.number,
+      customer: it.customer.value,
       subject: it.subject,
       status: it.status.value,
       executor: it.executor.value,

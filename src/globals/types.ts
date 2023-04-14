@@ -22,3 +22,19 @@ export enum FreedomTypes {
   Vacation = '4',
   Fired = '5',
 }
+
+export enum ClaimStates {
+  Acceptance = '1',
+  Departure = '2',
+  Repair = '3',
+  Testing = '4',
+  Extradition = '5',
+  Close = '6',
+}
+
+export enum TaskStates {
+  Open = '1',
+  InWork = '2',
+  Estimation = '3',
+  Close = '4',
+}

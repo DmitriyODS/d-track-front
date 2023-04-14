@@ -1,29 +1,64 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './ClaimEdit.module.css';
 import BaseDialog from '../../../components/baseDialog/BaseDialog';
-import { DialogActions } from '@mui/material';
+import { CircularProgress, DialogActions } from '@mui/material';
 import Button from '@mui/material/Button';
 import IconSave from '@mui/icons-material/SaveOutlined';
 import IconClose from '@mui/icons-material/Close';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Unstable_Grid2';
-import InputSelect, { TSelectItem } from '../../../components/inputSelect/InputSelect';
 import { EditModes } from '../../../globals/types';
-import { DatePicker } from '@mui/x-date-pickers';
+import IClaimData from '../../../models/claim/ClaimData';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { GetClaimDataFromFields, GetInitStateFieldsData, TClaimState } from './data';
+import { GetClaimValidation } from './validation';
+import { enqueueSnackbar } from 'notistack';
+import { GetClaimByID } from '../../../api/claim/methods';
+import { FormClaim } from './form';
 
-type Props = {
+type TProps = {
   onClose: () => void;
-  onSave: (data: any) => void;
+  onSave?: (data: IClaimData) => void;
   isOpen: boolean;
-  initData?: any;
   editMode: EditModes;
+  selectID: number;
+  isLoading?: boolean;
 };
 
-const initState = {};
-
-function ClaimEdit(props: Props) {
+function ClaimEdit(props: TProps) {
   const isViewMode = props.editMode === EditModes.View;
   const isEditMode = props.editMode === EditModes.Edit;
+  const isCreateMode = props.editMode === EditModes.Create;
+
+  const [dataField, setDataField] = useState<TClaimState>(GetInitStateFieldsData());
+  const [loading, setLoading] = useState(false);
+  const { handleSubmit, control, setValue } = useForm<TClaimState>({
+    resolver: yupResolver(GetClaimValidation(isCreateMode)),
+    values: dataField,
+  });
+
+  useEffect(() => {
+    if (isCreateMode || props.selectID === 0) {
+      return;
+    }
+
+    setLoading(true);
+    const result = GetClaimByID(props.selectID);
+    result.then(
+      (claim) => {
+        setDataField(GetInitStateFieldsData(claim));
+      },
+      (error: string) => {
+        enqueueSnackbar(error, { variant: 'error' });
+      }
+    );
+    result.finally(() => setLoading(false));
+  }, []);
+
+  const onSubmit = useCallback((data: TClaimState) => {
+    if (props.onSave !== undefined) {
+      return props.onSave(GetClaimDataFromFields(data));
+    }
+  }, []);
 
   return (
     <BaseDialog
@@ -34,87 +69,45 @@ function ClaimEdit(props: Props) {
       disableEscapeKeyDown
       maxWidth={'md'}
     >
-      <Grid container spacing={4} mt={1} mb={1}>
-        <Grid xs={6}>
-          <TextField
-            fullWidth
-            label="Номер заявки"
-            variant="outlined"
-            disabled={isViewMode || isEditMode}
-          />
-        </Grid>
-        <Grid xs={6}>
-          <DatePicker sx={{ width: '100%' }} label="Дата открытия" disabled format="DD.MM.YYYY" />
-        </Grid>
-        <Grid xs={6}>
-          <InputSelect label={'Клиент'} fullWidth disabled={isViewMode || isEditMode} value={'0'} />
-        </Grid>
-        <Grid xs={6}>
-          <InputSelect
-            label={'Вид услуги'}
-            fullWidth
-            disabled={isViewMode || isEditMode}
-            value={'0'}
-          />
-        </Grid>
-        <Grid xs={12}>
-          <TextField
-            fullWidth
-            label="Предмет заявки"
-            variant="outlined"
-            disabled={isViewMode || isEditMode}
-          />
-        </Grid>
-        <Grid xs={12}>
-          <TextField
-            fullWidth
-            label="Описание"
-            variant="outlined"
-            multiline
-            maxRows={4}
-            disabled={isViewMode}
-          />
-        </Grid>
-        <Grid xs={6}>
-          <InputSelect label={'Статус'} fullWidth disabled={isViewMode} value={'0'} />
-        </Grid>
-        <Grid xs={6}>
-          <InputSelect label={'Исполнитель'} fullWidth disabled={isViewMode} value={'0'} />
-        </Grid>
-        <Grid xs={6}>
-          <DatePicker
-            sx={{ width: '100%' }}
-            label="Ориентировочная дата закрытия"
-            disabled={isViewMode}
-            format="DD.MM.YYYY"
-          />
-        </Grid>
-        <Grid xs={6}>
-          <DatePicker sx={{ width: '100%' }} label="Дата закрытия" disabled format="DD.MM.YYYY" />
-        </Grid>
-      </Grid>
-
-      <DialogActions className={styles.spacing}>
-        <Button
-          variant={'contained'}
-          color={'tertiary'}
-          disableElevation
-          startIcon={<IconClose />}
-          onClick={props.onClose}
-        >
-          Закрыть
-        </Button>
-        {!isViewMode && (
+      {loading || props.isLoading ? (
+        <div className={styles.loading}>
+          <CircularProgress color="inherit" />
+          <p>Загрузка</p>
+        </div>
+      ) : (
+        <FormClaim
+          control={control}
+          isEditMode={isEditMode}
+          isCreateMode={isCreateMode}
+          isViewMode={isViewMode}
+          onSubmit={props.onSave}
+          setValue={setValue}
+        />
+      )}
+      {!loading && (
+        <DialogActions className={styles.spacing}>
           <Button
             variant={'contained'}
-            color={'secondary'}
+            color={'tertiary'}
             disableElevation
-            startIcon={<IconSave />}
+            startIcon={<IconClose />}
+            onClick={props.onClose}
           >
-            Сохранить
+            Закрыть
           </Button>
-        )}
-      </DialogActions>
+          {!isViewMode && (
+            <Button
+              variant={'contained'}
+              color={'secondary'}
+              disableElevation
+              startIcon={<IconSave />}
+              onClick={handleSubmit(onSubmit)}
+            >
+              Сохранить
+            </Button>
+          )}
+        </DialogActions>
+      )}
     </BaseDialog>
   );
 }

@@ -10,14 +10,14 @@ import IconArrow from '@mui/icons-material/Shortcut';
 import { EditModes, ViewModes } from '../../../globals/types';
 import { Collapse, useMediaQuery } from '@mui/material';
 
-type Props = {
+type TProps = {
   isArchive?: boolean;
   viewMode?: ViewModes;
   isSelected?: boolean;
   onOpenEditDialog: (editMode: EditModes) => void;
 };
 
-function ClaimsToolbar(props: Props) {
+function ClaimsToolbar(props: TProps) {
   const matches = useMediaQuery('(min-width: 1650px)');
 
   return (

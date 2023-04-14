@@ -1,5 +1,6 @@
 export type TClaimDataTable = {
   number: string;
+  customer: string;
   subject: string;
   status: string;
   executor: string;

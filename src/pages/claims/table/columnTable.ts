@@ -7,6 +7,11 @@ export const ColumnTable: TColumnItem[] = [
     indexKey: 'number',
   },
   {
+    name: 'Клиент',
+    typeData: TypeDataTable.TextStr,
+    indexKey: 'customer',
+  },
+  {
     name: 'Предмет',
     typeData: TypeDataTable.TextStr,
     indexKey: 'subject',

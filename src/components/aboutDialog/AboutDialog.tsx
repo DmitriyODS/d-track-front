@@ -16,11 +16,9 @@ function AboutDialog(props: Props) {
       onClose={props.onClose}
       className={styles.root}
     >
-      <Typography>
-        D-Track - система автоматизированного управления рабочими процессами.
-      </Typography>
-      <Typography>Версия: 0.1.0</Typography>
-      <Typography>Сборка: 20230225.1</Typography>
+      <Typography>D-Track - система автоматизированного управления рабочими процессами.</Typography>
+      <Typography>Версия: 0.2.0</Typography>
+      <Typography>Сборка: 20230414.1</Typography>
       <Typography>Разработчик: IT Компания DDDA</Typography>
     </BaseDialog>
   );

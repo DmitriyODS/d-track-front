@@ -7,7 +7,7 @@ import { MakeClaimFilters, MakeDataFromResponse, NewClaimRequest, TClaimResponse
 export async function GetClaims(numberFilter: string, isArchive: boolean): Promise<IClaimData[]> {
   const baseServer = process.env.REACT_APP_SERVER;
   const urlParams = new URLSearchParams(MakeClaimFilters(numberFilter, isArchive));
-  const url = `http://${baseServer}${ServerAPI.GetCustomersLst}?${urlParams}`;
+  const url = `http://${baseServer}${ServerAPI.GetClaimsLst}?${urlParams}`;
 
   return new Promise<IClaimData[]>(async (resolve, reject) => {
     const jwtKey = GetJWTFromLocalStorage();

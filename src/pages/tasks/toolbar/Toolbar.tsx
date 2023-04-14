@@ -6,16 +6,17 @@ import IconAdd from '@mui/icons-material/Add';
 import IconOpen from '@mui/icons-material/OpenInNew';
 import IconEdit from '@mui/icons-material/Edit';
 import IconChange from '@mui/icons-material/PublishedWithChanges';
-import { ViewModes } from '../../../globals/types';
+import { EditModes, ViewModes } from '../../../globals/types';
 import { Collapse, useMediaQuery } from '@mui/material';
 
-type Props = {
+type TProps = {
   isArchive?: boolean;
   viewMode?: ViewModes;
   isSelected?: boolean;
+  onOpenEditDialog: (editMode: EditModes) => void;
 };
 
-function TasksToolbar(props: Props) {
+function TasksToolbar(props: TProps) {
   const matches = useMediaQuery('(min-width: 1650px)');
 
   return (
@@ -25,6 +26,7 @@ function TasksToolbar(props: Props) {
           className={`${styles.btn} ${styles.btnMini}`}
           variant={'contained'}
           color={'secondary'}
+          onClick={() => props.onOpenEditDialog(EditModes.Create)}
         >
           <IconAdd />
           <Collapse in={matches} orientation={'horizontal'}>
@@ -38,6 +40,7 @@ function TasksToolbar(props: Props) {
           variant={'contained'}
           color={'primary'}
           disabled={!props.isSelected}
+          onClick={() => props.onOpenEditDialog(EditModes.View)}
         >
           <IconOpen />
           <Collapse in={matches} orientation={'horizontal'}>
@@ -50,6 +53,7 @@ function TasksToolbar(props: Props) {
             variant={'contained'}
             color={'primary'}
             disabled={!props.isSelected}
+            onClick={() => props.onOpenEditDialog(EditModes.Edit)}
           >
             <IconEdit />
             <Collapse in={matches} orientation={'horizontal'}>
