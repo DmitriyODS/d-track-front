@@ -3,61 +3,173 @@ import styles from './Customers.module.css';
 import { Typography } from '@mui/material';
 import SearchField from '../../components/searchField/SearchField';
 import Table, { TDataTableItem } from '../../components/table/Table';
-import { ColumnTable } from '../customers/table/columnTable';
+import { ColumnTable } from './table/columnTable';
 import CustomersToolbar from './toolbar/Toolbar';
+import { EditModes, PendingStatuses } from '../../globals/types';
+import { TCustomerDataTable } from './table/CustomerDataItem';
+import { PendingContext } from '../../providers/PendingProvider';
+import ICustomerData from '../../models/customer/CustomerData';
+import { CreateCustomer, EditCustomer, GetCustomers } from '../../api/customer/methods';
+import { enqueueSnackbar } from 'notistack';
+import { GetItemsFromData } from './table/dataConvert';
+import CustomerEdit from './editDialog/CustomerEdit';
 
-type State = {
+type TState = {
+  isArchive: boolean;
   curItemID: number;
+  isOpenEditDialog: boolean;
+  editMode: EditModes;
+  dataList: TDataTableItem<TCustomerDataTable>[];
 };
 
-class Customers extends React.Component<any, State> {
+class Customers extends React.Component<any, TState> {
+  context!: React.ContextType<typeof PendingContext>;
+  searchFilterTimerID: any;
+  searchFilterText: string;
+
   constructor(props: any) {
     super(props);
 
-    // todo: временная заглушка до ReduxToolkit
-    this.state = { curItemID: 0 };
+    this.searchFilterTimerID = 0;
+    this.searchFilterText = '';
+
+    this.state = {
+      isArchive: false,
+      curItemID: 0,
+      isOpenEditDialog: false,
+      editMode: EditModes.Create,
+      dataList: [],
+    };
   }
 
-  handleSelectItem = (itemID: number) => {
+  onSwitchToArchiveHandler = () => {
+    this.setState((s) => ({ ...s, isArchive: true, curItemID: 0 }));
+  };
+
+  onSwitchToActiveHandler = () => {
+    this.setState((s) => ({ ...s, isArchive: false, curItemID: 0 }));
+  };
+
+  onSelectItemHandler = (itemID: number) => {
     this.setState((s) => ({ ...s, curItemID: itemID }));
   };
 
-  // todo: временная заглушка до API
-  getDataTable = (count: number) => {
-    const dataItems: TDataTableItem<any>[] = [];
-
-    for (let i = 0; i < count; i++) {
-      dataItems.push({
-        id: i + 1,
-        value: {
-          t1: `Item ${i + 1}`,
-          t2: `Item ${i + 1}`,
-          t3: `Item ${i + 1}`,
-          t4: `Item ${i + 1}`,
-          t5: `Item ${i + 1}`,
-        },
-      });
+  onCloseEditDialogHandler = (e?: any, r?: string) => {
+    // нельзя закрывать форму при нажатии на пустое место - вдруг юзер ошибся?
+    if (r === 'backdropClick') {
+      return;
     }
 
-    return dataItems;
+    this.setState({
+      ...this.state,
+      isOpenEditDialog: false,
+    });
+  };
+
+  onOpenEditDialogHandler = (editMode: EditModes) => {
+    this.setState({
+      ...this.state,
+      editMode: editMode,
+      isOpenEditDialog: true,
+    });
+  };
+
+  onSaveEditDialogHandler = (data: ICustomerData) => {
+    this.context.ToPending?.();
+
+    let result: Promise<number>;
+    if (this.state.editMode === EditModes.Create) {
+      result = CreateCustomer(data);
+    } else if (this.state.editMode === EditModes.Edit) {
+      result = EditCustomer(data);
+    } else {
+      return;
+    }
+
+    result.then(
+      () => {
+        enqueueSnackbar('Операция выполнена', { variant: 'success' });
+        this.onCloseEditDialogHandler();
+      },
+      (error: string) => {
+        enqueueSnackbar(error, { variant: 'error' });
+      }
+    );
+
+    result.finally(() => {
+      this.getTableData();
+    });
+  };
+
+  getTableData = () => {
+    this.context.ToPending?.();
+
+    const result = GetCustomers(this.searchFilterText, this.state.isArchive);
+    result.then(
+      (customer) => {
+        this.setState((prev) => ({
+          ...prev,
+          curItemID: 0,
+          dataList: GetItemsFromData(customer),
+        }));
+      },
+      (error: string) => {
+        enqueueSnackbar(error, { variant: 'error' });
+      }
+    );
+
+    result.finally(() => this.context.ToReady?.());
+  };
+
+  componentDidMount() {
+    this.getTableData();
+  }
+
+  componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<TState>, snapshot?: any) {
+    if (prevState.isArchive != this.state.isArchive) {
+      this.getTableData();
+    }
+  }
+
+  onChangeFilter = (value: string) => {
+    clearTimeout(this.searchFilterTimerID);
+    this.searchFilterTimerID = setTimeout(() => {
+      this.searchFilterText = value;
+      this.getTableData();
+    }, 500);
   };
 
   render() {
     return (
       <div className={styles.root}>
+        {this.state.isOpenEditDialog && (
+          <CustomerEdit
+            onClose={this.onCloseEditDialogHandler}
+            onSave={this.onSaveEditDialogHandler}
+            isOpen={this.state.isOpenEditDialog}
+            editMode={this.state.editMode}
+            selectID={this.state.curItemID}
+            isLoading={this.context.Status === PendingStatuses.Loading}
+          />
+        )}
         <div className={styles.header}>
           <Typography variant={'h1'}>Клиенты</Typography>
-          <SearchField placeholder={'Фильтрация по ФИО клиента'} />
+          <SearchField onChange={this.onChangeFilter} placeholder={'Фильтрация по ФИО клиента'} />
         </div>
         <div className={styles.toolbar}>
-          <CustomersToolbar isSelected={this.state.curItemID !== 0} />
+          <CustomersToolbar
+            isArchive={this.state.isArchive}
+            isSelected={this.state.curItemID !== 0}
+            onOpenEditDialog={this.onOpenEditDialogHandler}
+          />
         </div>
         <div className={styles.content}>
           <Table
             column={ColumnTable}
-            data={this.getDataTable(33)}
-            onSelect={this.handleSelectItem}
+            data={this.state.dataList}
+            onSelect={this.onSelectItemHandler}
             curSelectedID={this.state.curItemID}
+            isLoading={this.context?.Status}
           />
         </div>
       </div>

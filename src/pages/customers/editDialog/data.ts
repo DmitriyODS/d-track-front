@@ -1,4 +1,4 @@
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import ICustomerData from '../../../models/customer/CustomerData';
 import { GetDayjsFromUnix, GetUnixFromDayjs } from '../../../globals/funcs';
 
@@ -30,7 +30,7 @@ export function GetInitStateFieldsData(customer?: ICustomerData): TCustomerState
       phone: '',
       email: '',
       address: '',
-      dateCreated: null,
+      dateCreated: dayjs(),
     };
   }
 
