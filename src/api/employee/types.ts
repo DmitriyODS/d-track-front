@@ -8,7 +8,10 @@ export type TFilters = {
 };
 
 export function MakeEmployeeFilters(fio: string, isArchive: boolean): TFilters {
-  return { fio_filter: fio, is_archive: isArchive.toString() };
+  return {
+    fio_filter: fio,
+    is_archive: isArchive.toString(),
+  };
 }
 
 export type TEmployeeRequest = {
@@ -19,19 +22,13 @@ export type TEmployeeRequest = {
   phone_number: string;
   email_address: string;
   address_of_residence: string;
-  position: {
-    id: number;
-    value: string;
-  };
+  position: IItemData;
   level_access: {
     id: number;
     name: string;
     access?: string;
   };
-  freedom_type: {
-    id: number;
-    value: string;
-  };
+  freedom_type: IItemData;
   date_appointments: number;
   date_of_dismissal: number;
 };
