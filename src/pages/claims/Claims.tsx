@@ -7,7 +7,13 @@ import Table, { TDataTableItem } from '../../components/table/Table';
 import ClaimsToolbar from './toolbar/Toolbar';
 import { ColumnTable } from './table/columnTable';
 import ClaimEdit from './editDialog/ClaimEdit';
-import { ClaimStates, EditModes, PendingStatuses } from '../../globals/types';
+import {
+  ClaimStates,
+  EditModes,
+  PendingStatuses,
+  SectionPos,
+  ViewModes,
+} from '../../globals/types';
 import { GetItemsFromData } from './table/dataConvert';
 import { enqueueSnackbar } from 'notistack';
 import { PendingContext } from '../../providers/PendingProvider';
@@ -15,6 +21,7 @@ import { TClaimDataTable } from './table/ClaimDataItem';
 import { CreateClaim, EditClaim, GetClaimByID, GetClaims } from '../../api/claim/methods';
 import IClaimData from '../../models/claim/ClaimData';
 import withRouterParams from '../../components/withRouterParams/WithRouterParams';
+import { GetViewModeByLevelAccess } from '../../globals/funcs';
 
 type TState = {
   isArchive: boolean;
@@ -23,6 +30,7 @@ type TState = {
   editMode: EditModes;
   dataList: TDataTableItem<TClaimDataTable>[];
   filterCustomerID: number;
+  viewMode: ViewModes;
 };
 
 type TProps = {
@@ -54,6 +62,7 @@ class Claims extends React.Component<TProps, TState> {
       editMode: EditModes.Create,
       dataList: [],
       filterCustomerID: claimID,
+      viewMode: GetViewModeByLevelAccess(SectionPos.Claims),
     };
   }
 
@@ -186,7 +195,14 @@ class Claims extends React.Component<TProps, TState> {
   };
 
   render() {
-    console.log(this.state.curItemID);
+    if (this.state.viewMode === ViewModes.None) {
+      return (
+        <div className={styles.errorAccess}>
+          Страницы не существует, или у вас нет к ней доступа
+        </div>
+      );
+    }
+
     return (
       <div className={styles.root}>
         {this.state.isOpenEditDialog && (
@@ -210,6 +226,7 @@ class Claims extends React.Component<TProps, TState> {
             onOpenEditDialog={this.onOpenEditDialogHandler}
             curItemID={this.state.curItemID}
             onChangeStatus={this.onChangeStatus}
+            viewMode={this.state.viewMode}
           />
           <Switcher
             isArchive={this.state.isArchive}

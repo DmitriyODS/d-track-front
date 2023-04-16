@@ -13,7 +13,7 @@ import { UrlPages } from '../../../globals/urlPages';
 
 type TProps = {
   isArchive?: boolean;
-  viewMode?: ViewModes;
+  viewMode: ViewModes;
   isSelected?: boolean;
   onOpenEditDialog: (editMode: EditModes) => void;
   curItemID?: number;
@@ -29,7 +29,7 @@ function CustomersToolbar(props: TProps) {
 
   return (
     <Paper className={styles.root}>
-      {!props.isArchive && (
+      {!props.isArchive && props.viewMode === ViewModes.Creator && (
         <Button
           className={`${styles.btn} ${styles.btnMini}`}
           variant={'contained'}
@@ -55,7 +55,7 @@ function CustomersToolbar(props: TProps) {
             <p>Просмотреть</p>
           </Collapse>
         </Button>
-        {!props.isArchive && (
+        {!props.isArchive && props.viewMode !== ViewModes.Viewer && (
           <Button
             className={styles.btn}
             variant={'contained'}

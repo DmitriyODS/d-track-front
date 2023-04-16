@@ -12,7 +12,7 @@ import { Collapse, useMediaQuery } from '@mui/material';
 
 type Props = {
   isArchive?: boolean;
-  viewMode?: ViewModes;
+  viewMode: ViewModes;
   isSelected?: boolean;
   onOpenEditDialog: (editMode: EditModes) => void;
   onEmployeeToFired?: () => void;
@@ -25,7 +25,7 @@ function EmployeesToolbar(props: Props) {
 
   return (
     <Paper className={styles.root}>
-      {!props.isArchive && (
+      {!props.isArchive && props.viewMode === ViewModes.Creator && (
         <Button
           className={`${styles.btn} ${styles.btnMini}`}
           variant={'contained'}
@@ -52,7 +52,7 @@ function EmployeesToolbar(props: Props) {
             <p>Просмотреть</p>
           </Collapse>
         </Button>
-        {!props.isArchive && (
+        {!props.isArchive && props.viewMode === ViewModes.Creator && (
           <Button
             className={styles.btn}
             variant={'contained'}
@@ -67,18 +67,20 @@ function EmployeesToolbar(props: Props) {
           </Button>
         )}
       </div>
-      <Button
-        className={`${styles.btn} ${styles.btnMini}`}
-        variant={'contained'}
-        color={'tertiary'}
-        disabled={!props.isSelected || props.isLoading}
-        onClick={props.isArchive ? props.onEmployeeRestore : props.onEmployeeToFired}
-      >
-        {props.isArchive ? <IconReplay /> : <IconPersonOff />}
-        <Collapse in={matches} orientation={'horizontal'}>
-          <p>{props.isArchive ? 'Восстановить' : 'Уволить'}</p>
-        </Collapse>
-      </Button>
+      {props.viewMode === ViewModes.Creator && (
+        <Button
+          className={`${styles.btn} ${styles.btnMini}`}
+          variant={'contained'}
+          color={'tertiary'}
+          disabled={!props.isSelected || props.isLoading}
+          onClick={props.isArchive ? props.onEmployeeRestore : props.onEmployeeToFired}
+        >
+          {props.isArchive ? <IconReplay /> : <IconPersonOff />}
+          <Collapse in={matches} orientation={'horizontal'}>
+            <p>{props.isArchive ? 'Восстановить' : 'Уволить'}</p>
+          </Collapse>
+        </Button>
+      )}
     </Paper>
   );
 }

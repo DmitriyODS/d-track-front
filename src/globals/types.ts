@@ -1,6 +1,8 @@
 export enum ViewModes {
-  Creator,
-  Viewer,
+  Creator = 3,
+  Updater = 2,
+  Viewer = 1,
+  None = 0,
 }
 
 export enum EditModes {
@@ -37,4 +39,11 @@ export enum TaskStates {
   InWork = '2',
   Estimation = '3',
   Close = '4',
+}
+
+export enum SectionPos {
+  Employees = 6,
+  Customers = 4,
+  Claims = 2,
+  Tasks = 0,
 }

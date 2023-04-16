@@ -6,14 +6,22 @@ import { GetClaims } from '../../api/claim/methods';
 import { enqueueSnackbar } from 'notistack';
 import { TDataTimelineCard } from '../../components/itemCardTimeline/ItemCardTimeline';
 import { PendingContext } from '../../providers/PendingProvider';
-import { ClaimStates, EditModes, PendingStatuses } from '../../globals/types';
+import {
+  ClaimStates,
+  EditModes,
+  PendingStatuses,
+  SectionPos,
+  ViewModes,
+} from '../../globals/types';
 import { GetDataTimelineCard, TitlesCard } from './timeline/dataCard';
 import ClaimEdit from '../claims/editDialog/ClaimEdit';
+import { GetViewModeByLevelAccess } from '../../globals/funcs';
 
 type TState = {
   curItemID: number;
   isOpenEditDialog: boolean;
   dataList: TDataTimelineCard[];
+  viewMode: ViewModes;
 };
 
 class ProcessesClaims extends React.Component<any, TState> {
@@ -26,6 +34,7 @@ class ProcessesClaims extends React.Component<any, TState> {
       curItemID: 0,
       isOpenEditDialog: false,
       dataList: [],
+      viewMode: GetViewModeByLevelAccess(SectionPos.Claims),
     };
   }
 
@@ -70,6 +79,14 @@ class ProcessesClaims extends React.Component<any, TState> {
   }
 
   render() {
+    if (this.state.viewMode === ViewModes.None) {
+      return (
+        <div className={styles.errorAccess}>
+          Страницы не существует, или у вас нет к ней доступа
+        </div>
+      );
+    }
+
     return (
       <div className={styles.root}>
         {this.state.isOpenEditDialog && (

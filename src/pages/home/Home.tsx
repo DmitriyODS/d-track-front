@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Home.module.css';
 import LeftPanel from '../../components/leftPanel/LeftPanel';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import AboutDialog from '../../components/aboutDialog/AboutDialog';
-import { UserContext } from '../../providers/UserProvider';
+import { UserContext, useUser } from '../../providers/UserProvider';
 import { UrlPages } from '../../globals/urlPages';
 import { ResetLocalStorage } from '../../globals/funcs';
 import EmployeeEdit from '../employees/editDailog/EmployeeEdit';
@@ -13,6 +13,25 @@ type State = {
   isOpenAboutDialog: boolean;
   isOpenEmployeeDialog: boolean;
 };
+
+function ManagerPages() {
+  const user = useUser();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (user.User.userId === 0) {
+      navigate(UrlPages.Auth, { replace: true });
+      return;
+    }
+
+    if (location.pathname === '/') {
+      navigate(UrlPages.Tasks, { replace: true });
+    }
+  });
+
+  return null;
+}
 
 class Home extends React.Component<any, State> {
   context!: React.ContextType<typeof UserContext>;
@@ -47,7 +66,7 @@ class Home extends React.Component<any, State> {
   render() {
     return (
       <div className={styles.root}>
-        {this.context.User.userId === 0 && <Navigate to={UrlPages.Auth} replace />}
+        <ManagerPages />
         {this.state.isOpenEmployeeDialog && (
           <EmployeeEdit
             onClose={this.onCloseEmployeeDialogHandler}
@@ -56,7 +75,10 @@ class Home extends React.Component<any, State> {
             selectID={this.context?.User.userId}
           />
         )}
-        <AboutDialog onClose={this.onCloseAboutDialogHandler} isOpen={this.state.isOpenAboutDialog} />
+        <AboutDialog
+          onClose={this.onCloseAboutDialogHandler}
+          isOpen={this.state.isOpenAboutDialog}
+        />
         <LeftPanel
           onOpenAboutDialogHandler={this.onOpenAboutDialogHandler}
           onLogout={this.onLogoutUserHandler}

@@ -24,3 +24,8 @@
 .content > div:not(:first-child) {
     margin-left: 2rem;
 }
+
+.errorAccess {
+    margin: auto;
+    font-size: 2rem;
+}

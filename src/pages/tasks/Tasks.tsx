@@ -6,7 +6,7 @@ import SearchField from '../../components/searchField/SearchField';
 import Switcher from '../../components/switcher/Switcher';
 import { ColumnTable } from './table/columnTable';
 import TasksToolbar from './toolbar/Toolbar';
-import { EditModes, PendingStatuses, TaskStates } from '../../globals/types';
+import { EditModes, PendingStatuses, SectionPos, TaskStates, ViewModes } from '../../globals/types';
 import { TTaskDataTable } from './table/TaskDataItem';
 import { PendingContext } from '../../providers/PendingProvider';
 import { enqueueSnackbar } from 'notistack';
@@ -14,6 +14,7 @@ import { GetItemsFromData } from './table/dataConvert';
 import { CreateTask, EditTask, GetTask, GetTaskByID } from '../../api/task/methods';
 import ITaskData from '../../models/task/TaskData';
 import TaskEdit from './editDialog/TaskEdit';
+import { GetViewModeByLevelAccess } from '../../globals/funcs';
 
 type TState = {
   isArchive: boolean;
@@ -21,6 +22,7 @@ type TState = {
   isOpenEditDialog: boolean;
   editMode: EditModes;
   dataList: TDataTableItem<TTaskDataTable>[];
+  viewMode: ViewModes;
 };
 
 class Tasks extends React.Component<any, TState> {
@@ -40,6 +42,7 @@ class Tasks extends React.Component<any, TState> {
       isOpenEditDialog: false,
       editMode: EditModes.Create,
       dataList: [],
+      viewMode: GetViewModeByLevelAccess(SectionPos.Tasks),
     };
   }
 
@@ -168,6 +171,14 @@ class Tasks extends React.Component<any, TState> {
   };
 
   render() {
+    if (this.state.viewMode === ViewModes.None) {
+      return (
+        <div className={styles.errorAccess}>
+          Страницы не существует, или у вас нет к ней доступа
+        </div>
+      );
+    }
+
     return (
       <div className={styles.root}>
         {this.state.isOpenEditDialog && (
@@ -190,6 +201,7 @@ class Tasks extends React.Component<any, TState> {
             isSelected={this.state.curItemID !== 0}
             onOpenEditDialog={this.onOpenEditDialogHandler}
             onChangeStatus={this.onChangeStatus}
+            viewMode={this.state.viewMode}
           />
           <Switcher
             isArchive={this.state.isArchive}

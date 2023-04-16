@@ -25,3 +25,8 @@
     flex-grow: 1;
     background-color: #392B2B;
 }
+
+.errorAccess {
+    margin: auto;
+    font-size: 2rem;
+}

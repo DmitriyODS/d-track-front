@@ -1,6 +1,7 @@
 import jwtDecode from 'jwt-decode';
 import dayjs, { Dayjs } from 'dayjs';
 import IUserData from '../models/user/UserData';
+import { SectionPos, ViewModes } from './types';
 
 function storageAvailable(typeStorage: any) {
   try {
@@ -40,7 +41,7 @@ type TJwtPayload = {
   user_id: number;
   login: string;
   position_id?: number;
-  level_access: string;
+  level_access: number;
 };
 
 export function GetUserFromJWT(jwtStr: string): IUserData {
@@ -77,4 +78,25 @@ export function GetUnixFromDayjs(date: Dayjs | null): number {
   }
 
   return date.unix();
+}
+
+export function GetViewModeByLevelAccess(section: SectionPos): ViewModes {
+  const localUser = GetLocalUser();
+  if (localUser?.levelAccess === undefined) {
+    return ViewModes.None;
+  }
+
+  if (((localUser.levelAccess >> section) & 3) === 3) {
+    return ViewModes.Creator;
+  }
+
+  if (((localUser.levelAccess >> section) & 2) > 0) {
+    return ViewModes.Updater;
+  }
+
+  if (((localUser.levelAccess >> section) & 3) > 0) {
+    return ViewModes.Viewer;
+  }
+
+  return ViewModes.None;
 }

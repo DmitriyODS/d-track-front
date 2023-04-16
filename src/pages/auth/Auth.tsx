@@ -3,7 +3,7 @@ import styles from './Auth.module.css';
 import AuthCard from '../../components/authCard/AuthCard';
 import { UserContext } from '../../providers/UserProvider';
 import { Navigate } from 'react-router-dom';
-import { SetJWTToLocalStorage } from '../../globals/funcs';
+import { GetUserFromJWT, SetJWTToLocalStorage } from '../../globals/funcs';
 import { enqueueSnackbar } from 'notistack';
 import { Login } from '../../api/auth/methods';
 import { NewLoginUser } from '../../models/user/UserData';
@@ -29,7 +29,7 @@ class AuthPage extends React.Component<any, State> {
 
     result.then(
       (u) => {
-        setUser?.(u);
+        setUser?.(GetUserFromJWT(u.jwt));
         SetJWTToLocalStorage(u.jwt);
       },
       (error: string) => enqueueSnackbar(error, { variant: 'error' })
@@ -43,7 +43,7 @@ class AuthPage extends React.Component<any, State> {
   render() {
     return (
       <div className={styles.root}>
-        {!!this.context?.User.userId && <Navigate to={'/'} replace={true} />}
+        {!!this.context?.User.userId && <Navigate to={'/tasks'} replace={true} />}
         <p className={styles.titleLogo}>D-Track</p>
         <AuthCard onLogin={this.onLoginHandler} isInactive={this.state.isLoading} />
         <p className={styles.textVer}>

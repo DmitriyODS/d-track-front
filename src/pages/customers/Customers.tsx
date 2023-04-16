@@ -5,7 +5,7 @@ import SearchField from '../../components/searchField/SearchField';
 import Table, { TDataTableItem } from '../../components/table/Table';
 import { ColumnTable } from './table/columnTable';
 import CustomersToolbar from './toolbar/Toolbar';
-import { EditModes, PendingStatuses } from '../../globals/types';
+import { EditModes, PendingStatuses, SectionPos, ViewModes } from '../../globals/types';
 import { TCustomerDataTable } from './table/CustomerDataItem';
 import { PendingContext } from '../../providers/PendingProvider';
 import ICustomerData from '../../models/customer/CustomerData';
@@ -14,6 +14,7 @@ import { enqueueSnackbar } from 'notistack';
 import { GetItemsFromData } from './table/dataConvert';
 import CustomerEdit from './editDialog/CustomerEdit';
 import withRouterParams from '../../components/withRouterParams/WithRouterParams';
+import { GetViewModeByLevelAccess } from '../../globals/funcs';
 
 type TState = {
   isArchive: boolean;
@@ -22,6 +23,7 @@ type TState = {
   editMode: EditModes;
   dataList: TDataTableItem<TCustomerDataTable>[];
   filterClaimID: number;
+  viewMode: ViewModes;
 };
 
 type TProps = {
@@ -53,6 +55,7 @@ class Customers extends React.Component<TProps, TState> {
       editMode: EditModes.Create,
       dataList: [],
       filterClaimID: customerID,
+      viewMode: GetViewModeByLevelAccess(SectionPos.Customers),
     };
   }
 
@@ -150,6 +153,14 @@ class Customers extends React.Component<TProps, TState> {
   };
 
   render() {
+    if (this.state.viewMode === ViewModes.None) {
+      return (
+        <div className={styles.errorAccess}>
+          Страницы не существует, или у вас нет к ней доступа
+        </div>
+      );
+    }
+
     return (
       <div className={styles.root}>
         {this.state.isOpenEditDialog && (
@@ -172,6 +183,7 @@ class Customers extends React.Component<TProps, TState> {
             isSelected={this.state.curItemID !== 0}
             onOpenEditDialog={this.onOpenEditDialogHandler}
             curItemID={this.state.curItemID}
+            viewMode={this.state.viewMode}
           />
         </div>
         <div className={styles.content}>

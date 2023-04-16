@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper';
 import ProfileCard from '../profileCard/ProfileCard';
 import Button from '@mui/material/Button';
 import Info from '@mui/icons-material/InfoOutlined';
-import NavigationBar, { NavItemData } from '../navigationBar/NavigationBar';
+import NavigationBar, { TNavItemData } from '../navigationBar/NavigationBar';
 import { UrlPages } from '../../globals/urlPages';
 import IconClaims from '@mui/icons-material/ReceiptLong';
 import IconProcessesClaims from '@mui/icons-material/Timeline';
@@ -12,60 +12,64 @@ import IconTasks from '@mui/icons-material/TaskOutlined';
 import IconTaskBoard from '@mui/icons-material/DashboardOutlined';
 import IconCustomers from '@mui/icons-material/PeopleOutline';
 import IconEmployees from '@mui/icons-material/BadgeOutlined';
+import { SectionPos } from '../../globals/types';
 
-type Props = {
+type TProps = {
   onOpenAboutDialogHandler: () => void;
   onLogout: () => void;
   onOpenUserInfo: () => void;
 };
 
-function LeftPanel(props: Props) {
-  const navItems: NavItemData[] = [
+function LeftPanel(props: TProps) {
+  const navItems: TNavItemData[] = [
     {
       id: 1,
       url: UrlPages.Claims,
       name: 'Заявки',
       icon: <IconClaims />,
+      sectionPos: SectionPos.Claims,
     },
     {
       id: 2,
       url: UrlPages.ProcessesClaims,
       name: 'Процессы заявок',
       icon: <IconProcessesClaims />,
+      sectionPos: SectionPos.Claims,
     },
     {
       id: 3,
       url: UrlPages.Tasks,
       name: 'Задачи',
       icon: <IconTasks />,
+      sectionPos: SectionPos.Tasks,
     },
     {
       id: 4,
       url: UrlPages.TaskBoard,
       name: 'Доска задач',
       icon: <IconTaskBoard />,
+      sectionPos: SectionPos.Tasks,
     },
     {
       id: 5,
       url: UrlPages.Customers,
       name: 'Клиенты',
       icon: <IconCustomers />,
+      sectionPos: SectionPos.Customers,
     },
     {
       id: 6,
       url: UrlPages.Employees,
       name: 'Сотрудники',
       icon: <IconEmployees />,
+      sectionPos: SectionPos.Employees,
     },
   ];
 
   return (
     <Paper className={styles.root}>
       <p className={styles.title}>D-Track</p>
-      <ProfileCard
-        onLogout={props.onLogout}
-        onOpenUserInfo={props.onOpenUserInfo}
-      />
+      <ProfileCard onLogout={props.onLogout} onOpenUserInfo={props.onOpenUserInfo} />
       <NavigationBar items={navItems} />
       <Button
         variant={'contained'}

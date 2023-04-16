@@ -4,7 +4,7 @@ interface IUserData {
   password?: string;
   jwt: string;
   positionId?: number;
-  levelAccess?: string;
+  levelAccess?: number;
 }
 
 export function NewEmptyUser(): IUserData {
