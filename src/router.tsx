@@ -8,9 +8,7 @@ const Home = lazy(() => import('./pages/home/Home'));
 const Claims = lazy(() => import('./pages/claims/Claims'));
 const Customers = lazy(() => import('./pages/customers/Customers'));
 const Employees = lazy(() => import('./pages/employees/Employees'));
-const ProcessesClaims = lazy(
-  () => import('./pages/processesClaims/ProcessesClaims')
-);
+const ProcessesClaims = lazy(() => import('./pages/processesClaims/ProcessesClaims'));
 const TaskBoard = lazy(() => import('./pages/taskBoard/TaskBoard'));
 const Tasks = lazy(() => import('./pages/tasks/Tasks'));
 
@@ -21,12 +19,30 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: UrlPages.Claims,
-        element: <Claims />,
+        path: 'claims',
+        children: [
+          {
+            path: ':claimID',
+            element: <Claims />,
+          },
+          {
+            index: true,
+            element: <Claims />,
+          },
+        ],
       },
       {
         path: UrlPages.Customers,
-        element: <Customers />,
+        children: [
+          {
+            path: ':customerID',
+            element: <Customers />,
+          },
+          {
+            index: true,
+            element: <Customers />,
+          },
+        ],
       },
       {
         path: UrlPages.Employees,

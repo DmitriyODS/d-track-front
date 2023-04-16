@@ -3,12 +3,14 @@ import ICustomerData from '../../models/customer/CustomerData';
 export type TFilters = {
   fio_filter?: string;
   is_archive?: string;
+  claim_id?: string;
 };
 
-export function MakeCustomerFilters(fio: string, isArchive: boolean): TFilters {
+export function MakeCustomerFilters(fio: string, isArchive: boolean, claim_id: number): TFilters {
   return {
     fio_filter: fio,
     is_archive: isArchive.toString(),
+    claim_id: claim_id.toString(),
   };
 }
 

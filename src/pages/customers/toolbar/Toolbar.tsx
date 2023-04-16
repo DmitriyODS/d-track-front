@@ -8,16 +8,24 @@ import IconEdit from '@mui/icons-material/Edit';
 import IconArrow from '@mui/icons-material/Shortcut';
 import { EditModes, ViewModes } from '../../../globals/types';
 import { Collapse, useMediaQuery } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { UrlPages } from '../../../globals/urlPages';
 
 type TProps = {
   isArchive?: boolean;
   viewMode?: ViewModes;
   isSelected?: boolean;
   onOpenEditDialog: (editMode: EditModes) => void;
+  curItemID?: number;
 };
 
 function CustomersToolbar(props: TProps) {
   const matches = useMediaQuery('(min-width: 1650px)');
+  const navigate = useNavigate();
+
+  const onGoToClaimsHandler = () => {
+    navigate(`${UrlPages.Claims}/${props.curItemID}`);
+  };
 
   return (
     <Paper className={styles.root}>
@@ -66,7 +74,8 @@ function CustomersToolbar(props: TProps) {
         className={`${styles.btn} ${styles.btnMini}`}
         variant={'contained'}
         color={'tertiary'}
-        disabled={!props.isSelected}
+        disabled={!props.isSelected || props.curItemID === undefined}
+        onClick={onGoToClaimsHandler}
       >
         <IconArrow />
         <Collapse in={matches} orientation={'horizontal'}>

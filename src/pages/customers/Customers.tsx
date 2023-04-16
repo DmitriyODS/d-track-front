@@ -13,6 +13,7 @@ import { CreateCustomer, EditCustomer, GetCustomers } from '../../api/customer/m
 import { enqueueSnackbar } from 'notistack';
 import { GetItemsFromData } from './table/dataConvert';
 import CustomerEdit from './editDialog/CustomerEdit';
+import withRouterParams from '../../components/withRouterParams/WithRouterParams';
 
 type TState = {
   isArchive: boolean;
@@ -20,18 +21,30 @@ type TState = {
   isOpenEditDialog: boolean;
   editMode: EditModes;
   dataList: TDataTableItem<TCustomerDataTable>[];
+  filterClaimID: number;
 };
 
-class Customers extends React.Component<any, TState> {
+type TProps = {
+  routerParams: {
+    customerID: any;
+  };
+};
+
+class Customers extends React.Component<TProps, TState> {
   context!: React.ContextType<typeof PendingContext>;
   searchFilterTimerID: any;
   searchFilterText: string;
 
-  constructor(props: any) {
+  constructor(props: TProps) {
     super(props);
 
     this.searchFilterTimerID = 0;
     this.searchFilterText = '';
+
+    let customerID = parseInt(this.props.routerParams.customerID);
+    if (!Number.isInteger(customerID)) {
+      customerID = 0;
+    }
 
     this.state = {
       isArchive: false,
@@ -39,16 +52,9 @@ class Customers extends React.Component<any, TState> {
       isOpenEditDialog: false,
       editMode: EditModes.Create,
       dataList: [],
+      filterClaimID: customerID,
     };
   }
-
-  onSwitchToArchiveHandler = () => {
-    this.setState((s) => ({ ...s, isArchive: true, curItemID: 0 }));
-  };
-
-  onSwitchToActiveHandler = () => {
-    this.setState((s) => ({ ...s, isArchive: false, curItemID: 0 }));
-  };
 
   onSelectItemHandler = (itemID: number) => {
     this.setState((s) => ({ ...s, curItemID: itemID }));
@@ -104,7 +110,11 @@ class Customers extends React.Component<any, TState> {
   getTableData = () => {
     this.context.ToPending?.();
 
-    const result = GetCustomers(this.searchFilterText, this.state.isArchive);
+    const result = GetCustomers(
+      this.searchFilterText,
+      this.state.isArchive,
+      this.state.filterClaimID
+    );
     result.then(
       (customer) => {
         this.setState((prev) => ({
@@ -161,6 +171,7 @@ class Customers extends React.Component<any, TState> {
             isArchive={this.state.isArchive}
             isSelected={this.state.curItemID !== 0}
             onOpenEditDialog={this.onOpenEditDialogHandler}
+            curItemID={this.state.curItemID}
           />
         </div>
         <div className={styles.content}>
@@ -177,4 +188,4 @@ class Customers extends React.Component<any, TState> {
   }
 }
 
-export default Customers;
+export default withRouterParams(Customers);

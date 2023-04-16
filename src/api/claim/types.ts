@@ -4,12 +4,18 @@ import IClaimData from '../../models/claim/ClaimData';
 export type TFilters = {
   number_filter?: string;
   is_archive?: string;
+  customer_id?: string;
 };
 
-export function MakeClaimFilters(number: string, isArchive: boolean): TFilters {
+export function MakeClaimFilters(
+  number: string,
+  isArchive: boolean,
+  customer_id: number
+): TFilters {
   return {
     number_filter: number,
     is_archive: isArchive.toString(),
+    customer_id: customer_id.toString(),
   };
 }
 

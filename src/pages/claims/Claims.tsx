@@ -14,6 +14,7 @@ import { PendingContext } from '../../providers/PendingProvider';
 import { TClaimDataTable } from './table/ClaimDataItem';
 import { CreateClaim, EditClaim, GetClaims } from '../../api/claim/methods';
 import IClaimData from '../../models/claim/ClaimData';
+import withRouterParams from '../../components/withRouterParams/WithRouterParams';
 
 type TState = {
   isArchive: boolean;
@@ -21,18 +22,30 @@ type TState = {
   isOpenEditDialog: boolean;
   editMode: EditModes;
   dataList: TDataTableItem<TClaimDataTable>[];
+  filterCustomerID: number;
 };
 
-class Claims extends React.Component<any, TState> {
+type TProps = {
+  routerParams: {
+    claimID: any;
+  };
+};
+
+class Claims extends React.Component<TProps, TState> {
   context!: React.ContextType<typeof PendingContext>;
   searchFilterTimerID: any;
   searchFilterText: string;
 
-  constructor(props: any) {
+  constructor(props: TProps) {
     super(props);
 
     this.searchFilterTimerID = 0;
     this.searchFilterText = '';
+
+    let claimID = parseInt(this.props.routerParams.claimID);
+    if (!Number.isInteger(claimID)) {
+      claimID = 0;
+    }
 
     this.state = {
       isArchive: false,
@@ -40,6 +53,7 @@ class Claims extends React.Component<any, TState> {
       isOpenEditDialog: false,
       editMode: EditModes.Create,
       dataList: [],
+      filterCustomerID: claimID,
     };
   }
 
@@ -105,7 +119,11 @@ class Claims extends React.Component<any, TState> {
   getTableData = () => {
     this.context.ToPending?.();
 
-    const result = GetClaims(this.searchFilterText, this.state.isArchive);
+    const result = GetClaims(
+      this.searchFilterText,
+      this.state.isArchive,
+      this.state.filterCustomerID
+    );
     result.then(
       (claim) => {
         this.setState((prev) => ({
@@ -141,6 +159,7 @@ class Claims extends React.Component<any, TState> {
   };
 
   render() {
+    console.log(this.state.curItemID);
     return (
       <div className={styles.root}>
         {this.state.isOpenEditDialog && (
@@ -162,6 +181,7 @@ class Claims extends React.Component<any, TState> {
             isArchive={this.state.isArchive}
             isSelected={this.state.curItemID !== 0}
             onOpenEditDialog={this.onOpenEditDialogHandler}
+            curItemID={this.state.curItemID}
           />
           <Switcher
             isArchive={this.state.isArchive}
@@ -187,4 +207,6 @@ class Claims extends React.Component<any, TState> {
 
 Claims.contextType = PendingContext;
 
-export default Claims;
+const NewObj = withRouterParams(Claims);
+
+export default NewObj;

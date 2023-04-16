@@ -4,9 +4,13 @@ import { TBaseResponse } from '../base/types';
 import IClaimData from '../../models/claim/ClaimData';
 import { MakeClaimFilters, MakeDataFromResponse, NewClaimRequest, TClaimResponse } from './types';
 
-export async function GetClaims(numberFilter: string, isArchive: boolean): Promise<IClaimData[]> {
+export async function GetClaims(
+  numberFilter: string,
+  isArchive: boolean,
+  customerID: number
+): Promise<IClaimData[]> {
   const baseServer = process.env.REACT_APP_SERVER;
-  const urlParams = new URLSearchParams(MakeClaimFilters(numberFilter, isArchive));
+  const urlParams = new URLSearchParams(MakeClaimFilters(numberFilter, isArchive, customerID));
   const url = `http://${baseServer}${ServerAPI.GetClaimsLst}?${urlParams}`;
 
   return new Promise<IClaimData[]>(async (resolve, reject) => {

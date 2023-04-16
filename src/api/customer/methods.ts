@@ -11,10 +11,11 @@ import { TBaseResponse } from '../base/types';
 
 export async function GetCustomers(
   fioFilter: string,
-  isArchive: boolean
+  isArchive: boolean,
+  claimID: number
 ): Promise<ICustomerData[]> {
   const baseServer = process.env.REACT_APP_SERVER;
-  const urlParams = new URLSearchParams(MakeCustomerFilters(fioFilter, isArchive));
+  const urlParams = new URLSearchParams(MakeCustomerFilters(fioFilter, isArchive, claimID));
   const url = `http://${baseServer}${ServerAPI.GetCustomersLst}?${urlParams}`;
 
   return new Promise<ICustomerData[]>(async (resolve, reject) => {
