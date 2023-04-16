@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './Toolbar.module.css';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
@@ -6,17 +6,21 @@ import IconAdd from '@mui/icons-material/Add';
 import IconOpen from '@mui/icons-material/OpenInNew';
 import IconEdit from '@mui/icons-material/Edit';
 import IconChange from '@mui/icons-material/PublishedWithChanges';
-import { EditModes, ViewModes } from '../../../globals/types';
+import { EditModes, TaskStates, ViewModes } from '../../../globals/types';
 import { Collapse, useMediaQuery } from '@mui/material';
+import { StatesMenu } from './StatesMenu';
 
 type TProps = {
   isArchive?: boolean;
   viewMode?: ViewModes;
   isSelected?: boolean;
   onOpenEditDialog: (editMode: EditModes) => void;
+  onChangeStatus: (newState: TaskStates) => void;
 };
 
 function TasksToolbar(props: TProps) {
+  const [isOpenStateMenu, setOpenStateMenu] = useState(false);
+  const btnRef = useRef<any>(null);
   const matches = useMediaQuery('(min-width: 1650px)');
 
   return (
@@ -67,6 +71,8 @@ function TasksToolbar(props: TProps) {
             variant={'contained'}
             color={'primary'}
             disabled={!props.isSelected}
+            ref={btnRef}
+            onClick={() => setOpenStateMenu(true)}
           >
             <IconChange />
             <Collapse in={matches} orientation={'horizontal'}>
@@ -74,6 +80,15 @@ function TasksToolbar(props: TProps) {
             </Collapse>
           </Button>
         )}
+        <StatesMenu
+          isOpen={isOpenStateMenu}
+          anchorEl={btnRef.current}
+          onChangeState={(newState: TaskStates) => {
+            props.onChangeStatus(newState);
+            setOpenStateMenu(false);
+          }}
+          onClose={() => setOpenStateMenu(false)}
+        />
       </div>
     </Paper>
   );

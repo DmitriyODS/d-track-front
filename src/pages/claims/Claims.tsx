@@ -7,12 +7,12 @@ import Table, { TDataTableItem } from '../../components/table/Table';
 import ClaimsToolbar from './toolbar/Toolbar';
 import { ColumnTable } from './table/columnTable';
 import ClaimEdit from './editDialog/ClaimEdit';
-import { EditModes, PendingStatuses } from '../../globals/types';
+import { ClaimStates, EditModes, PendingStatuses } from '../../globals/types';
 import { GetItemsFromData } from './table/dataConvert';
 import { enqueueSnackbar } from 'notistack';
 import { PendingContext } from '../../providers/PendingProvider';
 import { TClaimDataTable } from './table/ClaimDataItem';
-import { CreateClaim, EditClaim, GetClaims } from '../../api/claim/methods';
+import { CreateClaim, EditClaim, GetClaimByID, GetClaims } from '../../api/claim/methods';
 import IClaimData from '../../models/claim/ClaimData';
 import withRouterParams from '../../components/withRouterParams/WithRouterParams';
 
@@ -158,6 +158,33 @@ class Claims extends React.Component<TProps, TState> {
     }, 500);
   };
 
+  onChangeStatus = (newState: ClaimStates) => {
+    this.context.ToPending?.();
+
+    const result = GetClaimByID(this.state.curItemID);
+    result
+      .then(
+        (claimData) => {
+          return EditClaim({
+            ...claimData,
+            status: { id: parseInt(newState), value: '' },
+          });
+        },
+        (error: string) => {
+          enqueueSnackbar(error, { variant: 'error' });
+        }
+      )
+      .then(
+        () => {
+          enqueueSnackbar('Статус изменён', { variant: 'success' });
+        },
+        (error: string) => {
+          enqueueSnackbar(error, { variant: 'error' });
+        }
+      )
+      .finally(() => this.getTableData());
+  };
+
   render() {
     console.log(this.state.curItemID);
     return (
@@ -182,6 +209,7 @@ class Claims extends React.Component<TProps, TState> {
             isSelected={this.state.curItemID !== 0}
             onOpenEditDialog={this.onOpenEditDialogHandler}
             curItemID={this.state.curItemID}
+            onChangeStatus={this.onChangeStatus}
           />
           <Switcher
             isArchive={this.state.isArchive}

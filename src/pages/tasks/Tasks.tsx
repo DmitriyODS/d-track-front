@@ -6,12 +6,12 @@ import SearchField from '../../components/searchField/SearchField';
 import Switcher from '../../components/switcher/Switcher';
 import { ColumnTable } from './table/columnTable';
 import TasksToolbar from './toolbar/Toolbar';
-import { EditModes, PendingStatuses } from '../../globals/types';
+import { EditModes, PendingStatuses, TaskStates } from '../../globals/types';
 import { TTaskDataTable } from './table/TaskDataItem';
 import { PendingContext } from '../../providers/PendingProvider';
 import { enqueueSnackbar } from 'notistack';
 import { GetItemsFromData } from './table/dataConvert';
-import { CreateTask, EditTask, GetTask } from '../../api/task/methods';
+import { CreateTask, EditTask, GetTask, GetTaskByID } from '../../api/task/methods';
 import ITaskData from '../../models/task/TaskData';
 import TaskEdit from './editDialog/TaskEdit';
 
@@ -140,6 +140,33 @@ class Tasks extends React.Component<any, TState> {
     }, 500);
   };
 
+  onChangeStatus = (newTaskState: TaskStates) => {
+    this.context.ToPending?.();
+
+    const result = GetTaskByID(this.state.curItemID);
+    result
+      .then(
+        (taskData) => {
+          return EditTask({
+            ...taskData,
+            status: { id: parseInt(newTaskState), value: '' },
+          });
+        },
+        (error: string) => {
+          enqueueSnackbar(error, { variant: 'error' });
+        }
+      )
+      .then(
+        () => {
+          enqueueSnackbar('Статус изменён', { variant: 'success' });
+        },
+        (error: string) => {
+          enqueueSnackbar(error, { variant: 'error' });
+        }
+      )
+      .finally(() => this.getTableData());
+  };
+
   render() {
     return (
       <div className={styles.root}>
@@ -162,6 +189,7 @@ class Tasks extends React.Component<any, TState> {
             isArchive={this.state.isArchive}
             isSelected={this.state.curItemID !== 0}
             onOpenEditDialog={this.onOpenEditDialogHandler}
+            onChangeStatus={this.onChangeStatus}
           />
           <Switcher
             isArchive={this.state.isArchive}

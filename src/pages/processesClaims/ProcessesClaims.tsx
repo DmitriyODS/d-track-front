@@ -120,13 +120,6 @@ class ProcessesClaims extends React.Component<any, TState> {
             status_id={ClaimStates.Extradition}
             titlesCard={TitlesCard}
           />
-          <TimelineCards
-            onSelect={this.onOpenEditDialogHandler}
-            dataLst={this.state.dataList}
-            title={'Закрыта'}
-            status_id={ClaimStates.Close}
-            titlesCard={TitlesCard}
-          />
         </div>
       </div>
     );

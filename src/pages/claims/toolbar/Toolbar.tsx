@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './Toolbar.module.css';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
@@ -7,10 +7,11 @@ import IconOpen from '@mui/icons-material/OpenInNew';
 import IconEdit from '@mui/icons-material/Edit';
 import IconChange from '@mui/icons-material/PublishedWithChanges';
 import IconArrow from '@mui/icons-material/Shortcut';
-import { EditModes, ViewModes } from '../../../globals/types';
+import { ClaimStates, EditModes, ViewModes } from '../../../globals/types';
 import { Collapse, useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { UrlPages } from '../../../globals/urlPages';
+import { StatesMenu } from './StatesMenu';
 
 type TProps = {
   isArchive?: boolean;
@@ -18,9 +19,12 @@ type TProps = {
   isSelected?: boolean;
   onOpenEditDialog: (editMode: EditModes) => void;
   curItemID?: number;
+  onChangeStatus: (newState: ClaimStates) => void;
 };
 
 function ClaimsToolbar(props: TProps) {
+  const [isOpenStateMenu, setOpenStateMenu] = useState(false);
+  const btnRef = useRef<any>(null);
   const matches = useMediaQuery('(min-width: 1650px)');
   const navigate = useNavigate();
 
@@ -76,6 +80,8 @@ function ClaimsToolbar(props: TProps) {
             variant={'contained'}
             color={'primary'}
             disabled={!props.isSelected}
+            ref={btnRef}
+            onClick={() => setOpenStateMenu(true)}
           >
             <IconChange />
             <Collapse in={matches} orientation={'horizontal'}>
@@ -83,6 +89,15 @@ function ClaimsToolbar(props: TProps) {
             </Collapse>
           </Button>
         )}
+        <StatesMenu
+          isOpen={isOpenStateMenu}
+          anchorEl={btnRef.current}
+          onChangeState={(newState: ClaimStates) => {
+            props.onChangeStatus(newState);
+            setOpenStateMenu(false);
+          }}
+          onClose={() => setOpenStateMenu(false)}
+        />
       </div>
       <Button
         className={`${styles.btn} ${styles.btnMini}`}
