@@ -1,45 +1,33 @@
 import React from 'react';
 import styles from './ItemCardTimeline.module.css';
 
-export type DataCard = {
+export type TDataTimelineCard = {
   itemID: number;
-  number: string;
-  date: string;
-  executor: string;
-  creator: string;
-  info: string;
-  role: string;
+  statusID: string;
+  value: any;
 };
 
-type Props = {
-  data: DataCard;
+export type TTitleTimelineCard = {
+  title: string;
+  name: string;
+};
+
+type TProps = {
+  titles: TTitleTimelineCard[];
+  data: TDataTimelineCard;
   onSelect?: (itemID: number) => void;
 };
 
-function ItemCardTimeline(props: Props) {
+function ItemCardTimeline(props: TProps) {
   return (
-    <div
-      className={styles.root}
-      onClick={() => props.onSelect?.(props.data.itemID)}
-    >
-      <div className={styles.title}>{props.data.number}</div>
-      <div>
-        <span className={styles.title}>Клиент:</span>
-        <br />
-        {props.data.creator}
-      </div>
-      <div>
-        <span className={styles.title}>Описание:</span>
-        <br /> {props.data.info}
-      </div>
-      <div>
-        <span className={styles.title}>Дата:</span>
-        <br /> {props.data.date}
-      </div>
-      <div>
-        <span className={styles.title}>Исполнитель:</span>
-        <br /> {props.data.executor} - {props.data.role}
-      </div>
+    <div className={styles.root} onClick={() => props.onSelect?.(props.data.itemID)}>
+      {props.titles.map((title, index) => (
+        <div key={index}>
+          <span className={styles.title}>{title.title}</span>
+          <br />
+          {props.data.value[title.name]}
+        </div>
+      ))}
     </div>
   );
 }

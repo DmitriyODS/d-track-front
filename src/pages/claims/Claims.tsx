@@ -207,6 +207,4 @@ class Claims extends React.Component<TProps, TState> {
 
 Claims.contextType = PendingContext;
 
-const NewObj = withRouterParams(Claims);
-
-export default NewObj;
+export default withRouterParams(Claims);
