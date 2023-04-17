@@ -84,7 +84,7 @@ function EmployeeEdit(props: Props) {
           setValue={setValue}
         />
       )}
-      {!loading && (
+      {!loading && !props.isLoading && (
         <DialogActions className={styles.spacing}>
           <Button
             variant={'contained'}

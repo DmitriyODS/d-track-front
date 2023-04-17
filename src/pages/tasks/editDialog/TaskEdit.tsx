@@ -88,7 +88,7 @@ function TaskEdit(props: TProps) {
           setValue={setValue}
         />
       )}
-      {!loading && (
+      {!loading && !props.isLoading && (
         <DialogActions className={styles.spacing}>
           <Button
             variant={'contained'}
