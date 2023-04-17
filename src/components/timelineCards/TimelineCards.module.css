@@ -35,6 +35,6 @@
     align-items: center;
 }
 
-.errMsg >p {
+.errMsg > p {
     margin: 0 !important;
 }

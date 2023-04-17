@@ -11,7 +11,7 @@ import { TTaskDataTable } from './table/TaskDataItem';
 import { PendingContext } from '../../providers/PendingProvider';
 import { enqueueSnackbar } from 'notistack';
 import { GetItemsFromData } from './table/dataConvert';
-import { CreateTask, EditTask, GetTask, GetTaskByID } from '../../api/task/methods';
+import { CreateTask, EditTask, GetTasks, GetTaskByID } from '../../api/task/methods';
 import ITaskData from '../../models/task/TaskData';
 import TaskEdit from './editDialog/TaskEdit';
 import { GetViewModeByLevelAccess } from '../../globals/funcs';
@@ -108,7 +108,7 @@ class Tasks extends React.Component<any, TState> {
   getTableData = () => {
     this.context.ToPending?.();
 
-    const result = GetTask(this.searchFilterText, this.state.isArchive);
+    const result = GetTasks(this.searchFilterText, this.state.isArchive);
     result.then(
       (task) => {
         this.setState((prev) => ({

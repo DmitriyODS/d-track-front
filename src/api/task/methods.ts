@@ -4,7 +4,7 @@ import { ServerAPI } from '../base/methods';
 import { GetJWTFromLocalStorage } from '../../globals/funcs';
 import { TBaseResponse } from '../base/types';
 
-export async function GetTask(numberFilter: string, isArchive: boolean): Promise<ITaskData[]> {
+export async function GetTasks(numberFilter: string, isArchive: boolean): Promise<ITaskData[]> {
   const baseServer = process.env.REACT_APP_SERVER;
   const urlParams = new URLSearchParams(MakeTaskFilters(numberFilter, isArchive));
   const url = `http://${baseServer}${ServerAPI.GetTasksLst}?${urlParams}`;

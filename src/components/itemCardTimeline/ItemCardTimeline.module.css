@@ -24,3 +24,7 @@
     color: #FFB3B6;
     font-weight: bold;
 }
+
+.part_content {
+    overflow: hidden;
+}
