@@ -28,7 +28,7 @@ class TaskBoard extends React.Component<any, TState> {
       curItemID: 0,
       isOpenEditDialog: false,
       dataList: [],
-      viewMode: GetViewModeByLevelAccess(SectionPos.Claims),
+      viewMode: GetViewModeByLevelAccess(SectionPos.Tasks),
     };
   }
 
