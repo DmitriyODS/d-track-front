@@ -22,7 +22,7 @@ function ItemCardTimeline(props: TProps) {
   return (
     <div className={styles.root} onClick={() => props.onSelect?.(props.data.itemID)}>
       {props.titles.map((title, index) => (
-        <div key={index}>
+        <div className={styles.part_content} key={index}>
           <span className={styles.title}>{title.title}</span>
           <br />
           {props.data.value[title.name]}
