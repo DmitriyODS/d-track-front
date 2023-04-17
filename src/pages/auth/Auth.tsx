@@ -49,7 +49,7 @@ class AuthPage extends React.Component<any, State> {
         <p className={styles.textVer}>
           Ver: 0.2.0
           <br />
-          Build: 20230417.1
+          Build: 20230417.2
         </p>
       </div>
     );
