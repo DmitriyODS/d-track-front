@@ -200,4 +200,6 @@ class Customers extends React.Component<TProps, TState> {
   }
 }
 
+Customers.contextType = PendingContext;
+
 export default withRouterParams(Customers);
