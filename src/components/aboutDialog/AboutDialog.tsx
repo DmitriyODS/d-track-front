@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './AboutDialog.module.css';
 import BaseDialog from '../baseDialog/BaseDialog';
 import { Typography } from '@mui/material';
@@ -18,7 +18,7 @@ function AboutDialog(props: Props) {
     >
       <Typography>D-Track - система автоматизированного управления рабочими процессами.</Typography>
       <Typography>Версия: 0.2.0</Typography>
-      <Typography>Сборка: 20230416.2</Typography>
+      <Typography>Сборка: 20230417.1</Typography>
       <Typography>Разработчик: IT Компания DDDA</Typography>
     </BaseDialog>
   );

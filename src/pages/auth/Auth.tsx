@@ -47,9 +47,9 @@ class AuthPage extends React.Component<any, State> {
         <p className={styles.titleLogo}>D-Track</p>
         <AuthCard onLogin={this.onLoginHandler} isInactive={this.state.isLoading} />
         <p className={styles.textVer}>
-          Ver: 0.1.0
+          Ver: 0.2.0
           <br />
-          Build: 20230225.1
+          Build: 20230417.1
         </p>
       </div>
     );
