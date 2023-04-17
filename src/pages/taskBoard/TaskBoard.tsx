@@ -103,6 +103,7 @@ class TaskBoard extends React.Component<any, TState> {
             title={'Открыта'}
             status_id={TaskStates.Open}
             titlesCard={TitlesCard}
+            isLoading={this.context?.Status}
           />
           <TimelineCards
             onSelect={this.onOpenEditDialogHandler}
@@ -110,6 +111,7 @@ class TaskBoard extends React.Component<any, TState> {
             title={'В работе'}
             status_id={TaskStates.InWork}
             titlesCard={TitlesCard}
+            isLoading={this.context?.Status}
           />
           <TimelineCards
             onSelect={this.onOpenEditDialogHandler}
@@ -117,6 +119,7 @@ class TaskBoard extends React.Component<any, TState> {
             title={'Оценка'}
             status_id={TaskStates.Estimation}
             titlesCard={TitlesCard}
+            isLoading={this.context?.Status}
           />
         </div>
       </div>

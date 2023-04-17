@@ -35,6 +35,17 @@
     align-items: center;
 }
 
+.loadingMsg {
+    width: 100%;
+    text-align: center;
+    align-self: center;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 .errMsg > p {
     margin: 0 !important;
 }

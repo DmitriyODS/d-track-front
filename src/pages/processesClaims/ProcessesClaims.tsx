@@ -108,6 +108,7 @@ class ProcessesClaims extends React.Component<any, TState> {
             title={'Выезд'}
             status_id={ClaimStates.Departure}
             titlesCard={TitlesCard}
+            isLoading={this.context?.Status}
           />
           <TimelineCards
             onSelect={this.onOpenEditDialogHandler}
@@ -115,6 +116,7 @@ class ProcessesClaims extends React.Component<any, TState> {
             title={'Приёмка'}
             status_id={ClaimStates.Acceptance}
             titlesCard={TitlesCard}
+            isLoading={this.context?.Status}
           />
           <TimelineCards
             onSelect={this.onOpenEditDialogHandler}
@@ -122,6 +124,7 @@ class ProcessesClaims extends React.Component<any, TState> {
             title={'Тестирование'}
             status_id={ClaimStates.Testing}
             titlesCard={TitlesCard}
+            isLoading={this.context?.Status}
           />
           <TimelineCards
             onSelect={this.onOpenEditDialogHandler}
@@ -129,6 +132,7 @@ class ProcessesClaims extends React.Component<any, TState> {
             title={'Ремонт'}
             status_id={ClaimStates.Repair}
             titlesCard={TitlesCard}
+            isLoading={this.context?.Status}
           />
           <TimelineCards
             onSelect={this.onOpenEditDialogHandler}
@@ -136,6 +140,7 @@ class ProcessesClaims extends React.Component<any, TState> {
             title={'Выдача'}
             status_id={ClaimStates.Extradition}
             titlesCard={TitlesCard}
+            isLoading={this.context?.Status}
           />
         </div>
       </div>
