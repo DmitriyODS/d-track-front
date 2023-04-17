@@ -7,9 +7,9 @@ import { TDataTimelineCard } from '../../components/itemCardTimeline/ItemCardTim
 import { PendingContext } from '../../providers/PendingProvider';
 import { EditModes, PendingStatuses, SectionPos, TaskStates, ViewModes } from '../../globals/types';
 import { GetDataTimelineCard, TitlesCard } from './timeline/dataCard';
-import ClaimEdit from '../claims/editDialog/ClaimEdit';
 import { GetViewModeByLevelAccess } from '../../globals/funcs';
 import { GetTasks } from '../../api/task/methods';
+import TaskEdit from '../tasks/editDialog/TaskEdit';
 
 type TState = {
   curItemID: number;
@@ -84,7 +84,7 @@ class TaskBoard extends React.Component<any, TState> {
     return (
       <div className={styles.root}>
         {this.state.isOpenEditDialog && (
-          <ClaimEdit
+          <TaskEdit
             onClose={this.onCloseEditDialogHandler}
             isOpen={this.state.isOpenEditDialog}
             editMode={EditModes.View}
