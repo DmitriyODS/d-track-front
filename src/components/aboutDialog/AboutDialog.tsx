@@ -18,7 +18,7 @@ function AboutDialog(props: Props) {
     >
       <Typography>D-Track - система автоматизированного управления рабочими процессами.</Typography>
       <Typography>Версия: 0.2.0</Typography>
-      <Typography>Сборка: 20230417.2</Typography>
+      <Typography>Сборка: 20230418.1</Typography>
       <Typography>Разработчик: IT Компания DDDA</Typography>
     </BaseDialog>
   );
