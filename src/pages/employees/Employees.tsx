@@ -248,6 +248,7 @@ class Employee extends React.Component<any, TState> {
             onEmployeeToFired={this.onEmployeeToFired}
             isLoading={this.context.Status === PendingStatuses.Loading}
             viewMode={this.state.viewMode}
+            curItemID={this.state.curItemID}
           />
           <Switcher
             isArchive={this.state.isArchive}

@@ -14,6 +14,8 @@ import { GetEmployeeDataFromFields, GetInitStateFieldsData, TEmployeeState } fro
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { GetEmployeeValidation } from './validation';
+import { useUser } from '../../../providers/UserProvider';
+import { EmployeeAdminID } from '../../../globals/consts';
 
 type Props = {
   onClose: () => void;
@@ -35,6 +37,9 @@ function EmployeeEdit(props: Props) {
     resolver: yupResolver(GetEmployeeValidation(isCreateMode)),
     values: dataField,
   });
+  const curUser = useUser();
+  const isCurUserData = curUser.User.userId === props.selectID;
+  const isAdminEmployee = props.selectID === EmployeeAdminID;
 
   useEffect(() => {
     if (isCreateMode || props.selectID === 0) {
@@ -82,6 +87,8 @@ function EmployeeEdit(props: Props) {
           isViewMode={isViewMode}
           onSubmit={props.onSave}
           setValue={setValue}
+          isAdmin={isAdminEmployee}
+          isCurUser={isCurUserData}
         />
       )}
       {!loading && !props.isLoading && (

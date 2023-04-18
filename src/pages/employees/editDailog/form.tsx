@@ -21,6 +21,8 @@ type TProps = {
   control: Control<any>;
   onSubmit?: any;
   setValue: UseFormSetValue<TEmployeeState>;
+  isAdmin: boolean;
+  isCurUser: boolean;
 };
 
 export function FormEmployee(props: TProps) {
@@ -75,7 +77,7 @@ export function FormEmployee(props: TProps) {
           fullWidth
           onLoadData={GetListPositions}
           required
-          disabled={props.isViewMode}
+          disabled={props.isViewMode || props.isAdmin || props.isCurUser}
         />
       </Grid>
       <Grid xs={6}>
@@ -86,7 +88,7 @@ export function FormEmployee(props: TProps) {
           fullWidth
           onLoadData={GetListLevelAccess}
           required
-          disabled={props.isViewMode}
+          disabled={props.isViewMode || props.isAdmin || props.isCurUser}
         />
       </Grid>
       <Grid xs={6}>

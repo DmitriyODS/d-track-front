@@ -9,6 +9,8 @@ import IconPersonOff from '@mui/icons-material/PersonOffOutlined';
 import IconReplay from '@mui/icons-material/Replay';
 import { EditModes, ViewModes } from '../../../globals/types';
 import { Collapse, useMediaQuery } from '@mui/material';
+import { useUser } from '../../../providers/UserProvider';
+import { EmployeeAdminID } from '../../../globals/consts';
 
 type Props = {
   isArchive?: boolean;
@@ -18,10 +20,14 @@ type Props = {
   onEmployeeToFired?: () => void;
   onEmployeeRestore?: () => void;
   isLoading?: boolean;
+  curItemID: number;
 };
 
 function EmployeesToolbar(props: Props) {
   const matches = useMediaQuery('(min-width: 1650px)');
+  const curUser = useUser();
+  const isCurUserData = curUser.User.userId === props.curItemID;
+  const isAdminEmployee = props.curItemID === EmployeeAdminID;
 
   return (
     <Paper className={styles.root}>
@@ -72,7 +78,7 @@ function EmployeesToolbar(props: Props) {
           className={`${styles.btn} ${styles.btnMini}`}
           variant={'contained'}
           color={'tertiary'}
-          disabled={!props.isSelected || props.isLoading}
+          disabled={!props.isSelected || props.isLoading || isCurUserData || isAdminEmployee}
           onClick={props.isArchive ? props.onEmployeeRestore : props.onEmployeeToFired}
         >
           {props.isArchive ? <IconReplay /> : <IconPersonOff />}
