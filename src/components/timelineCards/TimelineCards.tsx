@@ -31,7 +31,7 @@ function GetContentTimeline(props: TProps) {
   if (dataLst.length === 0) {
     return (
       <div className={styles.errMsg}>
-        <p>Нет заявок</p>
+        <p>Нет записей</p>
       </div>
     );
   }
